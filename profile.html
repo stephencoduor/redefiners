@@ -12,10 +12,9 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 									<!-- --- Text Font --- -->
 	<link rel="preconnect" href="https://fonts.gstatic.com">
-	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
-	
-  </head>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 									<!-- --- Custom Css --- -->
+	<link rel="stylesheet" type="text/css" href="css/tokens.css">
 	<link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
@@ -67,6 +66,24 @@
 						<a href="inbox.html">
 							<i class="fa fa-comments"></i>
 							<span> Messages</span>
+						</a>
+					</div>
+					<div class="menu-link">
+						<a href="assignments.html">
+							<i class="fa fa-file-lines"></i>
+							<span> Assignments</span>
+						</a>
+					</div>
+					<div class="menu-link">
+						<a href="grades.html">
+							<i class="fa fa-chart-bar"></i>
+							<span> Grades</span>
+						</a>
+					</div>
+					<div class="menu-link">
+						<a href="modules.html">
+							<i class="fa fa-layer-group"></i>
+							<span> Modules</span>
 						</a>
 					</div>
 				</section>
@@ -993,6 +1010,9 @@ addEventButton.onclick = function (e) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <script>
       $(".button-collapse").sideNav();
-    </script>	
+    </script>
+<script src="js/api.js"></script>
+<script src="js/render.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
