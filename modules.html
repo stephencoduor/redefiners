@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0,  shrink-to-fit=no">
+	<title>ReDefiners</title>
+									<!-- --- Bootstrap 5 --- -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+									<!-- --- Font Awesome --- -->
+	<script src="https://kit.fontawesome.com/7a13c96681.js" crossorigin="anonymous"></script>
+									<!-- --- jQuery --- -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+									<!-- --- Text Font --- -->
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+
+  </head>
+									<!-- --- Custom Css --- -->
+	<link rel="stylesheet" type="text/css" href="css/tokens.css">
+	<link rel="stylesheet" type="text/css" href="styles.css">
+
+<style>
+	/* --- Modules Page Styles --- */
+	.modules-content {
+		padding: 30px 0;
+	}
+	.breadcrumb-nav {
+		font-size: 14px;
+		margin-bottom: 20px;
+	}
+	.breadcrumb-nav a {
+		color: #668B91;
+		text-decoration: none;
+	}
+	.breadcrumb-nav a:hover {
+		color: #063949;
+		text-decoration: underline;
+	}
+	.breadcrumb-nav span {
+		color: #063949;
+		font-weight: bold;
+	}
+	.page-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 30px;
+		flex-wrap: wrap;
+		gap: 15px;
+	}
+	.page-header h3 {
+		color: #063949;
+		margin: 0;
+		font-size: 24px;
+	}
+	.progress-overview {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		background: #fff;
+		padding: 10px 20px;
+		border-radius: 20px;
+		box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+	}
+	.progress-overview span {
+		color: #063949;
+		font-size: 14px;
+		white-space: nowrap;
+	}
+	.progress-overview .progress-bar-wrapper {
+		width: 180px;
+		height: 10px;
+		background: #e0e0e0;
+		border-radius: 5px;
+		overflow: hidden;
+	}
+	.progress-overview .progress-bar-fill {
+		height: 100%;
+		width: 65%;
+		background: linear-gradient(90deg, #16D2DD, #0fa);
+		border-radius: 5px;
+		transition: width 0.5s ease;
+	}
+
+	/* Module Card */
+	.module-card {
+		background: #fff;
+		border-radius: 20px;
+		box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+		margin-bottom: 24px;
+		overflow: hidden;
+		position: relative;
+	}
+	.module-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 18px 24px;
+		cursor: pointer;
+		user-select: none;
+		transition: background 0.2s;
+		flex-wrap: wrap;
+		gap: 10px;
+	}
+	.module-header:hover {
+		background: #f7fbfc;
+	}
+	.module-header-left {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+	}
+	.module-header-left .module-icon {
+		width: 36px;
+		height: 36px;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 16px;
+		color: #fff;
+		flex-shrink: 0;
+	}
+	.module-icon.completed { background: #28a745; }
+	.module-icon.in-progress { background: #17a2b8; }
+	.module-icon.locked { background: #adb5bd; }
+
+	.module-header-left h5 {
+		margin: 0;
+		color: #063949;
+		font-size: 16px;
+	}
+	.module-header-right {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		flex-wrap: wrap;
+	}
+	.module-meta {
+		font-size: 12px;
+		color: #668B91;
+	}
+	.module-completion {
+		font-size: 13px;
+		font-weight: bold;
+	}
+	.module-completion.done { color: #28a745; }
+	.module-completion.progress { color: #17a2b8; }
+	.module-completion.lock { color: #adb5bd; }
+	.module-toggle {
+		font-size: 18px;
+		color: #668B91;
+		transition: transform 0.3s;
+	}
+	.module-toggle.open {
+		transform: rotate(180deg);
+	}
+
+	/* Module prereq */
+	.module-prereq {
+		padding: 0 24px;
+		font-size: 12px;
+		color: #888;
+		margin-bottom: 6px;
+	}
+	.module-prereq i {
+		margin-right: 4px;
+	}
+
+	/* Module Items */
+	.module-items {
+		padding: 0 24px 18px;
+	}
+	.module-item {
+		display: flex;
+		align-items: center;
+		padding: 12px 14px;
+		border-bottom: 1px solid #f0f0f0;
+		gap: 14px;
+		transition: background 0.2s;
+		flex-wrap: wrap;
+	}
+	.module-item:last-child {
+		border-bottom: none;
+	}
+	.module-item:hover {
+		background: #f7fbfc;
+	}
+	.item-checkbox {
+		width: 22px;
+		height: 22px;
+		border-radius: 50%;
+		border: 2px solid #ccc;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+	}
+	.item-checkbox.checked {
+		border-color: #28a745;
+		background: #28a745;
+		color: #fff;
+		font-size: 12px;
+	}
+	.item-type-icon {
+		width: 32px;
+		height: 32px;
+		border-radius: 8px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 14px;
+		color: #fff;
+		flex-shrink: 0;
+	}
+	.item-type-icon.page { background: #17a2b8; }
+	.item-type-icon.assignment { background: #fd7e14; }
+	.item-type-icon.file { background: #6f42c1; }
+	.item-type-icon.quiz { background: #dc3545; }
+	.item-type-icon.external { background: #20c997; }
+	.item-type-icon.discussion { background: #0d6efd; }
+
+	.item-info {
+		flex: 1;
+		min-width: 0;
+	}
+	.item-info .item-name {
+		color: #063949;
+		font-size: 14px;
+		margin: 0;
+	}
+	.item-badges {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		flex-wrap: wrap;
+	}
+	.req-badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		font-size: 11px;
+		padding: 3px 10px;
+		border-radius: 12px;
+		font-weight: bold;
+		white-space: nowrap;
+	}
+	.req-badge.view {
+		background: #e8f4fd;
+		color: #17a2b8;
+	}
+	.req-badge.submit {
+		background: #fff3e0;
+		color: #fd7e14;
+	}
+	.req-badge.contribute {
+		background: #e3f2fd;
+		color: #0d6efd;
+	}
+	.req-badge.score {
+		background: #fff8e1;
+		color: #f5a623;
+	}
+	.points-badge {
+		font-size: 12px;
+		color: #668B91;
+		background: #f0f6f7;
+		padding: 3px 10px;
+		border-radius: 12px;
+		white-space: nowrap;
+	}
+	.status-completed {
+		color: #28a745;
+		font-size: 13px;
+		font-weight: bold;
+		white-space: nowrap;
+	}
+	.status-not-completed {
+		color: #adb5bd;
+		font-size: 13px;
+		white-space: nowrap;
+	}
+
+	/* Locked Module */
+	.module-card.locked-module .module-items {
+		position: relative;
+	}
+	.module-card.locked-module .module-item {
+		opacity: 0.45;
+		pointer-events: none;
+	}
+	.locked-overlay {
+		position: absolute;
+		top: 0; left: 0; right: 0; bottom: 0;
+		background: rgba(240,246,247,0.5);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 2;
+		border-radius: 0 0 20px 20px;
+	}
+	.locked-overlay .lock-msg {
+		background: #fff;
+		padding: 12px 24px;
+		border-radius: 12px;
+		box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		color: #adb5bd;
+		font-size: 14px;
+	}
+
+	/* Responsive */
+	@media (max-width: 890px) {
+		.page-header {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+		.progress-overview .progress-bar-wrapper {
+			width: 120px;
+		}
+		.module-header {
+			padding: 14px 16px;
+		}
+		.module-items {
+			padding: 0 16px 14px;
+		}
+		.module-item {
+			padding: 10px 8px;
+			gap: 10px;
+		}
+		.item-badges {
+			width: 100%;
+		}
+	}
+</style>
+</head>
+<body>
+	<div class="row starter">
+		<div class="col-lg-2 col-md-2 col-sm-2 left-sidebar">
+			<div class="menu-bar">
+				<section class="logo-section">
+					<i class="fa fa-times theme-color menu-hide"></i>
+					<img src="Images/logo.PNG" class="res-hide" alt="logo">
+					<div class="nav-input res-show-flex" style="margin: 20px 0 0">
+						<button style="border:1px solid #668B91;border-right: 0">
+							<i class="fa fa-search"></i>
+						</button>
+						<input style="border:1px solid #668B91;border-left: 0;width: 85%;" type="text" name="search" placeholder="Search">
+					</div>
+				</section>
+				<section class="menu-links">
+					<div class="menu-link">
+						<a href="dashboard.html">
+							<i class="fa fa-th-large"></i>
+							<span> Dashboard</span>
+						</a>
+					</div>
+					<div class="menu-link">
+						<a href="classroom.html">
+							<i class="fa fa-user"></i>
+							<span> Classroom</span>
+						</a>
+					</div>
+					<div class="menu-link">
+						<a href="courses.html">
+							<i class="fa fa-clipboard-list"></i>
+							<span> Courses</span>
+						</a>
+					</div>
+					<div class="menu-link">
+						<a href="calendar.html">
+							<i class="fa fa-calendar-alt"></i>
+							<span> Calendar</span>
+						</a>
+					</div>
+					<div class="menu-link">
+						<a href="announcement.html">
+							<i class="fa fa-bullhorn"></i>
+							<span> Announcements</span>
+						</a>
+					</div>
+					<div class="menu-link">
+						<a href="inbox.html">
+							<i class="fa fa-comments"></i>
+							<span> Messages</span>
+						</a>
+					</div>
+					<div class="menu-link">
+						<a href="assignments.html">
+							<i class="fa fa-file-lines"></i>
+							<span> Assignments</span>
+						</a>
+					</div>
+					<div class="menu-link">
+						<a href="grades.html">
+							<i class="fa fa-chart-bar"></i>
+							<span> Grades</span>
+						</a>
+					</div>
+					<div class="menu-link">
+						<a href="modules.html" class="active-menu">
+							<i class="fa fa-layer-group"></i>
+							<span> Modules</span>
+						</a>
+					</div>
+				</section>
+			</div>
+		</div>
+
+		<div class="col-lg-8 col-md-8 col-sm-12 middle-part">
+			<div class="nav-bar">
+				<div class="res-nav" style="display: flex;align-items: center;justify-content: space-between;">
+					<i class="fa fa-bars menu-icon" style="margin-right: 20px;"></i>
+					<div class="nav-input res-hide-flex" >
+						<button>
+							<i class="fa fa-search"></i>
+						</button>
+						<input type="text" name="search" placeholder="Search">
+					</div>
+					<div class="res-show" style="margin-bottom: 20px;">
+						<img src="Images/logo.PNG" alt="logo">
+					</div>
+					<i class="fa fa-calendar-alt calendar-icon res-show theme-color" style="font-size: 22px;"></i>
+				</div>
+				<div class="nav-red-heading">
+					<i class="fa fa-bullhorn"></i>
+					<h5>
+						 Aliquam enim, aenean tincidunt lectus porta facilisis
+						<br>
+						nullum. Gravida velit pretium.
+					</h5>
+				</div>
+				<div class="nav-quick">
+						<span>Quick Links </span>
+						<i class="fa fa-caret-down"></i>
+				</div>
+			</div>
+
+			<!-- Modules Content -->
+			<div class="modules-content">
+				<!-- Breadcrumbs -->
+				<div class="breadcrumb-nav">
+					<a href="dashboard.html">Home</a>
+					<i class="fa fa-chevron-right" style="font-size:10px; margin: 0 8px; color:#adb5bd;"></i>
+					<a href="courses.html">Spanish 101</a>
+					<i class="fa fa-chevron-right" style="font-size:10px; margin: 0 8px; color:#adb5bd;"></i>
+					<span>Modules</span>
+				</div>
+
+				<!-- Page Header -->
+				<div class="page-header">
+					<h3 class="second-color">Modules</h3>
+					<div class="progress-overview">
+						<span>65% Complete</span>
+						<div class="progress-bar-wrapper">
+							<div class="progress-bar-fill"></div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Module 1: Getting Started -->
+				<div class="module-card" data-module="1">
+					<div class="module-header" onclick="toggleModule(this)">
+						<div class="module-header-left">
+							<div class="module-icon completed">
+								<i class="fa fa-check"></i>
+							</div>
+							<h5>Module 1: Getting Started</h5>
+						</div>
+						<div class="module-header-right">
+							<span class="module-meta">4 items</span>
+							<span class="module-completion done">100%</span>
+							<i class="fa fa-chevron-down module-toggle open"></i>
+						</div>
+					</div>
+					<div class="module-prereq">
+						<i class="fa fa-info-circle"></i> Prerequisites: None
+					</div>
+					<div class="module-items">
+						<!-- Item 1 -->
+						<div class="module-item">
+							<div class="item-checkbox checked"><i class="fa fa-check"></i></div>
+							<div class="item-type-icon page"><i class="fa fa-file-alt"></i></div>
+							<div class="item-info">
+								<p class="item-name">Welcome &amp; Course Overview</p>
+							</div>
+							<div class="item-badges">
+								<span class="req-badge view"><i class="fa fa-eye"></i> View</span>
+							</div>
+							<span class="status-completed"><i class="fa fa-check-circle"></i> Completed</span>
+						</div>
+						<!-- Item 2 -->
+						<div class="module-item">
+							<div class="item-checkbox checked"><i class="fa fa-check"></i></div>
+							<div class="item-type-icon assignment"><i class="fa fa-file-lines"></i></div>
+							<div class="item-info">
+								<p class="item-name">Introduce Yourself Discussion</p>
+							</div>
+							<div class="item-badges">
+								<span class="req-badge contribute"><i class="fa fa-comment"></i> Contribute</span>
+							</div>
+							<span class="status-completed"><i class="fa fa-check-circle"></i> Completed</span>
+						</div>
+						<!-- Item 3 -->
+						<div class="module-item">
+							<div class="item-checkbox checked"><i class="fa fa-check"></i></div>
+							<div class="item-type-icon file"><i class="fa fa-file-pdf"></i></div>
+							<div class="item-info">
+								<p class="item-name">Syllabus (PDF)</p>
+							</div>
+							<div class="item-badges">
+								<span class="req-badge view"><i class="fa fa-eye"></i> View</span>
+							</div>
+							<span class="status-completed"><i class="fa fa-check-circle"></i> Completed</span>
+						</div>
+						<!-- Item 4 -->
+						<div class="module-item">
+							<div class="item-checkbox checked"><i class="fa fa-check"></i></div>
+							<div class="item-type-icon quiz"><i class="fa fa-question-circle"></i></div>
+							<div class="item-info">
+								<p class="item-name">Pre-Assessment Quiz</p>
+							</div>
+							<div class="item-badges">
+								<span class="req-badge submit"><i class="fa fa-paper-plane"></i> Submit</span>
+							</div>
+							<span class="status-completed"><i class="fa fa-check-circle"></i> Completed</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Module 2: Unit 1 - Basic Vocabulary -->
+				<div class="module-card" data-module="2">
+					<div class="module-header" onclick="toggleModule(this)">
+						<div class="module-header-left">
+							<div class="module-icon in-progress">
+								<i class="fa fa-spinner"></i>
+							</div>
+							<h5>Module 2: Unit 1 - Basic Vocabulary</h5>
+						</div>
+						<div class="module-header-right">
+							<span class="module-meta">5 items</span>
+							<span class="module-completion progress">40%</span>
+							<i class="fa fa-chevron-down module-toggle open"></i>
+						</div>
+					</div>
+					<div class="module-prereq">
+						<i class="fa fa-info-circle"></i> Prerequisites: Complete "Getting Started"
+					</div>
+					<div class="module-items">
+						<!-- Item 1 -->
+						<div class="module-item">
+							<div class="item-checkbox checked"><i class="fa fa-check"></i></div>
+							<div class="item-type-icon page"><i class="fa fa-file-alt"></i></div>
+							<div class="item-info">
+								<p class="item-name">Vocabulary List Ch 1-3</p>
+							</div>
+							<div class="item-badges">
+								<span class="req-badge view"><i class="fa fa-eye"></i> View</span>
+							</div>
+							<span class="status-completed"><i class="fa fa-check-circle"></i> Completed</span>
+						</div>
+						<!-- Item 2 -->
+						<div class="module-item">
+							<div class="item-checkbox checked"><i class="fa fa-check"></i></div>
+							<div class="item-type-icon external"><i class="fa fa-external-link-alt"></i></div>
+							<div class="item-info">
+								<p class="item-name">Practice on Duolingo</p>
+							</div>
+							<div class="item-badges">
+								<span class="req-badge view"><i class="fa fa-eye"></i> View</span>
+							</div>
+							<span class="status-completed"><i class="fa fa-check-circle"></i> Completed</span>
+						</div>
+						<!-- Item 3 -->
+						<div class="module-item">
+							<div class="item-checkbox"><i class="fa fa-check" style="visibility:hidden;"></i></div>
+							<div class="item-type-icon assignment"><i class="fa fa-file-lines"></i></div>
+							<div class="item-info">
+								<p class="item-name">Vocab Worksheet</p>
+							</div>
+							<div class="item-badges">
+								<span class="req-badge submit"><i class="fa fa-paper-plane"></i> Submit</span>
+								<span class="points-badge">20 pts</span>
+							</div>
+							<span class="status-not-completed">Not completed</span>
+						</div>
+						<!-- Item 4 -->
+						<div class="module-item">
+							<div class="item-checkbox"><i class="fa fa-check" style="visibility:hidden;"></i></div>
+							<div class="item-type-icon quiz"><i class="fa fa-question-circle"></i></div>
+							<div class="item-info">
+								<p class="item-name">Vocab Quiz Ch 1-3</p>
+							</div>
+							<div class="item-badges">
+								<span class="req-badge score"><i class="fa fa-star"></i> Score 70%</span>
+								<span class="points-badge">20 pts</span>
+							</div>
+							<span class="status-not-completed">Not completed</span>
+						</div>
+						<!-- Item 5 -->
+						<div class="module-item">
+							<div class="item-checkbox"><i class="fa fa-check" style="visibility:hidden;"></i></div>
+							<div class="item-type-icon discussion"><i class="fa fa-comments"></i></div>
+							<div class="item-info">
+								<p class="item-name">Share Your Favorite Word</p>
+							</div>
+							<div class="item-badges">
+								<span class="req-badge contribute"><i class="fa fa-comment"></i> Contribute</span>
+							</div>
+							<span class="status-not-completed">Not completed</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Module 3: Unit 2 - Grammar Basics (Locked) -->
+				<div class="module-card locked-module" data-module="3">
+					<div class="module-header" onclick="toggleModule(this)">
+						<div class="module-header-left">
+							<div class="module-icon locked">
+								<i class="fa fa-lock"></i>
+							</div>
+							<h5>Module 3: Unit 2 - Grammar Basics</h5>
+						</div>
+						<div class="module-header-right">
+							<span class="module-meta">4 items</span>
+							<span class="module-completion lock"><i class="fa fa-lock"></i> Locked</span>
+							<i class="fa fa-chevron-down module-toggle open"></i>
+						</div>
+					</div>
+					<div class="module-prereq">
+						<i class="fa fa-lock" style="color:#adb5bd;"></i> Prerequisites: Score at least 70% on "Vocab Quiz Ch 1-3"
+					</div>
+					<div class="module-items" style="position:relative;">
+						<div class="locked-overlay">
+							<div class="lock-msg">
+								<i class="fa fa-lock"></i> Complete prerequisites to unlock this module
+							</div>
+						</div>
+						<!-- Item 1 -->
+						<div class="module-item">
+							<div class="item-checkbox"><i class="fa fa-check" style="visibility:hidden;"></i></div>
+							<div class="item-type-icon page"><i class="fa fa-file-alt"></i></div>
+							<div class="item-info">
+								<p class="item-name">Grammar Rules Overview</p>
+							</div>
+							<div class="item-badges"></div>
+							<span class="status-not-completed"></span>
+						</div>
+						<!-- Item 2 -->
+						<div class="module-item">
+							<div class="item-checkbox"><i class="fa fa-check" style="visibility:hidden;"></i></div>
+							<div class="item-type-icon assignment"><i class="fa fa-file-lines"></i></div>
+							<div class="item-info">
+								<p class="item-name">Grammar Practice Exercises</p>
+							</div>
+							<div class="item-badges">
+								<span class="points-badge">50 pts</span>
+							</div>
+							<span class="status-not-completed"></span>
+						</div>
+						<!-- Item 3 -->
+						<div class="module-item">
+							<div class="item-checkbox"><i class="fa fa-check" style="visibility:hidden;"></i></div>
+							<div class="item-type-icon quiz"><i class="fa fa-question-circle"></i></div>
+							<div class="item-info">
+								<p class="item-name">Grammar Quiz Ch 4-6</p>
+							</div>
+							<div class="item-badges">
+								<span class="points-badge">20 pts</span>
+							</div>
+							<span class="status-not-completed"></span>
+						</div>
+						<!-- Item 4 -->
+						<div class="module-item">
+							<div class="item-checkbox"><i class="fa fa-check" style="visibility:hidden;"></i></div>
+							<div class="item-type-icon discussion"><i class="fa fa-comments"></i></div>
+							<div class="item-info">
+								<p class="item-name">Grammar Questions &amp; Answers</p>
+							</div>
+							<div class="item-badges"></div>
+							<span class="status-not-completed"></span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<!-- End Modules Content -->
+		</div>
+
+		<div class="col-lg-2 col-md-2 col-sm-2 right-sidebar">
+			<div class="real-rightmap">
+				<i class="fa fa-times theme-color menu-hide" style="position: relative;left: 95%;"></i>
+				<div class="right-top">
+					<div class="profile-click">
+					<img src="Images/profile.png">
+					<p class="second-color">
+						RadicalCode
+					</p>
+					</div>
+					<i class="fa fa-cog"></i>
+					<i class="fa fa-bell"></i>
+				</div>
+			</div>
+			<div class="right-popup">
+				<i class="fa fa-angle-left theme-color fa-2x close-profile" style="cursor: pointer;"></i>
+				<div class="message-pro">
+					<img src="Images/profile-img.png">
+					<h5 class="second-color">
+						RacialCode
+					</h5>
+					<p class="theme-color">
+						@radialcode
+					</p>
+					<p class="theme-color" style="font-size: 12px;">
+						Ac massa ids gravida vestibulum alliquet diam prion.
+					</p>
+					<div class="pro-three" style="flex-direction: column;">
+						<a href="profile.html" style="text-decoration: none;">
+							<div class="pro-three-inn" style="display: flex;align-items: center;margin-bottom: 20px;cursor: pointer;">
+								<i class="fa fa-user theme-color" style="margin-bottom: 0"></i>
+								<h5 class="second-color" style="margin-left: 10px;">
+									Profile
+								</h5>
+							</div>
+						</a>
+						<div class="pro-three-inn" style="display: flex;align-items: center;margin-bottom: 20px;cursor: pointer;">
+							<i class="fa fa-cog theme-color" style="margin-bottom: 0"></i>
+							<h5 class="second-color" style="margin-left: 10px;">
+								Settings
+							</h5>
+						</div>
+						<div class="pro-three-inn" style="display: flex;align-items: center;margin-bottom: 20px;cursor: pointer;">
+							<img src="Images/logout.png" style="margin-bottom: 0">
+							<h5 class="second-color" style="margin-left: 10px;">
+								Logout
+							</h5>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!-- Profile toggle scripts -->
+<script type="text/javascript">
+	$(".profile-click").click(function(){
+		$(".real-rightmap").css("display","none");
+		$(".right-popup").css("display","block");
+	})
+	$(".close-profile").click(function(){
+		$(".real-rightmap").css("display","block");
+		$(".right-popup").css("display","none");
+	})
+</script>
+
+<!-- Mobile menu scripts -->
+<script type="text/javascript">
+	$(".menu-icon").click(function(){
+		$("body").css("overflow","hidden");
+		$(".left-sidebar").animate({"margin-left": "0vw"}, 500)
+	});
+	$(".menu-hide").click(function(){
+		$("body").css("overflow","auto");
+	$(".left-sidebar").animate({"margin-left": "-100vw"}, 500)
+	$(".right-sidebar").css("display","none")
+	});
+
+	$(".calendar-icon").click(function(){
+		$(".right-sidebar").css("display","block")
+		$("body").css("overflow","hidden");
+	});
+</script>
+
+<!-- Module collapse/expand scripts -->
+<script type="text/javascript">
+	function toggleModule(header) {
+		var $header = $(header);
+		var $items = $header.closest('.module-card').find('.module-items');
+		var $prereq = $header.closest('.module-card').find('.module-prereq');
+		var $toggle = $header.find('.module-toggle');
+
+		$items.slideToggle(300);
+		$prereq.slideToggle(300);
+		$toggle.toggleClass('open');
+	}
+</script>
+
+<!-- JS includes -->
+<script src="js/api.js"></script>
+<script src="js/render.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

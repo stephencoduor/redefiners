@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ReDefiners</title>
+									<!-- --- Bootstrap 5 --- -->
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+									<!-- --- Font Awesome --- -->
+	<script src="https://kit.fontawesome.com/7a13c96681.js" crossorigin="anonymous"></script>
+									<!-- --- jQuery --- -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+									<!-- --- Text Font --- -->
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  </head>
+									<!-- --- Custom Css --- -->
+	<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+	<div class="row starter">
+		<div class="col-lg-2 col-md-2 col-sm-2 left-sidebar">
+			<div class="menu-bar">
+				<section class="logo-section">
+					<i class="fa fa-times theme-color menu-hide"></i>
+					<img src="Images/logo.PNG" class="res-hide" alt="logo">
+					<div class="nav-input res-show-flex" style="margin: 20px 0 0">
+						<button style="border:1px solid #668B91;border-right: 0">
+							<i class="fa fa-search"></i>
+						</button>
+						<input style="border:1px solid #668B91;border-left: 0;width: 85%;" type="text" name="search" placeholder="Search">
+					</div>
+				</section>
+				<section class="menu-links">
+					<div class="menu-link">
+						<a href="dashboard.html">
+							<i class="fa fa-th-large"></i>
+							<span> Dashboard</span>
+						</a>
+					</div>
+					<div class="menu-link">
+						<a href="classroom.html">
+							<i class="fa fa-user"></i>
+							<span> Classroom</span>
+						</a>
+					</div>
+					<div class="menu-link">
+						<a href="courses.html">
+							<i class="fa fa-clipboard-list"></i>
+							<span> Courses</span>
+						</a>
+					</div>
+					<div class="menu-link">
+						<a href="calendar.html">
+							<i class="fa fa-calendar-alt"></i>
+							<span> Calendar</span>
+						</a>
+					</div>
+					<div class="menu-link">
+						<a href="announcement.html">
+							<i class="fa fa-bullhorn"></i>
+							<span> Announcements</span>
+						</a>
+					</div>
+					<div class="menu-link">
+						<a href="inbox.html" class="active-menu">
+							<i class="fa fa-comments"></i>
+							<span> Messages</span>
+						</a>
+					</div>
+				</section>
+			</div>
+		</div>
+		<div class="col-lg-8 col-md-8 col-sm-12 middle-part">
+			<div class="nav-bar">
+				<div class="res-nav" style="display: flex;align-items: center;justify-content: space-between;">
+					<i class="fa fa-bars menu-icon" style="margin-right: 20px;"></i>
+					<div class="nav-input res-hide-flex" >
+						<button>
+							<i class="fa fa-search"></i>
+						</button>
+						<input type="text" name="search" placeholder="Search">
+					</div>
+					<div class="res-show" style="margin-bottom: 20px;">
+						<img src="Images/logo.PNG" alt="logo">
+					</div>
+					<i class="fa fa-calendar-alt calendar-icon res-show theme-color" style="font-size: 22px;"></i>
+				</div>
+				<div class="nav-red-heading">
+					<i class="fa fa-bullhorn"></i>
+					<h5>
+						 Aliquam enim, aenean tincidunt lectus porta facilisis
+						<br>
+						nullum. Gravida velit pretium.
+					</h5>
+				</div>
+				<div class="nav-quick">
+						<span>Quick Links </span>
+						<i class="fa fa-caret-down"></i>
+				</div>
+			</div>
+			<div class="inbox row">
+				<div class="col-md-3 inbox-left">
+					<div class="message-head">
+						<h5 class="second-color" style="font-weight: bold;font-size: 18px;"> 
+							Messages
+						</h5>
+						<i class="theme-color fa fa-cog">
+						</i>
+					</div>
+					<div class="mess-form">
+						<div class="people-sec">
+							<h5 class="second-color">
+								Teachers
+							</h5>
+							<div class="people-inn">
+								<img src="Images/instructor2.png">
+								<div>
+									<h5 class="second-color">
+										Lincoln
+									</h5>
+									<p>
+										Hlo 3:00 AM
+									</p>
+								</div>
+							</div>
+							<div class="people-inn">
+								<img src="Images/instructor1.png">
+								<div>
+									<h5 class="second-color">
+										Maren
+									</h5>
+									<p>
+										Hlo 3:00 AM
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="people-sec">
+							<h5 class="second-color">
+								Classmates
+							</h5>
+							<div class="people-inn inbox-active inbox-click">
+								<img src="Images/image6.png">
+								<div>
+									<h5 class="second-color">
+										Lindsey
+									</h5>
+									<p>
+										Thnkx 3:00 AM
+									</p>
+								</div>
+							</div>
+							<div class="people-inn">
+								<img src="Images/image3.png">
+								<div>
+									<h5 class="second-color">
+										Carter
+									</h5>
+									<p>
+										Thankx 3:00 AM
+									</p>
+								</div>
+							</div>
+							<div class="people-inn">
+								<img src="Images/image1.png">
+								<div>
+									<h5 class="second-color">
+										Rayna
+									</h5>
+									<p>
+										Thankx 3:00 AM
+									</p>
+								</div>
+							</div>
+							<div class="people-inn">
+								<img src="Images/image2.png">
+								<div>
+									<h5 class="second-color">
+										Jackson
+									</h5>
+									<p>
+										Thankx 3:00 AM
+									</p>
+								</div>
+							</div>
+							<div class="people-inn">
+								<img src="Images/image2.png">
+								<div>
+									<h5 class="second-color">
+										Jack
+									</h5>
+									<p>
+										Thankx 3:00 AM
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-9 inbox-right">
+					<div class="message-head inbox-head">
+
+					<i class="fa fa-angle-left fa-2x inbox-back theme-color res-show"></i>
+						<div class="inbox-head-inn message-head">
+							<img src="Images/image6.png">
+							<h5 class="second-color" style="margin-left: 10px;font-weight: bold;font-size: 18px;">
+								Lindsey
+							</h5>
+						</div>
+						<img src="Images/dots.png">
+					</div>
+					<div class="real-mess row">
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="real-mess-inn">
+										<img src="Images/image-inn.png">
+										<div class="mess-body">
+											Hi
+										</div>
+									</div>
+									<h5 class="second-color">
+										5 min ago
+									</h5>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="row" style="justify-content: flex-end;">
+								<div class="col-md-6">
+									<div class="real-mess-inn">
+										<div class="mess-body">
+											Hi
+										</div>
+										<img src="Images/image-inn1.png" style="margin-left: 10px">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="real-mess-inn">
+										<img src="Images/image-inn.png">
+										<div class="mess-body">
+											Pls send me
+											<br>
+											notes of previous class
+											<br>
+											pls.
+										</div>
+									</div>
+									<h5 class="second-color">
+										2 min ago
+									</h5>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="row" style="justify-content: flex-end;">
+								<div class="col-md-6">
+									<div class="real-mess-inn">
+										<div class="mess-body">
+											sure,wait
+										</div>
+										<img src="Images/image-inn1.png" style="margin-left: 10px">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="row" style="justify-content: flex-end;">
+								<div class="col-md-6">
+									<div class="real-mess-inn">
+										<div class="mess-body">
+											<img src="Images/media1.png">
+										</div>
+										<img src="Images/image-inn1.png" style="margin-left: 10px">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="real-mess-inn">
+										<img src="Images/image-inn.png">
+										<div class="mess-body">
+											thnkx
+										</div>
+									</div>
+									<h5 class="second-color">
+										Just now
+									</h5>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="real-mess-inn">
+										<img src="Images/image-inn.png">
+										<div class="mess-body">
+											Hi
+										</div>
+									</div>
+									<h5 class="second-color">
+										5 min ago
+									</h5>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="row" style="justify-content: flex-end;">
+								<div class="col-md-6">
+									<div class="real-mess-inn">
+										<div class="mess-body">
+											Hi
+										</div>
+										<img src="Images/image-inn1.png" style="margin-left: 10px">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="real-mess-inn">
+										<img src="Images/image-inn.png">
+										<div class="mess-body">
+											Pls send me
+											<br>
+											notes of previous class
+											<br>
+											pls.
+										</div>
+									</div>
+									<h5 class="second-color">
+										2 min ago
+									</h5>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="row" style="justify-content: flex-end;">
+								<div class="col-md-6">
+									<div class="real-mess-inn">
+										<div class="mess-body">
+											sure,wait
+										</div>
+										<img src="Images/image-inn1.png" style="margin-left: 10px">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="row" style="justify-content: flex-end;">
+								<div class="col-md-6">
+									<div class="real-mess-inn">
+										<div class="mess-body">
+											<img src="Images/media1.png">
+										</div>
+										<img src="Images/image-inn1.png" style="margin-left: 10px">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="real-mess-inn">
+										<img src="Images/image-inn.png">
+										<div class="mess-body">
+											thnkx
+										</div>
+									</div>
+									<h5 class="second-color">
+										Just now
+									</h5>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="mess-field">
+						<div class="mess-field-icon">
+							<img src="Images/attach-icon.png">
+						</div>
+						<div class="mess-field-icon">
+							<img src="Images/smile-icon.png">
+						</div>
+						<input type="text" name="">
+						<div class="mess-field-send">
+							<i class="fa fa-angle-right fa-2x"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-2 col-md-2 col-sm-2 right-sidebar">
+			<i class="fa fa-times theme-color menu-hide" style="position: relative;left: 95%;"></i>
+			<div class="right-top">
+				<div>
+				<img src="Images/profile.png">
+				<p class="second-color">
+					RadicalCode
+				</p>
+				</div>
+				<i class="fa fa-cog"></i>
+				<i class="fa fa-bell"></i>
+			</div>
+			<div class="message-right">
+				<div class="message-pro">
+					<img src="Images/inbox-profile.png">
+					<h5 class="second-color">
+						Lindsey
+					</h5>
+					<p class="theme-color">
+						@lindsey211
+					</p>
+					<p class="theme-color" style="font-size: 12px;">
+						Ac massa ids gravida vestibulum alliquet diam prion.
+					</p>
+					<div class="pro-three">
+						<div class="pro-three-inn">
+							<i class="fa fa-user theme-color"></i>
+							<h5 class="second-color">
+								Profile
+							</h5>
+						</div>
+						<div class="pro-three-inn">
+							<img src="Images/report.png">
+							<h5 class="second-color">
+								Report
+							</h5>
+						</div>
+						<div class="pro-three-inn">
+							<img src="Images/block.png">
+							<h5 class="second-color">
+								Block
+							</h5>
+						</div>
+					</div>
+				</div>
+				<div class="message-gall">
+					<div class="message-head">
+						<h5 class="second-color">
+							Shared Media
+						</h5>
+						<h5 class="second-color">
+							See All
+						</h5>
+					</div>
+					<div class="row md-gall">
+						<div class="col-lg-6 col-sm-6">
+							<div>
+								<img src="Images/media1.png">
+							</div>
+						</div>
+						<div class="col-lg-6 col-sm-6">
+							<div>
+								<img src="Images/media2.png">
+							</div>
+						</div>
+						<div class="col-lg-6 col-sm-6">
+							<div>
+								<img src="Images/media3.png">
+							</div>
+						</div>
+						<div class="col-lg-6 col-sm-6">
+							<div>
+								<img src="Images/media4.png">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<script type="text/javascript">
+	$(".inbox-click").click(function(){
+		$(".inbox-left").css("display","none");
+		$(".inbox-right").css("display","block");
+	})
+	$(".inbox-back").click(function(){
+		$(".inbox-left").css("display","block");
+		$(".inbox-right").css("display","none");
+	})
+</script>	
+<script type="text/javascript">
+	$(".menu-icon").click(function(){
+		$("body").css("overflow","hidden");
+		$(".left-sidebar").animate({"margin-left": "0vw"}, 500)	
+	});
+	$(".menu-hide").click(function(){
+		$("body").css("overflow","auto");
+	$(".left-sidebar").animate({"margin-left": "-100vw"}, 500)	
+	$(".right-sidebar").css("display","none")	
+	});
+	
+	$(".calendar-icon").click(function(){
+		$(".right-sidebar").css("display","block")
+		$("body").css("overflow","hidden");
+	});
+</script>	
+</body>
+</html>	
