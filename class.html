@@ -2,33 +2,38 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0,  shrink-to-fit=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 	<title>ReDefiners</title>
-									<!-- --- Bootstrap 5 --- -->
+								<!-- --- Bootstrap 5 --- -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-									<!-- --- Font Awesome --- -->
+								<!-- --- Tailwind CSS + Config --- -->
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="css/tailwind-config.js"></script>
+								<!-- --- Font Awesome --- -->
 	<script src="https://kit.fontawesome.com/7a13c96681.js" crossorigin="anonymous"></script>
-									<!-- --- jQuery --- -->
+								<!-- --- jQuery --- -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-									<!-- --- Text Font --- -->
+								<!-- --- Text Font --- -->
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-									<!-- --- Custom Css --- -->
+								<!-- --- Custom Css --- -->
 	<link rel="stylesheet" type="text/css" href="css/tokens.css">
+	<link rel="stylesheet" type="text/css" href="css/shadcn.css">
 	<link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-	<div class="row starter">
-		<div class="col-lg-2 col-md-2 col-sm-2 left-sidebar">
+	<div class="tw-flex tw-min-h-screen tw-font-poppins">
+		<!-- Sidebar -->
+		<aside class="left-sidebar tw-fixed tw-inset-y-0 tw-left-0 tw-w-[228px] tw-z-50 tw--translate-x-full lg:tw-translate-x-0 tw-transition-transform tw-duration-300 tw-overflow-y-auto shadcn-scrollbar">
 			<div class="menu-bar">
 				<section class="logo-section">
 					<i class="fa fa-times theme-color menu-hide"></i>
 					<img src="Images/logo.PNG" class="res-hide" alt="logo">
-					<div class="nav-input res-show-flex" style="margin: 20px 0 0">
-						<button style="border:1px solid #668B91;border-right: 0">
+					<div class="nav-input res-show-flex tw-mt-5">
+						<button class="tw-border tw-border-primary-400 tw-border-r-0 tw-bg-transparent tw-px-2">
 							<i class="fa fa-search"></i>
 						</button>
-						<input style="border:1px solid #668B91;border-left: 0;width: 85%;" type="text" name="search" placeholder="Search">
+						<input class="tw-border tw-border-primary-400 tw-border-l-0 tw-w-[85%] tw-bg-transparent tw-px-2 tw-py-1 tw-outline-none" type="text" name="search" placeholder="Search">
 					</div>
 				</section>
 				<section class="menu-links">
@@ -88,164 +93,156 @@
 					</div>
 				</section>
 			</div>
-		</div>
-
-		<div class="col-lg-8 col-md-8 col-sm-12 middle-part">
-			<div class="nav-bar">
-				<div class="res-nav" style="display: flex;align-items: center;justify-content: space-between;">
-					<i class="fa fa-bars menu-icon" style="margin-right: 20px;"></i>
-					<div class="nav-input res-hide-flex" >
-						<button>
-							<i class="fa fa-search"></i>
-						</button>
-						<input type="text" name="search" placeholder="Search">
+		</aside>
+		<!-- Mobile overlay -->
+		<div class="sidebar-overlay" id="sidebarOverlay"></div>
+		<!-- Main content -->
+		<main class="middle-part tw-flex-1 lg:tw-ml-[228px] tw-min-h-screen tw-px-4 md:tw-px-6 lg:tw-px-10 tw-pb-8">
+			<!-- Nav Bar -->
+			<div class="tw-flex tw-items-center tw-justify-between tw-py-4 tw-gap-3 tw-flex-wrap">
+				<div class="tw-flex tw-items-center tw-gap-3">
+					<i class="fa fa-bars tw-text-primary-400 tw-cursor-pointer tw-text-xl lg:tw-hidden menu-icon" id="menuToggle"></i>
+					<div class="shadcn-search tw-hidden sm:tw-flex tw-w-64">
+						<i class="fa fa-search"></i>
+						<input type="text" placeholder="Search...">
 					</div>
-					<div class="res-show" style="margin-bottom: 20px;">
-						<img src="Images/logo.PNG" alt="logo">
-					</div>
-					<i class="fa fa-calendar-alt calendar-icon res-show theme-color" style="font-size: 22px;"></i>
 				</div>
-				<div class="nav-red-heading">
-					<i class="fa fa-bullhorn"></i>
-					<h5>
-						 Aliquam enim, aenean tincidunt lectus porta facilisis
-						<br>
-						nullum. Gravida velit pretium.
-					</h5>
-				</div>
-				<div class="nav-quick">
-						<span>Quick Links </span>
-						<i class="fa fa-caret-down"></i>
+				<div class="tw-flex tw-items-center tw-gap-3">
+					<button class="shadcn-btn shadcn-btn-ghost shadcn-btn-icon"><i class="fa fa-bell tw-text-primary-400"></i></button>
+					<div class="shadcn-avatar shadcn-avatar-md tw-cursor-pointer"><img src="Images/profile.png" alt="Profile"></div>
 				</div>
 			</div>
-			<div class="class-inn-p">
-				<div class="row">
-					<a href="class.html" style="text-decoration: none;">
-						<div class="col-md-12 video-btn">
-							<!-- <i class="fa fa-play fa-3x"></i> -->
+			<!-- Course Detail Card -->
+			<div class="shadcn-card tw-p-6 tw-my-6">
+				<div class="class-inn-p">
+					<!-- Video Section -->
+					<div class="tw-w-full tw-aspect-video tw-rounded-token-md tw-overflow-hidden tw-mb-4">
+						<a href="class.html" class="tw-no-underline">
+							<div class="video-btn tw-w-full tw-h-full">
+							</div>
+						</a>
+					</div>
+					<div class="video-end">
+						<div class="video-last">
+							<img src="Images/video-pro.png">
+							<div>
+								<h5 class="second-color">
+									Let's learn somthing new
+								</h5>
+								<p class="theme-color">
+									Miss Martha Jones
+								</p>
+							</div>
 						</div>
-					</a>
-				</div>
-				<div class="video-end">
-					<div class="video-last">
-						<img src="Images/video-pro.png">
-						<div>
-							<h5 class="second-color">
-								Let's learn somthing new
-							</h5>
-							<p class="theme-color">
-								Miss Martha Jones
+						<div class="video-no">
+							<img src="Images/image1.png">
+							<img src="Images/image2.png">
+							<img src="Images/image3.png">
+							<img src="Images/image5.png">
+							<img src="Images/image6.png">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-8">
+							<p class="theme-color tw-text-[13px]">
+								Aliquam enim, aenean tincidunt lectus porta facilisis nullum. Gravida velit pretium.Aliquam enim, aenean tincidunt lectus porta facilisis nullum. Gravida velit pretium.
+								<br>
+								Aliquam enim, aenean tincidunt lectus porta facilisis nullum. Gravida velit pretium.Aliquam enim, aenean tincidunt lectus porta facilisis nullum. Gravida velit pretium.
 							</p>
-						</div>
-					</div>
-					<div class="video-no">
-						<img src="Images/image1.png">
-						<img src="Images/image2.png">
-						<img src="Images/image3.png">
-						<img src="Images/image5.png">
-						<img src="Images/image6.png">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-8">
-						<p style="font-size: 13px" class="theme-color">
-							Aliquam enim, aenean tincidunt lectus porta facilisis nullum. Gravida velit pretium.Aliquam enim, aenean tincidunt lectus porta facilisis nullum. Gravida velit pretium.
-							<br>
-							Aliquam enim, aenean tincidunt lectus porta facilisis nullum. Gravida velit pretium.Aliquam enim, aenean tincidunt lectus porta facilisis nullum. Gravida velit pretium.
-						</p>
-						<div class="class-boxes">
-							<div>
-								<i class="fa fa-comments theme-color fa-2x"></i>
-								<h5 class="second-color" style="font-weight: normal;font-size: 13px;margin-bottom: 0;">
-									Message
-									
-								</h5>
-							</div>
-							<div>
-								<img src="Images/syllabus.png">
-								<h5 class="second-color" style="font-weight: normal;font-size: 13px;margin-bottom: 0;">
-									Syllabus
-								</h5>
-							</div>
-							<div>
-								<i class="fa fa-bullhorn theme-color fa-2x"></i>
-								<h5 class="second-color" style="font-weight: normal;font-size: 13px;margin-bottom: 0;">
-									Announce
-								</h5>
-							</div>
-							<div>
-								<img src="Images/work.png">
-								<h5 class="second-color" style="font-weight: normal;font-size: 13px;margin-bottom: 0;">
-									Work 
-								</h5>
-							</div>
-							<div>
-								<img src="Images/download.png">
-								<h5 class="second-color" style="font-weight: normal;font-size: 13px;margin-bottom: 0;">
-									Download
-								</h5>
+							<div class="class-boxes">
+								<div>
+									<i class="fa fa-comments theme-color fa-2x"></i>
+									<h5 class="second-color tw-font-normal tw-text-[13px] tw-mb-0">
+										Message
+									</h5>
+								</div>
+								<div>
+									<img src="Images/syllabus.png">
+									<h5 class="second-color tw-font-normal tw-text-[13px] tw-mb-0">
+										Syllabus
+									</h5>
+								</div>
+								<div>
+									<i class="fa fa-bullhorn theme-color fa-2x"></i>
+									<h5 class="second-color tw-font-normal tw-text-[13px] tw-mb-0">
+										Announce
+									</h5>
+								</div>
+								<div>
+									<img src="Images/work.png">
+									<h5 class="second-color tw-font-normal tw-text-[13px] tw-mb-0">
+										Work
+									</h5>
+								</div>
+								<div>
+									<img src="Images/download.png">
+									<h5 class="second-color tw-font-normal tw-text-[13px] tw-mb-0">
+										Download
+									</h5>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="prev-classes">
-					<h3 class="second-color">
-						Previous Classes
-					</h3>
-					<div class="video-carousel">
-						<div >
-							<img src="Images/video-btn.png">
-							<h5 class="second-color">
-		    		 			Counting from 1 to 100
-		    		 		</h5>
-		    		 		<p class="theme-color">
-		    		 			radialcode
-		    		 		</p>
-						</div>
-						<div class="carousel">
-							<img src="Images/video-btn.png">
-							<h5 class="second-color">
-		    		 			Counting from 1 to 100
-		    		 		</h5>
-		    		 		<p class="theme-color">
-		    		 			radialcode
-		    		 		</p>
-						</div>
-						<div class="carousel">
-							<img src="Images/video-btn.png">
-							<h5 class="second-color">
-		    		 			Counting from 1 to 100
-		    		 		</h5>
-		    		 		<p class="theme-color">
-		    		 			radialcode
-		    		 		</p>
-						</div>
-						<div class="carousel">
-							<img src="Images/video-btn.png">
-							<h5 class="second-color">
-		    		 			Counting from 1 to 100
-		    		 		</h5>
-		    		 		<p class="theme-color">
-		    		 			radialcode
-		    		 		</p>
+					<div class="prev-classes">
+						<h3 class="second-color">
+							Previous Classes
+						</h3>
+						<div class="tw-flex tw-gap-5 tw-overflow-x-auto tw-snap-x tw-pb-4 shadcn-scrollbar">
+							<div class="tw-flex-shrink-0 tw-w-48">
+								<img src="Images/video-btn.png">
+								<h5 class="second-color">
+			    		 			Counting from 1 to 100
+			    		 		</h5>
+			    		 		<p class="theme-color">
+			    		 			radialcode
+			    		 		</p>
+							</div>
+							<div class="tw-flex-shrink-0 tw-w-48">
+								<img src="Images/video-btn.png">
+								<h5 class="second-color">
+			    		 			Counting from 1 to 100
+			    		 		</h5>
+			    		 		<p class="theme-color">
+			    		 			radialcode
+			    		 		</p>
+							</div>
+							<div class="tw-flex-shrink-0 tw-w-48">
+								<img src="Images/video-btn.png">
+								<h5 class="second-color">
+			    		 			Counting from 1 to 100
+			    		 		</h5>
+			    		 		<p class="theme-color">
+			    		 			radialcode
+			    		 		</p>
+							</div>
+							<div class="tw-flex-shrink-0 tw-w-48">
+								<img src="Images/video-btn.png">
+								<h5 class="second-color">
+			    		 			Counting from 1 to 100
+			    		 		</h5>
+			    		 		<p class="theme-color">
+			    		 			radialcode
+			    		 		</p>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="comments">
-				<h5 class="second-color" style="font-size: 15px;font-weight: bold;">
+			<!-- Comments Section -->
+			<div class="shadcn-card tw-p-6 tw-my-6">
+				<h5 class="second-color tw-text-[15px] tw-font-bold">
 					Comments
 				</h5>
-				<div class="mess-field">
-					<div class="mess-field-icon" style="background: none">
+				<div class="mess-field tw-flex tw-items-center tw-gap-2 tw-my-3">
+					<div class="mess-field-icon tw-bg-transparent">
 						<img src="Images/image1.png">
 					</div>
-					<input type="text" name="" style="background: white;width: 80%;padding-left: 10px" placeholder="Write a Comment">
+					<input class="shadcn-input tw-flex-1" type="text" name="" placeholder="Write a Comment">
 					<div class="mess-field-send">
 						<img src="Images/enter.png">
 					</div>
 				</div>
-				<div class="cmnt">
+				<div class="tw-flex tw-items-start tw-gap-3 tw-mb-4">
 					<img src="Images/image1.png">
 					<div>
 						<h5 class="second-color">
@@ -256,7 +253,7 @@
 						</p>
 					</div>
 				</div>
-				<div class="cmnt">
+				<div class="tw-flex tw-items-start tw-gap-3 tw-mb-4">
 					<img src="Images/image2.png">
 					<div>
 						<h5 class="second-color">
@@ -267,7 +264,7 @@
 						</p>
 					</div>
 				</div>
-				<div class="cmnt">
+				<div class="tw-flex tw-items-start tw-gap-3 tw-mb-4">
 					<img src="Images/image3.png">
 					<div>
 						<h5 class="second-color">
@@ -279,9 +276,9 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="col-lg-2 col-md-2 col-sm-2 right-sidebar">
-			<i class="fa fa-times theme-color menu-hide" style="position: relative;left: 95%;"></i>
+		</main>
+		<!-- Right sidebar -->
+		<aside class="tw-hidden lg:tw-block tw-w-[240px] tw-flex-shrink-0 tw-pt-4 tw-pr-4">
 			<div class="right-top">
 				<div class="profile-click">
 				<img src="Images/profile.png">
@@ -292,17 +289,17 @@
 				<i class="fa fa-cog"></i>
 				<i class="fa fa-bell"></i>
 			</div>
-			<h5 class="second-color" style="font-size: 13px;font-weight: bold;margin-top: 20px;">
+			<h5 class="second-color tw-text-[13px] tw-font-bold tw-mt-5">
 				Live Chat
 			</h5>
-			<div class="real-mess row" style="background: #edf5f6;max-height: 100%;padding: 20px 0;">
-				<div class="col-md-12" style="margin: 1px 0">
+			<div class="real-mess row tw-bg-surface-200 tw-max-h-full tw-py-5">
+				<div class="col-md-12 tw-my-px">
 					<div class="row">
 						<div class="col-md-12">
-							<div class="real-mess-inn" style="">
+							<div class="real-mess-inn">
 								<img src="Images/image-inn.png">
-								<div class="mess-body" style="background: white;font-size: 12px;padding: 5px 10px;">
-									<span style="font-weight: bold;">temmy</span>
+								<div class="mess-body tw-bg-white tw-text-xs tw-px-2.5 tw-py-1.5">
+									<span class="tw-font-bold">temmy</span>
 									<br>
 									Good Morniing
 								</div>
@@ -310,83 +307,83 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-12" style="margin: 1px 0">
-							<div class="row">
-								<div class="col-md-12">
-									<div class="real-mess-inn" style="margin-bottom: 10px">
-										<img src="Images/image-inn.png">
-										<div class="mess-body" style="background: white;font-size: 12px;padding: 5px 10px;">
-											<span style="font-weight: bold;">temmy</span>
-											<br>
-											Good Morniing
-										</div>
-									</div>
+				<div class="col-md-12 tw-my-px">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="real-mess-inn tw-mb-2.5">
+								<img src="Images/image-inn.png">
+								<div class="mess-body tw-bg-white tw-text-xs tw-px-2.5 tw-py-1.5">
+									<span class="tw-font-bold">temmy</span>
+									<br>
+									Good Morniing
 								</div>
 							</div>
+						</div>
+					</div>
 				</div>
-				<div class="col-md-12" style="margin: 1px 0">
-							<div class="row">
-								<div class="col-md-12">
-									<div class="real-mess-inn" style="margin-bottom: 10px">
-										<img src="Images/image-inn.png">
-										<div class="mess-body" style="background: white;font-size: 12px;padding: 5px 10px;">
-											<span style="font-weight: bold;">temmy</span>
-											<br>
-											Good Morniing
-										</div>
-									</div>
+				<div class="col-md-12 tw-my-px">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="real-mess-inn tw-mb-2.5">
+								<img src="Images/image-inn.png">
+								<div class="mess-body tw-bg-white tw-text-xs tw-px-2.5 tw-py-1.5">
+									<span class="tw-font-bold">temmy</span>
+									<br>
+									Good Morniing
 								</div>
 							</div>
+						</div>
+					</div>
 				</div>
-				<div class="col-md-12" style="margin: 1px 0">
-							<div class="row">
-								<div class="col-md-12">
-									<div class="real-mess-inn" style="margin-bottom: 10px">
-										<img src="Images/image-inn.png">
-										<div class="mess-body" style="background: white;font-size: 12px;padding: 5px 10px;">
-											<span style="font-weight: bold;">temmy</span>
-											<br>
-											Good Morniing
-										</div>
-									</div>
+				<div class="col-md-12 tw-my-px">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="real-mess-inn tw-mb-2.5">
+								<img src="Images/image-inn.png">
+								<div class="mess-body tw-bg-white tw-text-xs tw-px-2.5 tw-py-1.5">
+									<span class="tw-font-bold">temmy</span>
+									<br>
+									Good Morniing
 								</div>
 							</div>
+						</div>
+					</div>
 				</div>
-				<div class="col-md-12" style="margin: 1px 0">
-							<div class="row">
-								<div class="col-md-12">
-									<div class="real-mess-inn" style="margin-bottom: 10px">
-										<img src="Images/image-inn.png">
-										<div class="mess-body" style="background: white;font-size: 12px;padding: 5px 10px;">
-											<span style="font-weight: bold;">temmy</span>
-											<br>
-											Good Morniing
-										</div>
-									</div>
+				<div class="col-md-12 tw-my-px">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="real-mess-inn tw-mb-2.5">
+								<img src="Images/image-inn.png">
+								<div class="mess-body tw-bg-white tw-text-xs tw-px-2.5 tw-py-1.5">
+									<span class="tw-font-bold">temmy</span>
+									<br>
+									Good Morniing
 								</div>
 							</div>
+						</div>
+					</div>
 				</div>
-				<div class="mess-field" style="justify-content: center;background: white;padding: 5px;margin: 0px;border-radius: 10px;">
-				<input type="text" name="">
-				<div class="mess-field-send">
-					<i class="fa fa-angle-right fa-2x" style="padding: 1px 7px"></i>
+				<div class="mess-field tw-justify-center tw-bg-white tw-p-1.5 tw-m-0 tw-rounded-token-md">
+					<input type="text" name="">
+					<div class="mess-field-send">
+						<i class="fa fa-angle-right fa-2x tw-px-1.5 tw-py-px"></i>
+					</div>
 				</div>
 			</div>
-			</div>
-
-		</div>
+		</aside>
 	</div>
 <script type="text/javascript">
-	$(".menu-icon").click(function(){
+	$(".menu-icon, #menuToggle").click(function(){
+		$(".left-sidebar").removeClass("tw--translate-x-full").addClass("tw-translate-x-0");
+		$("#sidebarOverlay").addClass("active");
 		$("body").css("overflow","hidden");
-		$(".left-sidebar").animate({"margin-left": "0vw"}, 500)	
 	});
-	$(".menu-hide").click(function(){
+	$(".menu-hide, #sidebarOverlay").click(function(){
+		$(".left-sidebar").removeClass("tw-translate-x-0").addClass("tw--translate-x-full");
+		$("#sidebarOverlay").removeClass("active");
 		$("body").css("overflow","auto");
-	$(".left-sidebar").animate({"margin-left": "-100vw"}, 500)	
-	$(".right-sidebar").css("display","none")	
 	});
-	
+
 	$(".calendar-icon").click(function(){
 		$(".right-sidebar").css("display","block")
 		$("body").css("overflow","hidden");
