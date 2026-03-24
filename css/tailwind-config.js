@@ -12,12 +12,12 @@ tailwind.config = {
     extend: {
       colors: {
         primary: {
-          900: '#0D0D0D',
-          800: '#1B1B1B',
-          700: '#2D2D2D',
-          600: '#3D3D3D',
-          400: '#6B7280',
-          200: '#9CA3AF',
+          900: '#0F2922',
+          800: '#163B32',
+          700: '#1E4D42',
+          600: '#2A6355',
+          400: '#4A8B7A',
+          200: '#7CB5A4',
         },
         surface: {
           DEFAULT: '#FFFFFF',
@@ -44,9 +44,9 @@ tailwind.config = {
           'purple-track': '#EDE9FE',
           orange: '#FF6B35',
           'orange-light': '#FFF0EB',
-          yellow: '#FFD166',
+          yellow: '#F5C542',
           'yellow-light': '#FEF3C7',
-          green: '#00C48C',
+          green: '#2DB88A',
           'green-light': '#D1FAE5',
           teal: '#2DD4BF',
           red: '#EF4444',
@@ -83,11 +83,11 @@ tailwind.config = {
         'card': '0 2px 8px rgba(0,0,0,0.06)',
         'card-hover': '0 8px 24px rgba(0,0,0,0.10)',
         'elevated': '0 12px 32px rgba(0,0,0,0.12)',
-        'glow-green': '0 4px 20px rgba(0,196,140,0.25)',
+        'glow-green': '0 4px 20px rgba(45,184,138,0.25)',
         'glow-orange': '0 4px 15px rgba(255,107,53,0.3)',
         'glow-blue': '0 4px 15px rgba(59,130,246,0.25)',
         'glow-purple': '0 4px 15px rgba(139,92,246,0.3)',
-        'sidebar-active': '0 4px 20px rgba(0,196,140,0.3)',
+        'sidebar-active': '0 4px 20px rgba(45,184,138,0.3)',
         'inner-soft': 'inset 0 1px 2px rgba(0,0,0,0.06)',
         /* shadcn-inspired */
         'shadcn-xs': '0 1px 2px 0 rgba(0,0,0,0.05)',
@@ -95,7 +95,7 @@ tailwind.config = {
         'shadcn-md': '0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1)',
         'shadcn-lg': '0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1)',
         'shadcn-xl': '0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1)',
-        'ring-focus': '0 0 0 2px #FFFFFF, 0 0 0 4px #00C48C',
+        'ring-focus': '0 0 0 2px #FFFFFF, 0 0 0 4px #2DB88A',
       },
       spacing: {
         'sidebar': '240px',

@@ -6,12 +6,12 @@
 
 :root {
     /* ─── Primary Palette (Dark) ─── */
-    --color-primary-900: #0D0D0D;
-    --color-primary-800: #1B1B1B;
-    --color-primary-700: #2D2D2D;
-    --color-primary-600: #3D3D3D;
-    --color-primary-400: #6B7280;
-    --color-primary-200: #9CA3AF;
+    --color-primary-900: #0F2922;
+    --color-primary-800: #163B32;
+    --color-primary-700: #1E4D42;
+    --color-primary-600: #2A6355;
+    --color-primary-400: #4A8B7A;
+    --color-primary-200: #7CB5A4;
 
     /* ─── Neutral Palette ─── */
     --color-white: #FFFFFF;
@@ -39,21 +39,21 @@
     --color-accent-purple-track: #EDE9FE;
     --color-accent-orange: #FF6B35;
     --color-accent-orange-light: #FFF0EB;
-    --color-accent-yellow: #FFD166;
+    --color-accent-yellow: #F5C542;
     --color-accent-yellow-light: #FEF3C7;
     --color-accent-yellow-cell: #FBBF24;
-    --color-accent-green: #00C48C;
+    --color-accent-green: #2DB88A;
     --color-accent-green-light: #D1FAE5;
     --color-accent-teal-cell: #2DD4BF;
     --color-accent-red: #EF4444;
     --color-accent-red-bright: #DC2626;
 
     /* ─── Semantic Colors ─── */
-    --color-success: #00C48C;
+    --color-success: #2DB88A;
     --color-warning: #FF6B35;
     --color-error: #EF4444;
     --color-info: #3B82F6;
-    --color-active: #00C48C;
+    --color-active: #2DB88A;
     --color-in-progress: #8B5CF6;
 
     /* ─── Text Colors ─── */
@@ -64,7 +64,7 @@
     --text-link: #3B82F6;
     --text-muted: #9CA3AF;
     --text-placeholder: #9CA3AF;
-    --text-highlight: #00C48C;
+    --text-highlight: #2DB88A;
 
     /* ─── Shadows (Elevation) ─── */
     --shadow-0: none;
@@ -73,7 +73,7 @@
     --shadow-3: 0 4px 16px rgba(0,0,0,0.08);
     --shadow-4: 0 8px 24px rgba(0,0,0,0.10);
     --shadow-5: 0 12px 32px rgba(0,0,0,0.12);
-    --shadow-menu: 0 4px 20px rgba(0,196,140,0.15);
+    --shadow-menu: 0 4px 20px rgba(45,184,138,0.15);
 
     /* ─── Border Radius ─── */
     --radius-xs: 4px;
@@ -140,11 +140,11 @@
     --z-modal: 1000;
 
     /* ─── Gradients ─── */
-    --gradient-menu-active: linear-gradient(135deg, #00C48C 0%, #00A878 100%);
-    --gradient-sidebar: linear-gradient(180deg, #1B1B1B 0%, #0D0D0D 100%);
+    --gradient-menu-active: linear-gradient(135deg, #2DB88A 0%, #25A07A 100%);
+    --gradient-sidebar: linear-gradient(180deg, #163B32 0%, #0F2922 100%);
     --gradient-cta: linear-gradient(135deg, #FF6B35 0%, #FF8C5A 100%);
-    --gradient-hero: linear-gradient(135deg, #1B1B1B 0%, #2D2D2D 100%);
-    --gradient-green-glow: linear-gradient(135deg, #00C48C 0%, #2DD4BF 100%);
+    --gradient-hero: linear-gradient(135deg, #163B32 0%, #1E4D42 100%);
+    --gradient-green-glow: linear-gradient(135deg, #2DB88A 0%, #4ECBA0 100%);
 }
 
 /* ================================================================
@@ -464,7 +464,7 @@
     background: var(--color-accent-green);
     color: var(--text-on-accent);
     border-color: var(--color-accent-green);
-    box-shadow: 0 4px 12px rgba(0,196,140,0.3);
+    box-shadow: 0 4px 12px rgba(45,184,138,0.3);
 }
 .btn--danger {
     background: var(--color-error);
