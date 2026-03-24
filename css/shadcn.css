@@ -7,7 +7,7 @@
 /* ─── Focus Ring (shadcn signature) ─── */
 .shadcn-focus:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #2989CA;
+    box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #00C48C;
 }
 .shadcn-focus-destructive:focus-visible {
     outline: none;
@@ -17,17 +17,17 @@
 /* ─── Card ─── */
 .shadcn-card {
     background: #FFFFFF;
-    border: 1px solid #E9F2F4;
-    border-radius: 12px;
-    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px -1px rgba(0,0,0,0.1);
+    border: 1px solid #E5E7EB;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 .shadcn-card:hover {
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 .shadcn-card-interactive:hover {
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
-    border-color: #CCD6D9;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-color: #D1D5DB;
     transform: translateY(-1px);
 }
 .shadcn-card-header {
@@ -48,27 +48,27 @@
     display: flex;
     height: 40px;
     width: 100%;
-    border-radius: 8px;
-    border: 1px solid #CCD6D9;
+    border-radius: 12px;
+    border: 1px solid #E5E7EB;
     background: transparent;
     padding: 8px 12px;
     font-family: 'Poppins', sans-serif;
     font-size: 14px;
-    color: #00303F;
+    color: #1B1B1B;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
     outline: none;
 }
 .shadcn-input::placeholder {
-    color: #B5C2C6;
+    color: #9CA3AF;
 }
 .shadcn-input:focus {
-    border-color: #2989CA;
-    box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px rgba(41,137,202,0.2);
+    border-color: #00C48C;
+    box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px rgba(0,196,140,0.2);
 }
 .shadcn-input:disabled {
     cursor: not-allowed;
     opacity: 0.5;
-    background: #F6F9FA;
+    background: #F3F4F6;
 }
 
 /* ─── Search Input (pill) ─── */
@@ -77,15 +77,15 @@
     align-items: center;
     height: 40px;
     border-radius: 20px;
-    border: 1px solid #E9F2F4;
+    border: 1px solid #E5E7EB;
     background: #FFFFFF;
     padding: 0 16px;
     gap: 8px;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .shadcn-search:focus-within {
-    border-color: #2989CA;
-    box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px rgba(41,137,202,0.15);
+    border-color: #00C48C;
+    box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px rgba(0,196,140,0.15);
 }
 .shadcn-search input {
     border: none;
@@ -93,32 +93,32 @@
     background: transparent;
     font-family: 'Poppins', sans-serif;
     font-size: 13px;
-    color: #00303F;
+    color: #1B1B1B;
     flex: 1;
     min-width: 0;
 }
-.shadcn-search input::placeholder { color: #B5C2C6; }
-.shadcn-search i { color: #668B91; font-size: 14px; flex-shrink: 0; }
+.shadcn-search input::placeholder { color: #9CA3AF; }
+.shadcn-search i { color: #6B7280; font-size: 14px; flex-shrink: 0; }
 
 /* ─── Textarea ─── */
 .shadcn-textarea {
     display: flex;
     width: 100%;
     min-height: 80px;
-    border-radius: 8px;
-    border: 1px solid #CCD6D9;
+    border-radius: 12px;
+    border: 1px solid #E5E7EB;
     background: transparent;
     padding: 8px 12px;
     font-family: 'Poppins', sans-serif;
     font-size: 14px;
-    color: #00303F;
+    color: #1B1B1B;
     resize: vertical;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
     outline: none;
 }
 .shadcn-textarea:focus {
-    border-color: #2989CA;
-    box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px rgba(41,137,202,0.2);
+    border-color: #00C48C;
+    box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px rgba(0,196,140,0.2);
 }
 
 /* ─── Select ─── */
@@ -126,16 +126,16 @@
     display: flex;
     height: 40px;
     width: 100%;
-    border-radius: 8px;
-    border: 1px solid #CCD6D9;
+    border-radius: 12px;
+    border: 1px solid #E5E7EB;
     background: #FFFFFF;
     padding: 8px 12px;
     font-family: 'Poppins', sans-serif;
     font-size: 14px;
-    color: #00303F;
+    color: #1B1B1B;
     cursor: pointer;
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23668B91' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 12px center;
     padding-right: 32px;
@@ -143,8 +143,8 @@
     outline: none;
 }
 .shadcn-select:focus {
-    border-color: #2989CA;
-    box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px rgba(41,137,202,0.2);
+    border-color: #00C48C;
+    box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px rgba(0,196,140,0.2);
 }
 
 /* ─── Buttons ─── */
@@ -154,7 +154,7 @@
     justify-content: center;
     gap: 8px;
     white-space: nowrap;
-    border-radius: 8px;
+    border-radius: 9999px;
     font-family: 'Poppins', sans-serif;
     font-size: 14px;
     font-weight: 500;
@@ -173,7 +173,7 @@
     height: 32px;
     padding: 4px 12px;
     font-size: 13px;
-    border-radius: 6px;
+    border-radius: 9999px;
 }
 .shadcn-btn-lg {
     height: 44px;
@@ -184,42 +184,42 @@
     width: 36px;
     height: 36px;
     padding: 0;
-    border-radius: 8px;
+    border-radius: 9999px;
 }
 
 /* Primary */
 .shadcn-btn-primary {
-    background: #00303F;
+    background: #1B1B1B;
     color: #FFFFFF;
     box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
 }
 .shadcn-btn-primary:hover {
-    background: #0F4D61;
+    background: #0D0D0D;
 }
 .shadcn-btn-primary:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #2989CA;
+    box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #00C48C;
 }
 
 /* Secondary (Outline) */
 .shadcn-btn-secondary {
     background: #FFFFFF;
-    color: #00303F;
-    border: 1px solid #CCD6D9;
+    color: #1B1B1B;
+    border: 1px solid #E5E7EB;
     box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
 }
 .shadcn-btn-secondary:hover {
-    background: #F6F9FA;
-    border-color: #B5C2C6;
+    background: #F3F4F6;
+    border-color: #D1D5DB;
 }
 
 /* Ghost */
 .shadcn-btn-ghost {
     background: transparent;
-    color: #00303F;
+    color: #1B1B1B;
 }
 .shadcn-btn-ghost:hover {
-    background: #F0F6F7;
+    background: #F3F4F6;
 }
 
 /* Destructive */
@@ -228,18 +228,18 @@
     color: #FFFFFF;
 }
 .shadcn-btn-destructive:hover {
-    background: #DA6E61;
+    background: #DC2626;
 }
 
 /* CTA (brand accent) */
 .shadcn-btn-cta {
-    background: linear-gradient(135deg, #F49E21 0%, #F7B044 100%);
+    background: linear-gradient(135deg, #FF6B35 0%, #FF8A5C 100%);
     color: #FFFFFF;
     font-weight: 600;
-    box-shadow: 0 3px 10px rgba(244,158,33,0.3);
+    box-shadow: 0 3px 10px rgba(255,107,53,0.3);
 }
 .shadcn-btn-cta:hover {
-    box-shadow: 0 5px 15px rgba(244,158,33,0.4);
+    box-shadow: 0 5px 15px rgba(255,107,53,0.4);
     transform: translateY(-1px);
 }
 
@@ -256,19 +256,19 @@
     transition: background 0.15s ease;
 }
 .shadcn-badge-default {
-    background: #F0F6F7;
-    color: #00303F;
+    background: #F3F4F6;
+    color: #1B1B1B;
 }
 .shadcn-badge-primary {
-    background: #0F4D61;
+    background: #0D0D0D;
     color: #FFFFFF;
 }
 .shadcn-badge-success {
-    background: #dcfce7;
-    color: #166534;
+    background: #D1FAE5;
+    color: #065F46;
 }
 .shadcn-badge-warning {
-    background: #FDF5DE;
+    background: #FFD166;
     color: #92400e;
 }
 .shadcn-badge-destructive {
@@ -277,15 +277,15 @@
 }
 .shadcn-badge-outline {
     background: transparent;
-    color: #00303F;
-    border: 1px solid #CCD6D9;
+    color: #1B1B1B;
+    border: 1px solid #E5E7EB;
 }
 
 /* ─── Separator ─── */
 .shadcn-separator {
     height: 1px;
     width: 100%;
-    background: #E9F2F4;
+    background: #E5E7EB;
     border: none;
     margin: 16px 0;
     flex-shrink: 0;
@@ -304,24 +304,24 @@
     font-size: 14px;
 }
 .shadcn-table thead tr {
-    border-bottom: 1px solid #E9F2F4;
+    border-bottom: 1px solid #E5E7EB;
 }
 .shadcn-table thead th {
     padding: 10px 16px;
     font-size: 12px;
     font-weight: 500;
-    color: #668B91;
+    color: #6B7280;
     text-align: left;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     background: none;
 }
 .shadcn-table tbody tr {
-    border-bottom: 1px solid #F0F6F7;
+    border-bottom: 1px solid #F3F4F6;
     transition: background 0.15s ease;
 }
 .shadcn-table tbody tr:hover {
-    background: #F6F9FA;
+    background: #F9FAFB;
 }
 .shadcn-table tbody tr:last-child {
     border-bottom: none;
@@ -333,7 +333,7 @@
     border-radius: 0;
     width: auto;
     height: auto;
-    color: #00303F;
+    color: #1B1B1B;
     font-size: 14px;
 }
 
@@ -346,7 +346,7 @@
     border-radius: 100%;
     overflow: hidden;
     flex-shrink: 0;
-    background: #E9F2F4;
+    background: #D4EFE6;
 }
 .shadcn-avatar img {
     width: 100%;
@@ -376,8 +376,8 @@
 }
 .shadcn-dialog {
     background: #FFFFFF;
-    border-radius: 12px;
-    border: 1px solid #E9F2F4;
+    border-radius: 16px;
+    border: 1px solid #E5E7EB;
     box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
     padding: 24px;
     width: 100%;
@@ -392,8 +392,8 @@
     z-index: 50;
     min-width: 200px;
     background: #FFFFFF;
-    border: 1px solid #E9F2F4;
-    border-radius: 8px;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
     box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
     padding: 4px;
     display: none;
@@ -405,24 +405,24 @@
     align-items: center;
     gap: 8px;
     padding: 8px 12px;
-    border-radius: 4px;
+    border-radius: 8px;
     font-size: 14px;
-    color: #00303F;
+    color: #1B1B1B;
     cursor: pointer;
     transition: background 0.1s;
     text-decoration: none;
 }
 .shadcn-dropdown-item:hover {
-    background: #F0F6F7;
+    background: #D4EFE6;
 }
 .shadcn-dropdown-item i {
     width: 16px;
-    color: #668B91;
+    color: #6B7280;
     text-align: center;
 }
 .shadcn-dropdown-separator {
     height: 1px;
-    background: #E9F2F4;
+    background: #E5E7EB;
     margin: 4px 0;
 }
 
@@ -432,7 +432,7 @@
     align-items: center;
     gap: 12px;
     padding: 10px 14px;
-    border-radius: 8px;
+    border-radius: 12px;
     font-size: 14px;
     font-weight: 400;
     color: rgba(255,255,255,0.7);
@@ -446,9 +446,9 @@
 }
 .shadcn-nav-item.active {
     color: #FFFFFF;
-    background: linear-gradient(135deg, rgba(28,93,113,0.9) 0%, rgba(6,57,73,0.9) 100%);
+    background: linear-gradient(135deg, rgba(0,196,140,0.9) 0%, rgba(0,156,112,0.9) 100%);
     font-weight: 500;
-    box-shadow: 0 4px 12px rgba(6,57,73,0.3);
+    box-shadow: 0 4px 12px rgba(0,196,140,0.3);
 }
 .shadcn-nav-item i {
     width: 20px;
@@ -468,10 +468,10 @@
     left: 50%;
     transform: translateX(-50%) translateY(4px);
     padding: 6px 12px;
-    background: #00303F;
+    background: #0D0D0D;
     color: white;
     font-size: 12px;
-    border-radius: 6px;
+    border-radius: 8px;
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
@@ -523,11 +523,11 @@
     background: transparent;
 }
 .shadcn-scrollbar::-webkit-scrollbar-thumb {
-    background: #CCD6D9;
+    background: #D1D5DB;
     border-radius: 3px;
 }
 .shadcn-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #B5C2C6;
+    background: #9CA3AF;
 }
 
 /* ─── Responsive Grid Helpers ─── */
