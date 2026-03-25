@@ -720,29 +720,872 @@
     }
 
     // ═══════════════════════════════════════
+    // Batch 3: Assessment & Grading
+    // ═══════════════════════════════════════
+
+    async function initQuizzes() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        const container = document.querySelector('.quizzes-container, .quiz-list, #assign');
+        if (!container) return;
+        render.showLoading(container, 'row', 5);
+        try {
+            const { data: quizzes } = await api.quizzes.list(courseId);
+            container.innerHTML = '';
+            if (!quizzes || quizzes.length === 0) {
+                container.appendChild(render.emptyState('No quizzes', 'No quizzes in this course.'));
+                return;
+            }
+            quizzes.forEach(q => {
+                const statusColor = q.published ? 'tw-text-accent-green' : 'tw-text-gray-400';
+                const statusText = q.published ? 'Published' : 'Draft';
+                const row = render.el('div', 'tw-flex tw-items-center tw-justify-between tw-p-3 tw-rounded-lg tw-border tw-border-gray-100 tw-mb-2 hover:tw-bg-gray-50');
+                row.innerHTML = `
+                    <div class="tw-flex tw-items-center tw-gap-3">
+                        <i class="fa fa-question-circle tw-text-purple-500"></i>
+                        <div>
+                            <a href="quiz-take.html?course_id=${courseId}&quiz_id=${q.id}" class="tw-text-sm tw-font-medium second-color tw-no-underline hover:tw-text-accent-green">${render.truncate(q.title, 60)}</a>
+                            <p class="tw-text-xs tw-text-gray-500">${q.question_count || 0} questions &bull; ${q.points_possible || 0} pts &bull; ${q.time_limit ? q.time_limit + ' min' : 'No time limit'}</p>
+                        </div>
+                    </div>
+                    <div class="tw-flex tw-items-center tw-gap-3">
+                        <span class="tw-text-xs ${statusColor}">${statusText}</span>
+                        ${q.due_at ? `<span class="tw-text-xs tw-text-gray-400">Due ${render.formatDate(q.due_at)}</span>` : ''}
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        } catch (e) {
+            console.error('[Quizzes]', e);
+            container.innerHTML = '';
+            container.appendChild(render.emptyState('Error loading quizzes', e.message));
+        }
+    }
+
+    async function initQuizTake() {
+        const courseId = getCourseId();
+        const quizId = getParam('quiz_id');
+        if (!courseId || !quizId) return;
+        try {
+            const { data: quiz } = await api.quizzes.get(courseId, quizId);
+            const titleEl = document.querySelector('.quiz-title, h4.second-color, h3.second-color');
+            if (titleEl) titleEl.textContent = quiz.title;
+            const descEl = document.querySelector('.quiz-description, .quiz-desc');
+            if (descEl) descEl.innerHTML = quiz.description || 'No description.';
+            const metaEl = document.querySelector('.quiz-meta');
+            if (metaEl) {
+                metaEl.innerHTML = `
+                    <span><i class="fa fa-question-circle"></i> ${quiz.question_count || 0} questions</span>
+                    <span><i class="fa fa-star"></i> ${quiz.points_possible || 0} points</span>
+                    ${quiz.time_limit ? `<span><i class="fa fa-clock"></i> ${quiz.time_limit} minutes</span>` : ''}
+                    ${quiz.allowed_attempts > 0 ? `<span><i class="fa fa-redo"></i> ${quiz.allowed_attempts} attempts</span>` : ''}
+                `;
+            }
+        } catch (e) { console.error('[QuizTake]', e); }
+    }
+
+    async function initQuizResults() {
+        const courseId = getCourseId();
+        const quizId = getParam('quiz_id');
+        if (!courseId || !quizId) return;
+        try {
+            const { data: quiz } = await api.quizzes.get(courseId, quizId);
+            const titleEl = document.querySelector('.quiz-title, h4.second-color');
+            if (titleEl) titleEl.textContent = `Results: ${quiz.title}`;
+            const scoreEl = document.querySelector('.quiz-score, .score-display');
+            if (scoreEl) scoreEl.textContent = `${quiz.points_possible || 0} pts possible`;
+        } catch (e) { console.error('[QuizResults]', e); }
+    }
+
+    async function initGradebook() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        const container = document.querySelector('.gradebook-container, .gradebook-table, #assign');
+        if (!container) return;
+        render.showLoading(container, 'row', 8);
+        try {
+            const [studentsRes, groupsRes] = await Promise.all([
+                api.people.list(courseId, { enrollment_type: ['student'] }),
+                api.grades.assignmentGroupsWithGrades(courseId),
+            ]);
+            container.innerHTML = '';
+            const assignments = (groupsRes.data || []).flatMap(g => g.assignments || []);
+            if (!studentsRes.data?.length || !assignments.length) {
+                container.appendChild(render.emptyState('No gradebook data', 'No students or assignments found.'));
+                return;
+            }
+            const table = render.el('table', 'tw-w-full tw-text-xs');
+            const thead = render.el('thead', 'tw-bg-gray-50');
+            const headRow = render.el('tr');
+            headRow.appendChild(render.el('th', 'tw-text-left tw-p-2 tw-font-medium tw-text-gray-600 tw-sticky tw-left-0 tw-bg-gray-50', { text: 'Student' }));
+            assignments.slice(0, 10).forEach(a => {
+                headRow.appendChild(render.el('th', 'tw-text-center tw-p-2 tw-font-medium tw-text-gray-600', { text: render.truncate(a.name, 15) }));
+            });
+            headRow.appendChild(render.el('th', 'tw-text-center tw-p-2 tw-font-medium tw-text-gray-600', { text: 'Total' }));
+            thead.appendChild(headRow);
+            table.appendChild(thead);
+            const tbody = render.el('tbody');
+            studentsRes.data.slice(0, 20).forEach(student => {
+                const row = render.el('tr', 'tw-border-b tw-border-gray-100 hover:tw-bg-gray-50');
+                row.appendChild(render.el('td', 'tw-p-2 tw-font-medium tw-sticky tw-left-0 tw-bg-white', { text: student.name }));
+                assignments.slice(0, 10).forEach(() => {
+                    row.appendChild(render.el('td', 'tw-text-center tw-p-2 tw-text-gray-500', { text: '—' }));
+                });
+                const enrollment = student.enrollments?.find(e => e.type === 'StudentEnrollment');
+                const total = enrollment?.grades?.current_score || '—';
+                row.appendChild(render.el('td', 'tw-text-center tw-p-2 tw-font-bold', { text: `${total}%` }));
+                tbody.appendChild(row);
+            });
+            table.appendChild(tbody);
+            const wrapper = render.el('div', 'tw-overflow-x-auto');
+            wrapper.appendChild(table);
+            container.appendChild(wrapper);
+        } catch (e) {
+            console.error('[Gradebook]', e);
+            container.innerHTML = '';
+            container.appendChild(render.emptyState('Error loading gradebook', e.message));
+        }
+    }
+
+    async function initSpeedGrader() {
+        const courseId = getCourseId();
+        const assignmentId = getParam('assignment_id');
+        if (!courseId || !assignmentId) return;
+        try {
+            const { data: assignment } = await api.assignments.get(courseId, assignmentId);
+            const titleEl = document.querySelector('.assignment-title, h4.second-color');
+            if (titleEl) titleEl.textContent = `Speed Grader: ${assignment.name}`;
+            const pointsEl = document.querySelector('.total-points');
+            if (pointsEl) pointsEl.textContent = `${assignment.points_possible || 0} pts possible`;
+        } catch (e) { console.error('[SpeedGrader]', e); }
+    }
+
+    async function initRubrics() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        const container = document.querySelector('.rubrics-container, .rubric-list, #assign');
+        if (!container) return;
+        render.showLoading(container, 'row', 4);
+        try {
+            const { data: rubrics } = await api.rubrics.list(courseId);
+            container.innerHTML = '';
+            if (!rubrics || rubrics.length === 0) {
+                container.appendChild(render.emptyState('No rubrics', 'No rubrics created yet.'));
+                return;
+            }
+            rubrics.forEach(r => {
+                const row = render.el('div', 'tw-flex tw-items-center tw-justify-between tw-p-3 tw-rounded-lg tw-border tw-border-gray-100 tw-mb-2 hover:tw-bg-gray-50');
+                row.innerHTML = `
+                    <div class="tw-flex tw-items-center tw-gap-3">
+                        <i class="fa fa-th-list tw-text-accent-orange"></i>
+                        <div>
+                            <p class="tw-text-sm tw-font-medium second-color">${r.title}</p>
+                            <p class="tw-text-xs tw-text-gray-500">${r.points_possible || 0} pts &bull; ${(r.data || []).length} criteria</p>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        } catch (e) {
+            console.error('[Rubrics]', e);
+            container.innerHTML = '';
+            container.appendChild(render.emptyState('Error loading rubrics', e.message));
+        }
+    }
+
+    async function initOutcomes() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        const container = document.querySelector('.outcomes-container, .outcome-list, #assign');
+        if (!container) return;
+        render.showLoading(container, 'row', 4);
+        try {
+            const { data: groups } = await api.outcomes.groups(courseId);
+            container.innerHTML = '';
+            if (!groups || groups.length === 0) {
+                container.appendChild(render.emptyState('No outcomes', 'No learning outcomes defined.'));
+                return;
+            }
+            groups.forEach(g => {
+                const section = render.el('div', 'tw-mb-4');
+                section.innerHTML = `
+                    <h5 class="tw-text-sm tw-font-semibold second-color tw-mb-2"><i class="fa fa-bullseye tw-text-accent-green tw-mr-2"></i>${g.title}</h5>
+                    <p class="tw-text-xs tw-text-gray-500 tw-ml-6">${g.description || 'No description'}</p>
+                `;
+                container.appendChild(section);
+            });
+        } catch (e) {
+            console.error('[Outcomes]', e);
+            container.innerHTML = '';
+            container.appendChild(render.emptyState('Error loading outcomes', e.message));
+        }
+    }
+
+    // ═══════════════════════════════════════
+    // Batch 4: Communication & Social
+    // ═══════════════════════════════════════
+
+    async function initDiscussions() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        const container = document.querySelector('.discussions-container, .discussion-list, #assign');
+        if (!container) return;
+        render.showLoading(container, 'row', 5);
+        try {
+            const { data: topics } = await api.discussions.list(courseId);
+            container.innerHTML = '';
+            if (!topics || topics.length === 0) {
+                container.appendChild(render.emptyState('No discussions', 'No discussion topics yet.'));
+                return;
+            }
+            topics.forEach(t => {
+                const row = render.el('div', 'tw-flex tw-items-center tw-justify-between tw-p-3 tw-rounded-lg tw-border tw-border-gray-100 tw-mb-2 hover:tw-bg-gray-50');
+                row.innerHTML = `
+                    <div class="tw-flex tw-items-center tw-gap-3">
+                        <i class="fa fa-comments tw-text-blue-500"></i>
+                        <div>
+                            <a href="discussion-thread.html?course_id=${courseId}&topic_id=${t.id}" class="tw-text-sm tw-font-medium second-color tw-no-underline hover:tw-text-accent-green">${render.truncate(t.title, 60)}</a>
+                            <p class="tw-text-xs tw-text-gray-500">${t.discussion_subentry_count || 0} replies &bull; ${t.unread_count || 0} unread &bull; ${render.relativeTime(t.last_reply_at || t.posted_at)}</p>
+                        </div>
+                    </div>
+                    <div class="tw-flex tw-items-center tw-gap-2">
+                        ${t.pinned ? '<span class="tw-text-xs tw-text-accent-orange"><i class="fa fa-thumbtack"></i></span>' : ''}
+                        ${t.locked ? '<span class="tw-text-xs tw-text-gray-400"><i class="fa fa-lock"></i></span>' : ''}
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        } catch (e) {
+            console.error('[Discussions]', e);
+            container.innerHTML = '';
+            container.appendChild(render.emptyState('Error loading discussions', e.message));
+        }
+    }
+
+    async function initDiscussionThread() {
+        const courseId = getCourseId();
+        const topicId = getParam('topic_id');
+        if (!courseId || !topicId) return;
+        try {
+            const [topicRes, threadRes] = await Promise.all([
+                api.discussions.get(courseId, topicId),
+                api.discussions.fullThread(courseId, topicId),
+            ]);
+            const topic = topicRes.data;
+            const thread = threadRes.data;
+            const titleEl = document.querySelector('.topic-title, h4.second-color, h3.second-color');
+            if (titleEl) titleEl.textContent = topic.title;
+            const bodyEl = document.querySelector('.topic-body, .discussion-body');
+            if (bodyEl) bodyEl.innerHTML = topic.message || '';
+            const repliesContainer = document.querySelector('.replies-container, .discussion-replies');
+            if (repliesContainer && thread.view) {
+                repliesContainer.innerHTML = '';
+                (thread.view || []).forEach(entry => {
+                    const participant = (thread.participants || []).find(p => p.id === entry.user_id) || {};
+                    const reply = render.el('div', 'tw-flex tw-gap-3 tw-p-3 tw-border-b tw-border-gray-100');
+                    reply.innerHTML = `
+                        <img src="${participant.avatar_image_url || 'Images/profile.PNG'}" class="tw-w-8 tw-h-8 tw-rounded-full tw-object-cover" />
+                        <div class="tw-flex-1">
+                            <div class="tw-flex tw-justify-between tw-items-center tw-mb-1">
+                                <span class="tw-text-sm tw-font-medium second-color">${participant.display_name || 'Anonymous'}</span>
+                                <span class="tw-text-xs tw-text-gray-400">${render.relativeTime(entry.created_at)}</span>
+                            </div>
+                            <div class="tw-text-sm tw-text-gray-600">${entry.message || ''}</div>
+                        </div>
+                    `;
+                    repliesContainer.appendChild(reply);
+                });
+            }
+        } catch (e) { console.error('[DiscussionThread]', e); }
+    }
+
+    async function initConferences() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        const container = document.querySelector('.conferences-container, .conference-list, #assign');
+        if (!container) return;
+        render.showLoading(container, 'row', 3);
+        try {
+            const { data: result } = await api.conferences.list(courseId);
+            const conferences = result.conferences || result || [];
+            container.innerHTML = '';
+            if (conferences.length === 0) {
+                container.appendChild(render.emptyState('No conferences', 'No video conferences scheduled.'));
+                return;
+            }
+            conferences.forEach(c => {
+                const isLive = c.started_at && !c.ended_at;
+                const row = render.el('div', 'tw-flex tw-items-center tw-justify-between tw-p-3 tw-rounded-lg tw-border tw-border-gray-100 tw-mb-2 hover:tw-bg-gray-50');
+                row.innerHTML = `
+                    <div class="tw-flex tw-items-center tw-gap-3">
+                        <i class="fa fa-video ${isLive ? 'tw-text-accent-green' : 'tw-text-gray-400'}"></i>
+                        <div>
+                            <p class="tw-text-sm tw-font-medium second-color">${c.title}</p>
+                            <p class="tw-text-xs tw-text-gray-500">${c.description || 'No description'} &bull; ${c.participant_count || 0} participants</p>
+                        </div>
+                    </div>
+                    ${isLive ? '<span class="tw-bg-accent-green/10 tw-text-accent-green tw-text-xs tw-px-2 tw-py-0.5 tw-rounded-full">Live</span>' : `<span class="tw-text-xs tw-text-gray-400">${c.started_at ? 'Ended' : 'Upcoming'}</span>`}
+                `;
+                container.appendChild(row);
+            });
+        } catch (e) {
+            console.error('[Conferences]', e);
+            container.innerHTML = '';
+            container.appendChild(render.emptyState('Error loading conferences', e.message));
+        }
+    }
+
+    async function initCollaborations() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        const container = document.querySelector('.collaborations-container, .collab-list, #assign');
+        if (!container) return;
+        render.showLoading(container, 'row', 3);
+        try {
+            const { data: collabs } = await api.collaborations.list(courseId);
+            container.innerHTML = '';
+            if (!collabs || collabs.length === 0) {
+                container.appendChild(render.emptyState('No collaborations', 'No collaborative documents yet.'));
+                return;
+            }
+            collabs.forEach(c => {
+                const row = render.el('div', 'tw-flex tw-items-center tw-justify-between tw-p-3 tw-rounded-lg tw-border tw-border-gray-100 tw-mb-2 hover:tw-bg-gray-50');
+                row.innerHTML = `
+                    <div class="tw-flex tw-items-center tw-gap-3">
+                        <i class="fa fa-users-cog tw-text-blue-500"></i>
+                        <div>
+                            <p class="tw-text-sm tw-font-medium second-color">${c.title}</p>
+                            <p class="tw-text-xs tw-text-gray-500">${c.description || ''} &bull; Created ${render.relativeTime(c.created_at)}</p>
+                        </div>
+                    </div>
+                    <a href="${c.url || '#'}" target="_blank" class="tw-text-xs tw-text-accent-green hover:tw-underline">Open</a>
+                `;
+                container.appendChild(row);
+            });
+        } catch (e) {
+            console.error('[Collaborations]', e);
+            container.innerHTML = '';
+            container.appendChild(render.emptyState('Error loading collaborations', e.message));
+        }
+    }
+
+    async function initGroups() {
+        const courseId = getCourseId();
+        const container = document.querySelector('.groups-container, .group-list, #assign');
+        if (!container) return;
+        render.showLoading(container, 'row', 4);
+        try {
+            const { data: groups } = courseId
+                ? await api.groups.listForCourse(courseId)
+                : await api.groups.listForUser();
+            container.innerHTML = '';
+            if (!groups || groups.length === 0) {
+                container.appendChild(render.emptyState('No groups', 'You are not in any groups.'));
+                return;
+            }
+            groups.forEach(g => {
+                const row = render.el('div', 'tw-flex tw-items-center tw-justify-between tw-p-3 tw-rounded-lg tw-border tw-border-gray-100 tw-mb-2 hover:tw-bg-gray-50');
+                row.innerHTML = `
+                    <div class="tw-flex tw-items-center tw-gap-3">
+                        <i class="fa fa-users tw-text-primary-400"></i>
+                        <div>
+                            <p class="tw-text-sm tw-font-medium second-color">${g.name}</p>
+                            <p class="tw-text-xs tw-text-gray-500">${g.members_count || 0} members &bull; ${g.context_type || ''}</p>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        } catch (e) {
+            console.error('[Groups]', e);
+            container.innerHTML = '';
+            container.appendChild(render.emptyState('Error loading groups', e.message));
+        }
+    }
+
+    async function initPeople() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        const container = document.querySelector('.people-container, .people-list, #assign');
+        if (!container) return;
+        render.showLoading(container, 'row', 8);
+        try {
+            const { data: users } = await api.people.list(courseId);
+            container.innerHTML = '';
+            if (!users || users.length === 0) {
+                container.appendChild(render.emptyState('No people', 'No participants in this course.'));
+                return;
+            }
+            users.forEach(u => {
+                const role = u.enrollments?.[0]?.type?.replace('Enrollment', '') || 'User';
+                const roleColor = role === 'Teacher' ? 'tw-text-accent-orange' : role === 'Student' ? 'tw-text-blue-500' : 'tw-text-gray-500';
+                const row = render.el('div', 'tw-flex tw-items-center tw-justify-between tw-p-3 tw-rounded-lg tw-border tw-border-gray-100 tw-mb-2 hover:tw-bg-gray-50');
+                row.innerHTML = `
+                    <div class="tw-flex tw-items-center tw-gap-3">
+                        <img src="${u.avatar_url || 'Images/profile.PNG'}" class="tw-w-9 tw-h-9 tw-rounded-full tw-object-cover" />
+                        <div>
+                            <p class="tw-text-sm tw-font-medium second-color">${u.name}</p>
+                            <p class="tw-text-xs tw-text-gray-500">${u.email || u.login_id || ''}</p>
+                        </div>
+                    </div>
+                    <span class="tw-text-xs ${roleColor} tw-font-medium">${role}</span>
+                `;
+                container.appendChild(row);
+            });
+        } catch (e) {
+            console.error('[People]', e);
+            container.innerHTML = '';
+            container.appendChild(render.emptyState('Error loading people', e.message));
+        }
+    }
+
+    // ═══════════════════════════════════════
+    // Batch 5: Admin & Settings
+    // ═══════════════════════════════════════
+
+    async function initAccountSettings() {
+        try {
+            const { data: profile } = await api.users.profile();
+            const nameEl = document.querySelector('.settings-name, input[name="name"]');
+            if (nameEl) nameEl.value = profile.name || '';
+            const emailEl = document.querySelector('.settings-email, input[name="email"]');
+            if (emailEl) emailEl.value = profile.primary_email || '';
+            const avatarEl = document.querySelector('.settings-avatar, .profile-avatar img');
+            if (avatarEl && profile.avatar_url) avatarEl.src = profile.avatar_url;
+            const bioEl = document.querySelector('textarea[name="bio"]');
+            if (bioEl && profile.bio) bioEl.value = profile.bio;
+        } catch (e) { console.error('[AccountSettings]', e); }
+    }
+
+    async function initCourseSettings() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        try {
+            const { data: course } = await api.courses.get(courseId);
+            const nameEl = document.querySelector('input[name="course_name"]');
+            if (nameEl) nameEl.value = course.name || '';
+            const codeEl = document.querySelector('input[name="course_code"]');
+            if (codeEl) codeEl.value = course.course_code || '';
+        } catch (e) { console.error('[CourseSettings]', e); }
+    }
+
+    async function initPermissions() {
+        try {
+            const { data: accounts } = await api.admin.accounts();
+            if (!accounts?.length) return;
+            const accountId = accounts[0].id;
+            const { data: roles } = await api.admin.roles(accountId);
+            const container = document.querySelector('.permissions-container, .roles-list, #assign');
+            if (!container || !roles) return;
+            container.innerHTML = '';
+            roles.forEach(r => {
+                const row = render.el('div', 'tw-flex tw-items-center tw-justify-between tw-p-3 tw-rounded-lg tw-border tw-border-gray-100 tw-mb-2');
+                row.innerHTML = `
+                    <div>
+                        <p class="tw-text-sm tw-font-medium second-color">${r.label || r.role}</p>
+                        <p class="tw-text-xs tw-text-gray-500">Base role: ${r.base_role_type || 'Custom'}</p>
+                    </div>
+                    <span class="tw-text-xs ${r.workflow_state === 'active' ? 'tw-text-accent-green' : 'tw-text-gray-400'}">${r.workflow_state}</span>
+                `;
+                container.appendChild(row);
+            });
+        } catch (e) { console.error('[Permissions]', e); }
+    }
+
+    async function initUserManagement() {
+        try {
+            const { data: accounts } = await api.admin.accounts();
+            if (!accounts?.length) return;
+            const accountId = accounts[0].id;
+            const { data: users } = await api.admin.users(accountId, { per_page: 25 });
+            const container = document.querySelector('.users-container, .user-list, #assign');
+            if (!container || !users) return;
+            container.innerHTML = '';
+            users.forEach(u => {
+                const row = render.el('div', 'tw-flex tw-items-center tw-justify-between tw-p-3 tw-rounded-lg tw-border tw-border-gray-100 tw-mb-2 hover:tw-bg-gray-50');
+                row.innerHTML = `
+                    <div class="tw-flex tw-items-center tw-gap-3">
+                        <img src="${u.avatar_url || 'Images/profile.PNG'}" class="tw-w-8 tw-h-8 tw-rounded-full tw-object-cover" />
+                        <div>
+                            <p class="tw-text-sm tw-font-medium second-color">${u.name}</p>
+                            <p class="tw-text-xs tw-text-gray-500">${u.email || u.login_id || ''}</p>
+                        </div>
+                    </div>
+                    <span class="tw-text-xs tw-text-gray-400">ID: ${u.id}</span>
+                `;
+                container.appendChild(row);
+            });
+        } catch (e) { console.error('[UserManagement]', e); }
+    }
+
+    async function initAdminDashboard() {
+        try {
+            const { data: accounts } = await api.admin.accounts();
+            if (!accounts?.length) return;
+            const accountId = accounts[0].id;
+            const nameEl = document.querySelector('.account-name, h3.second-color');
+            if (nameEl) nameEl.textContent = accounts[0].name || 'Account';
+        } catch (e) { console.error('[AdminDashboard]', e); }
+    }
+
+    async function initSubAccounts() {
+        try {
+            const { data: accounts } = await api.admin.accounts();
+            if (!accounts?.length) return;
+            const { data: subs } = await api.admin.subAccounts(accounts[0].id);
+            const container = document.querySelector('.sub-accounts-container, #assign');
+            if (!container || !subs) return;
+            container.innerHTML = '';
+            if (subs.length === 0) {
+                container.appendChild(render.emptyState('No sub-accounts', 'No sub-accounts configured.'));
+                return;
+            }
+            subs.forEach(s => {
+                const row = render.el('div', 'tw-p-3 tw-rounded-lg tw-border tw-border-gray-100 tw-mb-2');
+                row.innerHTML = `<p class="tw-text-sm tw-font-medium second-color">${s.name}</p><p class="tw-text-xs tw-text-gray-500">ID: ${s.id}</p>`;
+                container.appendChild(row);
+            });
+        } catch (e) { console.error('[SubAccounts]', e); }
+    }
+
+    // ═══════════════════════════════════════
+    // Batch 6: Remaining Pages
+    // ═══════════════════════════════════════
+
+    async function initNotifications() {
+        const container = document.querySelector('.notifications-container, .notif-list, #assign');
+        if (!container) return;
+        render.showLoading(container, 'row', 5);
+        try {
+            const { data: items } = await api.notifications.list();
+            container.innerHTML = '';
+            if (!items || items.length === 0) {
+                container.appendChild(render.emptyState('No notifications', 'You are all caught up!'));
+                return;
+            }
+            items.slice(0, 30).forEach(item => {
+                const iconMap = { Announcement: 'fa-bullhorn tw-text-accent-orange', Submission: 'fa-file-alt tw-text-blue-500', Conversation: 'fa-envelope tw-text-primary-400', Message: 'fa-comment tw-text-accent-green' };
+                const icon = iconMap[item.type] || 'fa-bell tw-text-gray-400';
+                const row = render.el('div', 'tw-flex tw-items-start tw-gap-3 tw-p-3 tw-border-b tw-border-gray-100');
+                row.innerHTML = `
+                    <i class="fa ${icon} tw-mt-1"></i>
+                    <div class="tw-flex-1">
+                        <p class="tw-text-sm second-color">${item.title || item.type}</p>
+                        <p class="tw-text-xs tw-text-gray-500">${render.relativeTime(item.created_at)}</p>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        } catch (e) {
+            console.error('[Notifications]', e);
+            container.innerHTML = '';
+            container.appendChild(render.emptyState('Error loading notifications', e.message));
+        }
+    }
+
+    async function initEPortfolio() {
+        const container = document.querySelector('.portfolio-container, .portfolio-list, #assign');
+        if (!container) return;
+        render.showLoading(container, 'row', 3);
+        try {
+            const { data: portfolios } = await api.eportfolio.list();
+            container.innerHTML = '';
+            if (!portfolios || portfolios.length === 0) {
+                container.appendChild(render.emptyState('No portfolios', 'Create your first portfolio to showcase your work.'));
+                return;
+            }
+            portfolios.forEach(p => {
+                const row = render.el('div', 'tw-flex tw-items-center tw-justify-between tw-p-3 tw-rounded-lg tw-border tw-border-gray-100 tw-mb-2 hover:tw-bg-gray-50');
+                row.innerHTML = `
+                    <div class="tw-flex tw-items-center tw-gap-3">
+                        <i class="fa fa-briefcase tw-text-primary-400"></i>
+                        <div>
+                            <p class="tw-text-sm tw-font-medium second-color">${p.name}</p>
+                            <p class="tw-text-xs tw-text-gray-500">${p.public ? 'Public' : 'Private'} &bull; Updated ${render.relativeTime(p.updated_at)}</p>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        } catch (e) {
+            console.error('[EPortfolio]', e);
+            container.innerHTML = '';
+            container.appendChild(render.emptyState('Error loading portfolios', e.message));
+        }
+    }
+
+    async function initPlanner() {
+        const container = document.querySelector('.planner-container, .planner-list, #assign');
+        if (!container) return;
+        render.showLoading(container, 'row', 6);
+        try {
+            const { data: items } = await api.planner.items({ per_page: 20 });
+            container.innerHTML = '';
+            if (!items || items.length === 0) {
+                container.appendChild(render.emptyState('Nothing planned', 'Your planner is clear!'));
+                return;
+            }
+            let lastDate = '';
+            items.forEach(item => {
+                const date = render.formatDate(item.plannable_date);
+                if (date !== lastDate) {
+                    lastDate = date;
+                    container.appendChild(render.el('h5', 'tw-text-xs tw-font-semibold tw-text-gray-500 tw-mt-4 tw-mb-2 tw-uppercase', { text: date }));
+                }
+                const typeIcon = item.plannable_type === 'assignment' ? 'fa-file-alt tw-text-blue-500' :
+                                 item.plannable_type === 'quiz' ? 'fa-question-circle tw-text-purple-500' :
+                                 item.plannable_type === 'discussion_topic' ? 'fa-comments tw-text-accent-green' :
+                                 'fa-calendar tw-text-gray-400';
+                const row = render.el('div', 'tw-flex tw-items-center tw-gap-3 tw-p-2 tw-rounded-lg hover:tw-bg-gray-50');
+                row.innerHTML = `
+                    <i class="fa ${typeIcon}"></i>
+                    <div class="tw-flex-1">
+                        <p class="tw-text-sm second-color">${item.plannable?.title || 'Untitled'}</p>
+                        <p class="tw-text-xs tw-text-gray-500">${item.context_name || ''}</p>
+                    </div>
+                    <span class="tw-text-xs tw-text-gray-400">${item.plannable?.points_possible ? item.plannable.points_possible + ' pts' : ''}</span>
+                `;
+                container.appendChild(row);
+            });
+        } catch (e) {
+            console.error('[Planner]', e);
+            container.innerHTML = '';
+            container.appendChild(render.emptyState('Error loading planner', e.message));
+        }
+    }
+
+    async function initSearchResults() {
+        const query = getParam('q');
+        if (!query) return;
+        const container = document.querySelector('.search-results-container, .results-list, #assign');
+        if (!container) return;
+        render.showLoading(container, 'row', 5);
+        try {
+            const { data: courses } = await api.search.allCourses({ search_term: query });
+            const { data: recipients } = await api.search.recipients({ search: query, per_page: 10 });
+            container.innerHTML = '';
+            if (courses?.length) {
+                container.appendChild(render.el('h5', 'tw-text-sm tw-font-semibold tw-text-gray-600 tw-mb-2', { text: `Courses (${courses.length})` }));
+                courses.forEach(c => {
+                    const row = render.el('div', 'tw-flex tw-items-center tw-gap-3 tw-p-2 tw-rounded-lg hover:tw-bg-gray-50');
+                    row.innerHTML = `<i class="fa fa-book tw-text-primary-400"></i><a href="class.html?course_id=${c.id}" class="tw-text-sm second-color tw-no-underline hover:tw-text-accent-green">${c.name}</a>`;
+                    container.appendChild(row);
+                });
+            }
+            if (recipients?.length) {
+                container.appendChild(render.el('h5', 'tw-text-sm tw-font-semibold tw-text-gray-600 tw-mt-4 tw-mb-2', { text: `People (${recipients.length})` }));
+                recipients.forEach(r => {
+                    const row = render.el('div', 'tw-flex tw-items-center tw-gap-3 tw-p-2 tw-rounded-lg hover:tw-bg-gray-50');
+                    row.innerHTML = `<img src="${r.avatar_url || 'Images/profile.PNG'}" class="tw-w-7 tw-h-7 tw-rounded-full" /><p class="tw-text-sm second-color">${r.name}</p>`;
+                    container.appendChild(row);
+                });
+            }
+            if (!courses?.length && !recipients?.length) {
+                container.appendChild(render.emptyState('No results', `No results found for "${query}".`));
+            }
+        } catch (e) {
+            console.error('[Search]', e);
+            container.innerHTML = '';
+            container.appendChild(render.emptyState('Search error', e.message));
+        }
+    }
+
+    async function initAnalytics() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        try {
+            const { data: course } = await api.courses.get(courseId);
+            const titleEl = document.querySelector('.analytics-title, h4.second-color');
+            if (titleEl) titleEl.textContent = `Analytics: ${course.name}`;
+        } catch (e) { console.error('[Analytics]', e); }
+    }
+
+    async function initGradebookHistory() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        const container = document.querySelector('.history-container, #assign');
+        if (!container) return;
+        try {
+            const { data: groups } = await api.grades.assignmentGroupsWithGrades(courseId);
+            const assignments = (groups || []).flatMap(g => g.assignments || []);
+            container.innerHTML = '';
+            if (assignments.length === 0) {
+                container.appendChild(render.emptyState('No history', 'No grade changes recorded.'));
+                return;
+            }
+            assignments.slice(0, 20).forEach(a => {
+                const row = render.el('div', 'tw-flex tw-items-center tw-justify-between tw-p-2 tw-border-b tw-border-gray-100');
+                row.innerHTML = `
+                    <p class="tw-text-sm second-color">${a.name}</p>
+                    <span class="tw-text-xs tw-text-gray-400">${a.points_possible || 0} pts</span>
+                `;
+                container.appendChild(row);
+            });
+        } catch (e) { console.error('[GradebookHistory]', e); }
+    }
+
+    async function initContentMigrations() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        const container = document.querySelector('.migrations-container, #assign');
+        if (!container) return;
+        try {
+            const { data: migrations } = await api.contentMigrations.list(courseId);
+            container.innerHTML = '';
+            if (!migrations || migrations.length === 0) {
+                container.appendChild(render.emptyState('No migrations', 'No content imports yet.'));
+                return;
+            }
+            migrations.forEach(m => {
+                const statusColor = m.workflow_state === 'completed' ? 'tw-text-accent-green' : m.workflow_state === 'failed' ? 'tw-text-red-500' : 'tw-text-accent-orange';
+                const row = render.el('div', 'tw-flex tw-items-center tw-justify-between tw-p-3 tw-border-b tw-border-gray-100');
+                row.innerHTML = `
+                    <div>
+                        <p class="tw-text-sm second-color">${m.migration_type_title || m.migration_type}</p>
+                        <p class="tw-text-xs tw-text-gray-500">Created ${render.relativeTime(m.created_at)}</p>
+                    </div>
+                    <span class="tw-text-xs ${statusColor}">${m.workflow_state}</span>
+                `;
+                container.appendChild(row);
+            });
+        } catch (e) { console.error('[ContentMigrations]', e); }
+    }
+
+    async function initSisImport() {
+        try {
+            const { data: accounts } = await api.admin.accounts();
+            if (!accounts?.length) return;
+            const { data: imports } = await api.admin.sisImports(accounts[0].id);
+            const container = document.querySelector('.sis-container, #assign');
+            if (!container) return;
+            const sisImports = imports?.sis_imports || imports || [];
+            container.innerHTML = '';
+            if (sisImports.length === 0) {
+                container.appendChild(render.emptyState('No SIS imports', 'No SIS data imports found.'));
+                return;
+            }
+            sisImports.slice(0, 15).forEach(i => {
+                const row = render.el('div', 'tw-flex tw-items-center tw-justify-between tw-p-3 tw-border-b tw-border-gray-100');
+                row.innerHTML = `
+                    <div>
+                        <p class="tw-text-sm second-color">Import #${i.id}</p>
+                        <p class="tw-text-xs tw-text-gray-500">${render.relativeTime(i.created_at)}</p>
+                    </div>
+                    <span class="tw-text-xs ${i.workflow_state === 'imported' ? 'tw-text-accent-green' : 'tw-text-accent-orange'}">${i.workflow_state}</span>
+                `;
+                container.appendChild(row);
+            });
+        } catch (e) { console.error('[SisImport]', e); }
+    }
+
+    async function initReports() {
+        try {
+            const { data: accounts } = await api.admin.accounts();
+            if (!accounts?.length) return;
+            const { data: reports } = await api.admin.reports(accounts[0].id);
+            const container = document.querySelector('.reports-container, #assign');
+            if (!container || !reports) return;
+            container.innerHTML = '';
+            reports.forEach(r => {
+                const row = render.el('div', 'tw-p-3 tw-rounded-lg tw-border tw-border-gray-100 tw-mb-2');
+                row.innerHTML = `
+                    <p class="tw-text-sm tw-font-medium second-color">${r.title || r.report}</p>
+                    <p class="tw-text-xs tw-text-gray-500">${r.parameters?.length || 0} parameters</p>
+                `;
+                container.appendChild(row);
+            });
+        } catch (e) { console.error('[Reports]', e); }
+    }
+
+    async function initDeveloperKeys() {
+        try {
+            const { data: accounts } = await api.admin.accounts();
+            if (!accounts?.length) return;
+            const { data: keys } = await api.admin.developerKeys(accounts[0].id);
+            const container = document.querySelector('.devkeys-container, #assign');
+            if (!container || !keys) return;
+            container.innerHTML = '';
+            if (keys.length === 0) {
+                container.appendChild(render.emptyState('No developer keys', 'No API keys configured.'));
+                return;
+            }
+            keys.forEach(k => {
+                const row = render.el('div', 'tw-flex tw-items-center tw-justify-between tw-p-3 tw-border-b tw-border-gray-100');
+                row.innerHTML = `
+                    <div>
+                        <p class="tw-text-sm tw-font-medium second-color">${k.name || 'Unnamed Key'}</p>
+                        <p class="tw-text-xs tw-text-gray-500">ID: ${k.id} &bull; ${k.workflow_state}</p>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        } catch (e) { console.error('[DeveloperKeys]', e); }
+    }
+
+    // ═══════════════════════════════════════
     // Page Router
     // ═══════════════════════════════════════
 
     const pageInitializers = {
+        // Batch 1: Core
         'dashboard.html': initDashboard,
         'courses.html': initCourses,
-        'assignments.html': initAssignments,
-        'grades.html': initGrades,
-        'modules.html': initModules,
-        'calendar.html': initCalendar,
-        'announcement.html': initAnnouncements,
-        'announcements-list.html': initAnnouncements,
         'inbox.html': initInbox,
         'profile.html': initProfile,
+        'calendar.html': initCalendar,
+
+        // Batch 2: Course Content
         'class.html': initCourseHome,
         'course-home.html': initCourseHome,
         'classroom.html': initModules,
+        'assignments.html': initAssignments,
         'assignment-detail.html': initAssignmentDetail,
         'submission.html': initSubmission,
+        'modules.html': initModules,
         'pages.html': initPages,
         'page-view.html': initPageView,
         'files.html': initFiles,
         'syllabus.html': initSyllabus,
+        'announcement.html': initAnnouncements,
+        'announcements-list.html': initAnnouncements,
+
+        // Batch 3: Assessment & Grading
+        'quizzes.html': initQuizzes,
+        'quiz-take.html': initQuizTake,
+        'quiz-results.html': initQuizResults,
+        'grades.html': initGrades,
+        'gradebook.html': initGradebook,
+        'gradebook-history.html': initGradebookHistory,
+        'speed-grader.html': initSpeedGrader,
+        'rubrics.html': initRubrics,
+        'outcomes.html': initOutcomes,
+
+        // Batch 4: Communication & Social
+        'discussions.html': initDiscussions,
+        'discussion-thread.html': initDiscussionThread,
+        'conferences.html': initConferences,
+        'collaborations.html': initCollaborations,
+        'groups.html': initGroups,
+        'people.html': initPeople,
+
+        // Batch 5: Admin & Settings
+        'account-settings.html': initAccountSettings,
+        'course-settings.html': initCourseSettings,
+        'permissions.html': initPermissions,
+        'user-management.html': initUserManagement,
+        'admin-dashboard.html': initAdminDashboard,
+        'sub-accounts.html': initSubAccounts,
+        'developer-keys.html': initDeveloperKeys,
+        'reports.html': initReports,
+        'sis-import.html': initSisImport,
+
+        // Batch 6: Remaining
+        'notifications.html': initNotifications,
+        'eportfolio.html': initEPortfolio,
+        'planner.html': initPlanner,
+        'search-results.html': initSearchResults,
+        'analytics.html': initAnalytics,
+        'content-migrations.html': initContentMigrations,
     };
 
     // ═══════════════════════════════════════
