@@ -355,6 +355,371 @@
     }
 
     // ═══════════════════════════════════════
+    // Page: Course Home
+    // ═══════════════════════════════════════
+
+    async function initCourseHome() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+
+        try {
+            const { data: course } = await api.courses.get(courseId);
+
+            // Update course title
+            const titleEl = document.querySelector('.course-title, .banner-title, h3.second-color');
+            if (titleEl && course.name) titleEl.textContent = course.name;
+
+            // Update course code
+            const codeEl = document.querySelector('.course-code, .banner-subtitle');
+            if (codeEl && course.course_code) codeEl.textContent = course.course_code;
+        } catch (e) { console.error('[CourseHome] Course:', e); }
+
+        // Load recent announcements
+        try {
+            const { data: announcements } = await api.announcements.list([`course_${courseId}`]);
+            const announceContainer = document.querySelector('.announce-list, .recent-announcements');
+            if (announceContainer && announcements) {
+                announceContainer.innerHTML = '';
+                announcements.slice(0, 3).forEach(a => announceContainer.appendChild(render.announcementRow(a)));
+            }
+        } catch (e) { console.error('[CourseHome] Announcements:', e); }
+
+        // Load upcoming assignments
+        try {
+            const { data: assignments } = await api.assignments.list(courseId);
+            const upcomingContainer = document.querySelector('.upcoming-assignments, .assign-list');
+            if (upcomingContainer && assignments) {
+                const upcoming = assignments
+                    .filter(a => a.due_at && new Date(a.due_at) > new Date())
+                    .sort((a, b) => new Date(a.due_at) - new Date(b.due_at))
+                    .slice(0, 5);
+                upcomingContainer.innerHTML = '';
+                upcoming.forEach(a => upcomingContainer.appendChild(render.assignmentRow(a)));
+            }
+        } catch (e) { console.error('[CourseHome] Assignments:', e); }
+    }
+
+    // ═══════════════════════════════════════
+    // Page: Assignment Detail
+    // ═══════════════════════════════════════
+
+    async function initAssignmentDetail() {
+        const courseId = getCourseId();
+        const assignmentId = getParam('assignment_id');
+        if (!courseId || !assignmentId) return;
+
+        try {
+            const { data: assignment } = await api.assignments.get(courseId, assignmentId);
+
+            // Update title
+            const titleEl = document.querySelector('.assignment-title, h4.second-color, h3.second-color');
+            if (titleEl) titleEl.textContent = assignment.name;
+
+            // Update description
+            const descEl = document.querySelector('.assignment-description, .assign-desc');
+            if (descEl) descEl.innerHTML = assignment.description || 'No description provided.';
+
+            // Update points
+            const pointsEl = document.querySelector('.assignment-points, .points-badge');
+            if (pointsEl) pointsEl.textContent = `${assignment.points_possible || 0} points`;
+
+            // Update due date
+            const dueEl = document.querySelector('.assignment-due, .due-date');
+            if (dueEl && assignment.due_at) {
+                dueEl.textContent = `Due ${render.formatDateTime(assignment.due_at)}`;
+            }
+
+            // Update submission status
+            if (assignment.submission) {
+                const statusEl = document.querySelector('.submission-status');
+                if (statusEl) {
+                    statusEl.textContent = render.submissionStatus(assignment.submission);
+                }
+            }
+
+            // Load rubric if present
+            if (assignment.rubric) {
+                const rubricContainer = document.querySelector('.rubric-container, .rubric-table');
+                if (rubricContainer) {
+                    rubricContainer.innerHTML = '';
+                    const table = render.el('table', 'tw-w-full tw-text-sm');
+                    const thead = render.el('thead');
+                    const headRow = render.el('tr', 'tw-border-b');
+                    headRow.appendChild(render.el('th', 'tw-text-left tw-py-2 tw-text-gray-500', { text: 'Criteria' }));
+                    headRow.appendChild(render.el('th', 'tw-text-right tw-py-2 tw-text-gray-500', { text: 'Points' }));
+                    thead.appendChild(headRow);
+                    table.appendChild(thead);
+                    const tbody = render.el('tbody');
+                    assignment.rubric.forEach(criterion => {
+                        const row = render.el('tr', 'tw-border-b');
+                        row.appendChild(render.el('td', 'tw-py-2', { text: criterion.description }));
+                        row.appendChild(render.el('td', 'tw-py-2 tw-text-right tw-font-medium', { text: `${criterion.points}` }));
+                        tbody.appendChild(row);
+                    });
+                    table.appendChild(tbody);
+                    rubricContainer.appendChild(table);
+                }
+            }
+        } catch (e) {
+            console.error('[AssignmentDetail]', e);
+        }
+    }
+
+    // ═══════════════════════════════════════
+    // Page: Submission
+    // ═══════════════════════════════════════
+
+    async function initSubmission() {
+        const courseId = getCourseId();
+        const assignmentId = getParam('assignment_id');
+        if (!courseId || !assignmentId) return;
+
+        try {
+            const [assignmentRes, submissionRes] = await Promise.all([
+                api.assignments.get(courseId, assignmentId),
+                api.assignments.submission(courseId, assignmentId),
+            ]);
+
+            const assignment = assignmentRes.data;
+            const submission = submissionRes.data;
+
+            // Update assignment name
+            const titleEl = document.querySelector('.submission-title, h4.second-color');
+            if (titleEl) titleEl.textContent = assignment.name;
+
+            // Update grade
+            const gradeEl = document.querySelector('.submission-grade, .grade-display');
+            if (gradeEl && submission.score !== null) {
+                gradeEl.textContent = `${submission.score}/${assignment.points_possible}`;
+            }
+
+            // Update status
+            const statusEl = document.querySelector('.submission-status');
+            if (statusEl) {
+                statusEl.textContent = render.submissionStatus(submission);
+            }
+        } catch (e) {
+            console.error('[Submission]', e);
+        }
+    }
+
+    // ═══════════════════════════════════════
+    // Page: Pages Index
+    // ═══════════════════════════════════════
+
+    async function initPages() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+
+        const container = document.querySelector('.pages-container, .pages-list, #assign');
+        if (!container) return;
+
+        render.showLoading(container, 'row', 5);
+
+        try {
+            const { data: pages } = await api.pages.list(courseId);
+            container.innerHTML = '';
+
+            if (!pages || pages.length === 0) {
+                container.appendChild(render.emptyState('No pages', 'This course has no pages yet.'));
+                return;
+            }
+
+            pages.forEach(page => {
+                const row = render.el('div', 'tw-flex tw-items-center tw-justify-between tw-p-3 tw-rounded-lg tw-border tw-border-gray-100 tw-mb-2 hover:tw-bg-gray-50 tw-cursor-pointer');
+                row.innerHTML = `
+                    <div class="tw-flex tw-items-center tw-gap-3">
+                        <i class="fa fa-file-alt tw-text-primary-400"></i>
+                        <div>
+                            <a href="page-view.html?course_id=${courseId}&page_url=${encodeURIComponent(page.url)}" class="tw-text-sm tw-font-medium second-color tw-no-underline hover:tw-text-accent-green">${render.truncate(page.title, 60)}</a>
+                            <p class="tw-text-xs tw-text-gray-500">${page.published ? 'Published' : 'Draft'} &bull; Updated ${render.relativeTime(page.updated_at)}</p>
+                        </div>
+                    </div>
+                    ${page.front_page ? '<span class="tw-bg-accent-green/10 tw-text-accent-green tw-text-xs tw-px-2 tw-py-0.5 tw-rounded-full">Front Page</span>' : ''}
+                `;
+                container.appendChild(row);
+            });
+        } catch (e) {
+            console.error('[Pages]', e);
+            container.innerHTML = '';
+            container.appendChild(render.emptyState('Error loading pages', e.message));
+        }
+    }
+
+    // ═══════════════════════════════════════
+    // Page: Page View
+    // ═══════════════════════════════════════
+
+    async function initPageView() {
+        const courseId = getCourseId();
+        const pageUrl = getParam('page_url');
+        if (!courseId || !pageUrl) return;
+
+        try {
+            const { data: page } = await api.pages.get(courseId, pageUrl);
+
+            // Update title
+            const titleEl = document.querySelector('.page-title, h4.second-color, h3.second-color');
+            if (titleEl) titleEl.textContent = page.title;
+
+            // Update body
+            const bodyEl = document.querySelector('.page-body, .page-content, .wiki-content');
+            if (bodyEl) bodyEl.innerHTML = page.body || '<p>This page is empty.</p>';
+
+            // Update meta
+            const metaEl = document.querySelector('.page-meta, .page-info');
+            if (metaEl) {
+                metaEl.textContent = `Last updated ${render.relativeTime(page.updated_at)}`;
+            }
+
+            // Breadcrumb
+            const breadcrumb = document.querySelector('.breadcrumb');
+            if (breadcrumb) {
+                breadcrumb.innerHTML = `
+                    <a href="class.html?course_id=${courseId}">Course</a> &rsaquo;
+                    <a href="pages.html?course_id=${courseId}">Pages</a> &rsaquo;
+                    <span>${render.truncate(page.title, 40)}</span>
+                `;
+            }
+        } catch (e) {
+            console.error('[PageView]', e);
+        }
+    }
+
+    // ═══════════════════════════════════════
+    // Page: Files
+    // ═══════════════════════════════════════
+
+    async function initFiles() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+
+        const container = document.querySelector('.files-container, .file-list, #assign');
+        if (!container) return;
+
+        render.showLoading(container, 'row', 5);
+
+        try {
+            // Get root folder first
+            const { data: rootFolder } = await api.files.rootFolder(courseId);
+
+            // Load files and subfolders in parallel
+            const [filesRes, foldersRes, quotaRes] = await Promise.all([
+                api.files.listInFolder(courseId, rootFolder.id),
+                api.files.listFolders(courseId, rootFolder.id),
+                api.files.quota(courseId),
+            ]);
+
+            container.innerHTML = '';
+
+            // Render folders
+            (foldersRes.data || []).forEach(folder => {
+                const row = render.el('div', 'tw-flex tw-items-center tw-justify-between tw-p-3 tw-rounded-lg tw-border tw-border-gray-100 tw-mb-2 hover:tw-bg-gray-50 tw-cursor-pointer');
+                row.innerHTML = `
+                    <div class="tw-flex tw-items-center tw-gap-3">
+                        <i class="fa fa-folder tw-text-accent-orange"></i>
+                        <div>
+                            <p class="tw-text-sm tw-font-medium second-color">${folder.name}</p>
+                            <p class="tw-text-xs tw-text-gray-500">${folder.files_count || 0} files</p>
+                        </div>
+                    </div>
+                    <i class="fa fa-chevron-right tw-text-gray-300"></i>
+                `;
+                container.appendChild(row);
+            });
+
+            // Render files
+            (filesRes.data || []).forEach(file => {
+                const icon = file.content_type?.includes('pdf') ? 'fa-file-pdf tw-text-red-500' :
+                             file.content_type?.includes('image') ? 'fa-file-image tw-text-blue-500' :
+                             file.content_type?.includes('video') ? 'fa-file-video tw-text-purple-500' :
+                             file.content_type?.includes('word') ? 'fa-file-word tw-text-blue-600' :
+                             'fa-file tw-text-gray-400';
+                const size = file.size > 1048576 ? `${(file.size / 1048576).toFixed(1)} MB` : `${(file.size / 1024).toFixed(0)} KB`;
+
+                const row = render.el('div', 'tw-flex tw-items-center tw-justify-between tw-p-3 tw-rounded-lg tw-border tw-border-gray-100 tw-mb-2 hover:tw-bg-gray-50');
+                row.innerHTML = `
+                    <div class="tw-flex tw-items-center tw-gap-3">
+                        <i class="fa ${icon}"></i>
+                        <div>
+                            <p class="tw-text-sm tw-font-medium second-color">${file.display_name}</p>
+                            <p class="tw-text-xs tw-text-gray-500">${size} &bull; ${render.relativeTime(file.updated_at)}</p>
+                        </div>
+                    </div>
+                    <a href="${file.url}" target="_blank" class="tw-text-gray-400 hover:tw-text-accent-green"><i class="fa fa-download"></i></a>
+                `;
+                container.appendChild(row);
+            });
+
+            // Storage quota
+            const quotaEl = document.querySelector('.storage-quota, .quota-bar');
+            if (quotaEl && quotaRes.data) {
+                const used = quotaRes.data.quota_used || 0;
+                const total = quotaRes.data.quota || 1;
+                const pct = Math.round((used / total) * 100);
+                const usedMB = (used / 1048576).toFixed(1);
+                const totalMB = (total / 1048576).toFixed(0);
+                quotaEl.innerHTML = `
+                    <p class="tw-text-xs tw-text-gray-500 tw-mb-1">Storage: ${usedMB} MB / ${totalMB} MB (${pct}%)</p>
+                    <div class="tw-w-full tw-bg-gray-100 tw-rounded-full tw-h-2">
+                        <div class="tw-bg-accent-green tw-h-2 tw-rounded-full" style="width:${pct}%"></div>
+                    </div>
+                `;
+            }
+
+            if ((filesRes.data || []).length === 0 && (foldersRes.data || []).length === 0) {
+                container.appendChild(render.emptyState('No files', 'This course has no files yet.'));
+            }
+        } catch (e) {
+            console.error('[Files]', e);
+            container.innerHTML = '';
+            container.appendChild(render.emptyState('Error loading files', e.message));
+        }
+    }
+
+    // ═══════════════════════════════════════
+    // Page: Syllabus
+    // ═══════════════════════════════════════
+
+    async function initSyllabus() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+
+        try {
+            const { data: course } = await api.courses.get(courseId);
+
+            // Update syllabus body
+            const bodyEl = document.querySelector('.syllabus-body, .syllabus-content, .page-content');
+            if (bodyEl && course.syllabus_body) {
+                bodyEl.innerHTML = course.syllabus_body;
+            }
+
+            // Load assignments for the syllabus schedule
+            const { data: assignments } = await api.assignments.list(courseId, { order_by: 'due_at' });
+            const scheduleContainer = document.querySelector('.syllabus-schedule, .assignment-schedule');
+            if (scheduleContainer && assignments) {
+                scheduleContainer.innerHTML = '';
+                assignments
+                    .filter(a => a.due_at)
+                    .sort((a, b) => new Date(a.due_at) - new Date(b.due_at))
+                    .forEach(a => {
+                        const row = render.el('div', 'tw-flex tw-items-center tw-justify-between tw-p-2 tw-border-b tw-border-gray-100');
+                        row.innerHTML = `
+                            <div>
+                                <p class="tw-text-sm second-color">${a.name}</p>
+                                <p class="tw-text-xs tw-text-gray-500">${render.formatDate(a.due_at)}</p>
+                            </div>
+                            <span class="tw-text-xs tw-text-gray-400">${a.points_possible || 0} pts</span>
+                        `;
+                        scheduleContainer.appendChild(row);
+                    });
+            }
+        } catch (e) {
+            console.error('[Syllabus]', e);
+        }
+    }
+
+    // ═══════════════════════════════════════
     // Page Router
     // ═══════════════════════════════════════
 
@@ -366,10 +731,18 @@
         'modules.html': initModules,
         'calendar.html': initCalendar,
         'announcement.html': initAnnouncements,
+        'announcements-list.html': initAnnouncements,
         'inbox.html': initInbox,
         'profile.html': initProfile,
-        'class.html': initAssignments, // Course home shows assignments
-        'classroom.html': initModules, // Classroom shows modules
+        'class.html': initCourseHome,
+        'course-home.html': initCourseHome,
+        'classroom.html': initModules,
+        'assignment-detail.html': initAssignmentDetail,
+        'submission.html': initSubmission,
+        'pages.html': initPages,
+        'page-view.html': initPageView,
+        'files.html': initFiles,
+        'syllabus.html': initSyllabus,
     };
 
     // ═══════════════════════════════════════
