@@ -1523,54 +1523,758 @@
     }
 
     // ═══════════════════════════════════════
-    // Page Router
+    // Batch 7-8: Extended Page Initializers
+    // ═══════════════════════════════════════
+
+    // --- Account & Admin extended ---
+    async function initAccountAdminTools() {
+        try {
+            const { data: accounts } = await api.admin.accounts();
+            const el = document.querySelector('.admin-tools-title, h3.second-color');
+            if (el && accounts?.[0]) el.textContent = `Admin Tools: ${accounts[0].name}`;
+        } catch (e) { console.error('[AccountAdminTools]', e); }
+    }
+
+    async function initAccountCalendarSettings() {
+        try {
+            const { data: profile } = await api.users.profile();
+            const el = document.querySelector('.settings-user, .user-name');
+            if (el) el.textContent = profile.name;
+        } catch (e) { console.error('[AccountCalendarSettings]', e); }
+    }
+
+    async function initAccountSearch() {
+        const query = getParam('q');
+        if (!query) return;
+        try {
+            const { data: accounts } = await api.admin.accounts();
+            if (!accounts?.length) return;
+            const { data: users } = await api.admin.users(accounts[0].id, { search_term: query });
+            const container = document.querySelector('.search-results, #assign');
+            if (!container) return;
+            container.innerHTML = '';
+            (users || []).forEach(u => {
+                const row = render.el('div', 'tw-flex tw-items-center tw-gap-3 tw-p-3 tw-border-b tw-border-gray-100');
+                row.innerHTML = `<img src="${u.avatar_url || 'Images/profile.PNG'}" class="tw-w-8 tw-h-8 tw-rounded-full" /><div><p class="tw-text-sm second-color">${u.name}</p><p class="tw-text-xs tw-text-gray-500">${u.email || ''}</p></div>`;
+                container.appendChild(row);
+            });
+        } catch (e) { console.error('[AccountSearch]', e); }
+    }
+
+    async function initAccountStatistics() {
+        try {
+            const { data: accounts } = await api.admin.accounts();
+            if (!accounts?.length) return;
+            const el = document.querySelector('.stats-title, h3.second-color');
+            if (el) el.textContent = `Statistics: ${accounts[0].name}`;
+        } catch (e) { console.error('[AccountStatistics]', e); }
+    }
+
+    async function initAccountReports() {
+        try {
+            const { data: accounts } = await api.admin.accounts();
+            if (!accounts?.length) return;
+            const { data: reports } = await api.admin.reports(accounts[0].id);
+            const container = document.querySelector('.reports-container, #assign');
+            if (!container || !reports) return;
+            container.innerHTML = '';
+            reports.forEach(r => {
+                const row = render.el('div', 'tw-p-3 tw-border-b tw-border-gray-100');
+                row.innerHTML = `<p class="tw-text-sm tw-font-medium second-color">${r.title || r.report}</p>`;
+                container.appendChild(row);
+            });
+        } catch (e) { console.error('[AccountReports]', e); }
+    }
+
+    async function initAuthProviders() {
+        try {
+            const { data: accounts } = await api.admin.accounts();
+            const el = document.querySelector('.auth-title, h3.second-color');
+            if (el && accounts?.[0]) el.textContent = `Authentication: ${accounts[0].name}`;
+        } catch (e) { console.error('[AuthProviders]', e); }
+    }
+
+    async function initBrandConfigs() {
+        try {
+            const { data: accounts } = await api.admin.accounts();
+            const el = document.querySelector('.brand-title, h3.second-color');
+            if (el && accounts?.[0]) el.textContent = `Theme: ${accounts[0].name}`;
+        } catch (e) { console.error('[BrandConfigs]', e); }
+    }
+
+    async function initTermsIndex() {
+        try {
+            const { data: accounts } = await api.admin.accounts();
+            if (!accounts?.length) return;
+            const { data: terms } = await api.admin.terms(accounts[0].id);
+            const container = document.querySelector('.terms-container, #assign');
+            if (!container) return;
+            container.innerHTML = '';
+            const termsList = terms?.enrollment_terms || terms || [];
+            termsList.forEach(t => {
+                const row = render.el('div', 'tw-p-3 tw-border-b tw-border-gray-100');
+                row.innerHTML = `<p class="tw-text-sm tw-font-medium second-color">${t.name}</p><p class="tw-text-xs tw-text-gray-500">${t.start_at ? render.formatDate(t.start_at) : 'No start'} — ${t.end_at ? render.formatDate(t.end_at) : 'No end'}</p>`;
+                container.appendChild(row);
+            });
+        } catch (e) { console.error('[TermsIndex]', e); }
+    }
+
+    // --- Assignment extended ---
+    async function initAssignmentEdit() {
+        const courseId = getCourseId();
+        const assignmentId = getParam('assignment_id');
+        if (!courseId || !assignmentId) return;
+        try {
+            const { data: a } = await api.assignments.get(courseId, assignmentId);
+            const nameEl = document.querySelector('input[name="name"]');
+            if (nameEl) nameEl.value = a.name || '';
+            const descEl = document.querySelector('.assignment-desc, textarea[name="description"]');
+            if (descEl) descEl.value = a.description || '';
+            const pointsEl = document.querySelector('input[name="points"]');
+            if (pointsEl) pointsEl.value = a.points_possible || '';
+        } catch (e) { console.error('[AssignmentEdit]', e); }
+    }
+
+    async function initPeerReview() {
+        const courseId = getCourseId();
+        const assignmentId = getParam('assignment_id');
+        if (!courseId || !assignmentId) return;
+        try {
+            const { data: reviews } = await api.assignments.peerReviews(courseId, assignmentId);
+            const container = document.querySelector('.reviews-container, #assign');
+            if (!container) return;
+            container.innerHTML = '';
+            if (!reviews?.length) { container.appendChild(render.emptyState('No peer reviews', 'No reviews assigned.')); return; }
+            reviews.forEach(r => {
+                const row = render.el('div', 'tw-p-3 tw-border-b tw-border-gray-100');
+                row.innerHTML = `<p class="tw-text-sm second-color">Reviewer: ${r.user_id} → Assessor: ${r.assessor_id}</p><p class="tw-text-xs tw-text-gray-500">${r.workflow_state}</p>`;
+                container.appendChild(row);
+            });
+        } catch (e) { console.error('[PeerReview]', e); }
+    }
+
+    // --- Quiz extended ---
+    async function initQuizShow() {
+        const courseId = getCourseId();
+        const quizId = getParam('quiz_id');
+        if (!courseId || !quizId) return;
+        try {
+            const { data: quiz } = await api.quizzes.get(courseId, quizId);
+            const titleEl = document.querySelector('.quiz-title, h3.second-color, h4.second-color');
+            if (titleEl) titleEl.textContent = quiz.title;
+            const descEl = document.querySelector('.quiz-description');
+            if (descEl) descEl.innerHTML = quiz.description || '';
+        } catch (e) { console.error('[QuizShow]', e); }
+    }
+
+    async function initQuizStatistics() {
+        const courseId = getCourseId();
+        const quizId = getParam('quiz_id');
+        if (!courseId || !quizId) return;
+        try {
+            const { data: quiz } = await api.quizzes.get(courseId, quizId);
+            const titleEl = document.querySelector('.stats-title, h3.second-color');
+            if (titleEl) titleEl.textContent = `Statistics: ${quiz.title}`;
+        } catch (e) { console.error('[QuizStatistics]', e); }
+    }
+
+    async function initQuestionBanks() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        const container = document.querySelector('.qbanks-container, #assign');
+        if (!container) return;
+        container.appendChild(render.el('p', 'tw-text-sm tw-text-gray-500 tw-p-4', { text: 'Question banks are managed through the course quiz editor.' }));
+    }
+
+    // --- Course extended ---
+    async function initCourseStatistics() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        try {
+            const { data: course } = await api.courses.get(courseId);
+            const el = document.querySelector('.stats-title, h3.second-color');
+            if (el) el.textContent = `Statistics: ${course.name}`;
+        } catch (e) { console.error('[CourseStatistics]', e); }
+    }
+
+    async function initCoursePaces() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        try {
+            const { data: course } = await api.courses.get(courseId);
+            const el = document.querySelector('.paces-title, h3.second-color');
+            if (el) el.textContent = `Course Pacing: ${course.name}`;
+        } catch (e) { console.error('[CoursePaces]', e); }
+    }
+
+    async function initAllCourses() {
+        const container = document.querySelector('.all-courses-container, .course-list, #assign');
+        if (!container) return;
+        render.showLoading(container, 'card', 6);
+        try {
+            const { data: courses } = await api.search.allCourses({ per_page: 50 });
+            if (courses) render.courseCardList(courses, container);
+        } catch (e) {
+            console.error('[AllCourses]', e);
+            container.innerHTML = '';
+            container.appendChild(render.emptyState('Error loading courses', e.message));
+        }
+    }
+
+    async function initCopyStatus() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        try {
+            const { data: migrations } = await api.contentMigrations.list(courseId);
+            const container = document.querySelector('.migration-status, #assign');
+            if (!container) return;
+            container.innerHTML = '';
+            (migrations || []).forEach(m => {
+                const row = render.el('div', 'tw-p-3 tw-border-b tw-border-gray-100');
+                row.innerHTML = `<p class="tw-text-sm second-color">${m.migration_type_title || m.migration_type}</p><p class="tw-text-xs ${m.workflow_state === 'completed' ? 'tw-text-accent-green' : 'tw-text-accent-orange'}">${m.workflow_state} ${m.progress_url ? `(${m.completion || 0}%)` : ''}</p>`;
+                container.appendChild(row);
+            });
+        } catch (e) { console.error('[CopyStatus]', e); }
+    }
+
+    async function initBlueprintCourses() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        try {
+            const { data: course } = await api.courses.get(courseId);
+            const el = document.querySelector('.blueprint-title, h3.second-color');
+            if (el) el.textContent = `Blueprint: ${course.name}`;
+        } catch (e) { console.error('[Blueprint]', e); }
+    }
+
+    async function initContentExports() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        const container = document.querySelector('.exports-container, #assign');
+        if (!container) return;
+        container.appendChild(render.el('p', 'tw-text-sm tw-text-gray-500 tw-p-4', { text: 'Content exports allow you to download course content as a ZIP file.' }));
+    }
+
+    async function initContentSharing() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        const container = document.querySelector('.sharing-container, #assign');
+        if (!container) return;
+        container.appendChild(render.el('p', 'tw-text-sm tw-text-gray-500 tw-p-4', { text: 'Share course content with other instructors and courses.' }));
+    }
+
+    // --- Discussion extended ---
+    async function initDiscussionEdit() {
+        const courseId = getCourseId();
+        const topicId = getParam('topic_id');
+        if (!courseId || !topicId) return;
+        try {
+            const { data: topic } = await api.discussions.get(courseId, topicId);
+            const titleEl = document.querySelector('input[name="title"]');
+            if (titleEl) titleEl.value = topic.title || '';
+            const bodyEl = document.querySelector('textarea[name="message"]');
+            if (bodyEl) bodyEl.value = topic.message || '';
+        } catch (e) { console.error('[DiscussionEdit]', e); }
+    }
+
+    // --- File extended ---
+    async function initFilePreview() {
+        const fileId = getParam('file_id');
+        if (!fileId) return;
+        try {
+            const { data: file } = await api.files.get(fileId);
+            const titleEl = document.querySelector('.file-title, h4.second-color');
+            if (titleEl) titleEl.textContent = file.display_name;
+            const previewEl = document.querySelector('.file-preview, .preview-area');
+            if (previewEl && file.preview_url) {
+                previewEl.innerHTML = `<iframe src="${file.preview_url}" class="tw-w-full tw-h-96 tw-border-0"></iframe>`;
+            }
+        } catch (e) { console.error('[FilePreview]', e); }
+    }
+
+    async function initFileDetails() {
+        const fileId = getParam('file_id');
+        if (!fileId) return;
+        try {
+            const { data: file } = await api.files.get(fileId);
+            const titleEl = document.querySelector('.file-title, h4.second-color');
+            if (titleEl) titleEl.textContent = file.display_name;
+            const sizeEl = document.querySelector('.file-size');
+            if (sizeEl) sizeEl.textContent = file.size > 1048576 ? `${(file.size / 1048576).toFixed(1)} MB` : `${(file.size / 1024).toFixed(0)} KB`;
+        } catch (e) { console.error('[FileDetails]', e); }
+    }
+
+    // --- ePortfolio extended ---
+    async function initEPortfolioModeration() {
+        try {
+            const { data: portfolios } = await api.eportfolio.list();
+            const container = document.querySelector('.moderation-container, #assign');
+            if (!container) return;
+            container.innerHTML = '';
+            (portfolios || []).forEach(p => {
+                const row = render.el('div', 'tw-p-3 tw-border-b tw-border-gray-100');
+                row.innerHTML = `<p class="tw-text-sm second-color">${p.name}</p><p class="tw-text-xs tw-text-gray-500">${p.public ? 'Public' : 'Private'}</p>`;
+                container.appendChild(row);
+            });
+        } catch (e) { console.error('[EPortfolioModeration]', e); }
+    }
+
+    // --- Grades extended ---
+    async function initUserGrades() {
+        try {
+            const { data: courses } = await api.courses.list();
+            const container = document.querySelector('.user-grades-container, #assign');
+            if (!container) return;
+            container.innerHTML = '';
+            for (const course of (courses || []).slice(0, 10)) {
+                try {
+                    const { data: enrollments } = await api.grades.enrollments(course.id);
+                    const enrollment = enrollments?.find(e => e.type === 'StudentEnrollment');
+                    const grade = enrollment?.grades?.current_score;
+                    const row = render.el('div', 'tw-flex tw-items-center tw-justify-between tw-p-3 tw-border-b tw-border-gray-100');
+                    row.innerHTML = `<p class="tw-text-sm second-color">${course.name}</p><span class="tw-text-sm tw-font-bold ${grade >= 70 ? 'tw-text-accent-green' : 'tw-text-accent-orange'}">${grade !== null && grade !== undefined ? grade + '%' : '—'}</span>`;
+                    container.appendChild(row);
+                } catch (_) { /* skip courses where grades aren't accessible */ }
+            }
+        } catch (e) { console.error('[UserGrades]', e); }
+    }
+
+    async function initGradebookUploads() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        try {
+            const { data: course } = await api.courses.get(courseId);
+            const el = document.querySelector('.upload-title, h3.second-color');
+            if (el) el.textContent = `Upload Grades: ${course.name}`;
+        } catch (e) { console.error('[GradebookUploads]', e); }
+    }
+
+    // --- User extended ---
+    async function initProfileShow() {
+        try {
+            const { data: profile } = await api.users.profile();
+            const nameEl = document.querySelector('.profile-name, h3.second-color');
+            if (nameEl) nameEl.textContent = profile.name;
+            const imgEl = document.querySelector('.profile-img img');
+            if (imgEl && profile.avatar_url) imgEl.src = profile.avatar_url;
+        } catch (e) { console.error('[ProfileShow]', e); }
+    }
+
+    async function initUserSettings() {
+        try {
+            const { data: profile } = await api.users.profile();
+            const nameEl = document.querySelector('input[name="name"]');
+            if (nameEl) nameEl.value = profile.name || '';
+            const emailEl = document.querySelector('input[name="email"]');
+            if (emailEl) emailEl.value = profile.primary_email || '';
+        } catch (e) { console.error('[UserSettings]', e); }
+    }
+
+    async function initUserLogins() {
+        try {
+            const { data: profile } = await api.users.profile();
+            const el = document.querySelector('.logins-user, h3.second-color');
+            if (el) el.textContent = `Login History: ${profile.name}`;
+        } catch (e) { console.error('[UserLogins]', e); }
+    }
+
+    async function initUserObservees() {
+        try {
+            const { data: profile } = await api.users.profile();
+            const el = document.querySelector('.observees-title, h3.second-color');
+            if (el) el.textContent = `Observing: ${profile.name}`;
+        } catch (e) { console.error('[UserObservees]', e); }
+    }
+
+    async function initUserOutcomeResults() {
+        try {
+            const { data: profile } = await api.users.profile();
+            const el = document.querySelector('.outcomes-title, h3.second-color');
+            if (el) el.textContent = `Outcomes: ${profile.name}`;
+        } catch (e) { console.error('[UserOutcomeResults]', e); }
+    }
+
+    // --- Calendar extended ---
+    async function initEditCalendarEvent() {
+        const eventId = getParam('event_id');
+        if (!eventId) return;
+        try {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+            const end = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().split('T')[0];
+            const { data: events } = await api.calendar.events(start, end);
+            const event = (events || []).find(e => e.id == eventId);
+            if (event) {
+                const titleEl = document.querySelector('input[name="title"]');
+                if (titleEl) titleEl.value = event.title || '';
+            }
+        } catch (e) { console.error('[EditCalendarEvent]', e); }
+    }
+
+    // --- Conversation extended ---
+    async function initConversationCompose() {
+        try {
+            const { data: recipients } = await api.search.recipients({ per_page: 20 });
+            const container = document.querySelector('.recipients-list, .compose-recipients');
+            if (!container || !recipients) return;
+            container.innerHTML = '';
+            recipients.forEach(r => {
+                const opt = render.el('div', 'tw-flex tw-items-center tw-gap-2 tw-p-2 tw-cursor-pointer hover:tw-bg-gray-50');
+                opt.innerHTML = `<img src="${r.avatar_url || 'Images/profile.PNG'}" class="tw-w-6 tw-h-6 tw-rounded-full" /><span class="tw-text-sm">${r.name}</span>`;
+                container.appendChild(opt);
+            });
+        } catch (e) { console.error('[ConversationCompose]', e); }
+    }
+
+    // --- Manage groups ---
+    async function initManageGroups() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        try {
+            const { data: categories } = await api.groups.categories(courseId);
+            const container = document.querySelector('.group-categories, #assign');
+            if (!container) return;
+            container.innerHTML = '';
+            (categories || []).forEach(cat => {
+                const row = render.el('div', 'tw-p-3 tw-border-b tw-border-gray-100');
+                row.innerHTML = `<p class="tw-text-sm tw-font-medium second-color">${cat.name}</p><p class="tw-text-xs tw-text-gray-500">${cat.group_limit || 'No limit'} per group &bull; ${cat.groups_count || 0} groups</p>`;
+                container.appendChild(row);
+            });
+        } catch (e) { console.error('[ManageGroups]', e); }
+    }
+
+    // --- Wiki extended ---
+    async function initWikiPageEdit() {
+        const courseId = getCourseId();
+        const pageUrl = getParam('page_url');
+        if (!courseId || !pageUrl) return;
+        try {
+            const { data: page } = await api.pages.get(courseId, pageUrl);
+            const titleEl = document.querySelector('input[name="title"]');
+            if (titleEl) titleEl.value = page.title || '';
+            const bodyEl = document.querySelector('textarea[name="body"]');
+            if (bodyEl) bodyEl.value = page.body || '';
+        } catch (e) { console.error('[WikiPageEdit]', e); }
+    }
+
+    async function initWikiPageRevisions() {
+        const courseId = getCourseId();
+        const pageUrl = getParam('page_url');
+        if (!courseId || !pageUrl) return;
+        try {
+            const { data: revisions } = await api.pages.revisions(courseId, pageUrl);
+            const container = document.querySelector('.revisions-container, #assign');
+            if (!container) return;
+            container.innerHTML = '';
+            (revisions || []).forEach(r => {
+                const row = render.el('div', 'tw-flex tw-items-center tw-justify-between tw-p-3 tw-border-b tw-border-gray-100');
+                row.innerHTML = `<div><p class="tw-text-sm second-color">Revision ${r.revision_id}</p><p class="tw-text-xs tw-text-gray-500">${render.relativeTime(r.updated_at)}</p></div>`;
+                container.appendChild(row);
+            });
+        } catch (e) { console.error('[WikiPageRevisions]', e); }
+    }
+
+    // --- K5 (Elementary) ---
+    async function initK5Dashboard() {
+        // K5 dashboard is an elementary-themed version of the regular dashboard
+        await initDashboard();
+    }
+
+    async function initK5Course() {
+        await initCourseHome();
+    }
+
+    // --- Outcome extended ---
+    async function initOutcomeManagement() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        try {
+            const { data: groups } = await api.outcomes.groups(courseId);
+            const container = document.querySelector('.outcome-mgmt-container, #assign');
+            if (!container) return;
+            container.innerHTML = '';
+            (groups || []).forEach(g => {
+                const row = render.el('div', 'tw-p-3 tw-border-b tw-border-gray-100');
+                row.innerHTML = `<p class="tw-text-sm tw-font-medium second-color"><i class="fa fa-bullseye tw-text-accent-green tw-mr-2"></i>${g.title}</p>`;
+                container.appendChild(row);
+            });
+        } catch (e) { console.error('[OutcomeManagement]', e); }
+    }
+
+    // --- Rubric extended ---
+    async function initRubricDetail() {
+        const courseId = getCourseId();
+        const rubricId = getParam('rubric_id');
+        if (!courseId || !rubricId) return;
+        try {
+            const { data: rubric } = await api.rubrics.get(courseId, rubricId);
+            const titleEl = document.querySelector('.rubric-title, h3.second-color');
+            if (titleEl) titleEl.textContent = rubric.title;
+            const container = document.querySelector('.criteria-container, #assign');
+            if (!container) return;
+            container.innerHTML = '';
+            (rubric.data || []).forEach(c => {
+                const row = render.el('div', 'tw-p-3 tw-border-b tw-border-gray-100');
+                row.innerHTML = `<p class="tw-text-sm tw-font-medium second-color">${c.description}</p><p class="tw-text-xs tw-text-gray-500">${c.points} points &bull; ${(c.ratings || []).length} ratings</p>`;
+                container.appendChild(row);
+            });
+        } catch (e) { console.error('[RubricDetail]', e); }
+    }
+
+    // --- Section management ---
+    async function initSectionManagement() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        try {
+            const { data: course } = await api.courses.get(courseId);
+            const el = document.querySelector('.sections-title, h3.second-color');
+            if (el) el.textContent = `Sections: ${course.name}`;
+        } catch (e) { console.error('[SectionManagement]', e); }
+    }
+
+    // --- Learning path ---
+    async function initLearningPath() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        try {
+            const { data: modules } = await api.modules.list(courseId);
+            const container = document.querySelector('.learning-path-container, #assign');
+            if (!container) return;
+            render.moduleList(modules || [], container);
+        } catch (e) { console.error('[LearningPath]', e); }
+    }
+
+    // --- Media gallery ---
+    async function initMediaGallery() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        const container = document.querySelector('.media-container, #assign');
+        if (!container) return;
+        container.appendChild(render.el('p', 'tw-text-sm tw-text-gray-500 tw-p-4', { text: 'Media gallery displays course videos, images, and audio files.' }));
+    }
+
+    // --- Smart search ---
+    async function initSmartSearch() {
+        const query = getParam('q');
+        if (!query) { await initSearchResults(); return; }
+        await initSearchResults();
+    }
+
+    // --- Student context ---
+    async function initStudentContext() {
+        const courseId = getCourseId();
+        const studentId = getParam('student_id');
+        if (!courseId || !studentId) return;
+        try {
+            const { data: user } = await api.people.get(courseId, studentId);
+            const nameEl = document.querySelector('.student-name, h3.second-color');
+            if (nameEl) nameEl.textContent = user.name;
+            const imgEl = document.querySelector('.student-avatar img');
+            if (imgEl && user.avatar_url) imgEl.src = user.avatar_url;
+        } catch (e) { console.error('[StudentContext]', e); }
+    }
+
+    // --- Teacher activity ---
+    async function initTeacherActivityReport() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        try {
+            const { data: course } = await api.courses.get(courseId);
+            const el = document.querySelector('.report-title, h3.second-color');
+            if (el) el.textContent = `Teacher Activity: ${course.name}`;
+        } catch (e) { console.error('[TeacherActivityReport]', e); }
+    }
+
+    // --- Jobs dashboard (admin) ---
+    async function initJobsDashboard() {
+        try {
+            const { data: accounts } = await api.admin.accounts();
+            const el = document.querySelector('.jobs-title, h3.second-color');
+            if (el && accounts?.[0]) el.textContent = `Jobs: ${accounts[0].name}`;
+        } catch (e) { console.error('[JobsDashboard]', e); }
+    }
+
+    // --- Change password ---
+    async function initChangePassword() {
+        try {
+            const { data: profile } = await api.users.profile();
+            const el = document.querySelector('.password-user, .user-email');
+            if (el) el.textContent = profile.primary_email || profile.name;
+        } catch (e) { console.error('[ChangePassword]', e); }
+    }
+
+    // --- Accessibility ---
+    async function initAccessibility() {
+        // Static page, no API needed — just ensure sidebar loads
+    }
+
+    // --- Prior users ---
+    async function initPriorUsers() {
+        const courseId = getCourseId();
+        if (!courseId) return;
+        try {
+            const { data: course } = await api.courses.get(courseId);
+            const el = document.querySelector('.prior-title, h3.second-color');
+            if (el) el.textContent = `Prior Enrollments: ${course.name}`;
+        } catch (e) { console.error('[PriorUsers]', e); }
+    }
+
+    // --- Analytics hub ---
+    async function initAnalyticsHub() {
+        try {
+            const { data: courses } = await api.courses.list();
+            const container = document.querySelector('.analytics-courses, #assign');
+            if (!container) return;
+            container.innerHTML = '';
+            (courses || []).forEach(c => {
+                const row = render.el('div', 'tw-flex tw-items-center tw-justify-between tw-p-3 tw-border-b tw-border-gray-100 tw-cursor-pointer hover:tw-bg-gray-50');
+                row.innerHTML = `<p class="tw-text-sm second-color">${c.name}</p><a href="analytics.html?course_id=${c.id}" class="tw-text-xs tw-text-accent-green">View</a>`;
+                container.appendChild(row);
+            });
+        } catch (e) { console.error('[AnalyticsHub]', e); }
+    }
+
+    // --- Notification settings ---
+    async function initNotificationSettings() {
+        try {
+            const { data: channels } = await api.notifications.communicationChannels();
+            const container = document.querySelector('.channels-container, #assign');
+            if (!container) return;
+            container.innerHTML = '';
+            (channels || []).forEach(ch => {
+                const row = render.el('div', 'tw-flex tw-items-center tw-justify-between tw-p-3 tw-border-b tw-border-gray-100');
+                row.innerHTML = `<div><p class="tw-text-sm second-color">${ch.address}</p><p class="tw-text-xs tw-text-gray-500">${ch.type} &bull; ${ch.workflow_state}</p></div>`;
+                container.appendChild(row);
+            });
+        } catch (e) { console.error('[NotificationSettings]', e); }
+    }
+
+    // --- Page views (user activity) ---
+    async function initPageViews() {
+        try {
+            const { data: stream } = await api.people.activityStream();
+            const container = document.querySelector('.pageviews-container, #assign');
+            if (!container) return;
+            container.innerHTML = '';
+            (stream || []).slice(0, 20).forEach(item => {
+                const row = render.el('div', 'tw-p-2 tw-border-b tw-border-gray-100');
+                row.innerHTML = `<p class="tw-text-sm second-color">${item.title || item.type}</p><p class="tw-text-xs tw-text-gray-500">${render.relativeTime(item.created_at)}</p>`;
+                container.appendChild(row);
+            });
+        } catch (e) { console.error('[PageViews]', e); }
+    }
+
+    // ═══════════════════════════════════════
+    // Page Router (COMPLETE — 174 pages)
     // ═══════════════════════════════════════
 
     const pageInitializers = {
-        // Batch 1: Core
+        // ── Core ──
         'dashboard.html': initDashboard,
         'courses.html': initCourses,
         'inbox.html': initInbox,
         'profile.html': initProfile,
         'calendar.html': initCalendar,
 
-        // Batch 2: Course Content
+        // ── Course Content ──
         'class.html': initCourseHome,
         'course-home.html': initCourseHome,
         'classroom.html': initModules,
         'assignments.html': initAssignments,
         'assignment-detail.html': initAssignmentDetail,
+        'assignment-edit.html': initAssignmentEdit,
+        'assignment-group-weights.html': initAssignments,
+        'assignment-peer-reviews.html': initPeerReview,
+        'assignment-rubric-assessment.html': initAssignmentDetail,
         'submission.html': initSubmission,
+        'submission-detail.html': initSubmission,
+        'submission-comments.html': initSubmission,
+        'submit-assignment.html': initAssignmentDetail,
         'modules.html': initModules,
         'pages.html': initPages,
         'page-view.html': initPageView,
+        'wiki-page-edit.html': initWikiPageEdit,
+        'wiki-page-revisions.html': initWikiPageRevisions,
         'files.html': initFiles,
+        'file-preview.html': initFilePreview,
+        'file-details.html': initFileDetails,
+        'file-show.html': initFileDetails,
         'syllabus.html': initSyllabus,
         'announcement.html': initAnnouncements,
         'announcements-list.html': initAnnouncements,
+        'media-gallery.html': initMediaGallery,
+        'learning-path.html': initLearningPath,
 
-        // Batch 3: Assessment & Grading
+        // ── Assessment & Grading ──
         'quizzes.html': initQuizzes,
         'quiz-take.html': initQuizTake,
         'quiz-results.html': initQuizResults,
+        'quiz-show.html': initQuizShow,
+        'quiz-statistics.html': initQuizStatistics,
+        'quiz-history.html': initQuizShow,
+        'quiz-log-auditing.html': initQuizStatistics,
+        'quiz-submission.html': initQuizResults,
+        'quizzes-access-code.html': initQuizTake,
+        'moderate-quiz.html': initQuizShow,
+        'question-banks.html': initQuestionBanks,
         'grades.html': initGrades,
         'gradebook.html': initGradebook,
         'gradebook-history.html': initGradebookHistory,
+        'gradebook-uploads.html': initGradebookUploads,
+        'enhanced-gradebook.html': initGradebook,
         'speed-grader.html': initSpeedGrader,
         'rubrics.html': initRubrics,
+        'rubric-detail.html': initRubricDetail,
+        'edit-rubric.html': initRubricDetail,
         'outcomes.html': initOutcomes,
+        'outcome-management.html': initOutcomeManagement,
+        'outcome-alignments.html': initOutcomes,
+        'outcome-alignment-v2.html': initOutcomes,
+        'user-outcome-results.html': initUserOutcomeResults,
+        'grade-passback.html': initGrades,
+        'peer-review.html': initPeerReview,
+        'user-grades.html': initUserGrades,
 
-        // Batch 4: Communication & Social
+        // ── Communication & Social ──
         'discussions.html': initDiscussions,
         'discussion-thread.html': initDiscussionThread,
+        'discussion-edit.html': initDiscussionEdit,
+        'discussion-insights.html': initDiscussions,
         'conferences.html': initConferences,
         'collaborations.html': initCollaborations,
         'groups.html': initGroups,
+        'manage-groups.html': initManageGroups,
+        'student-groups.html': initGroups,
         'people.html': initPeople,
+        'course-people-new.html': initPeople,
+        'prior-users.html': initPriorUsers,
+        'conversation-compose.html': initConversationCompose,
+        'bulk-message.html': initConversationCompose,
+        'student-context.html': initStudentContext,
 
-        // Batch 5: Admin & Settings
+        // ── Admin & Settings ──
         'account-settings.html': initAccountSettings,
+        'account-admin-tools.html': initAccountAdminTools,
+        'account-calendar-settings.html': initAccountCalendarSettings,
+        'account-course-user-search.html': initAccountSearch,
+        'account-grading-settings.html': initAccountSettings,
+        'account-manage.html': initAccountAdminTools,
+        'account-notification-settings.html': initNotificationSettings,
+        'account-reports.html': initAccountReports,
+        'account-search.html': initAccountSearch,
+        'account-statistics.html': initAccountStatistics,
         'course-settings.html': initCourseSettings,
+        'course-grading-standards.html': initCourseSettings,
+        'course-link-validator.html': initCourseSettings,
+        'course-navigation-settings.html': initCourseSettings,
+        'course-notification-settings.html': initNotificationSettings,
+        'course-pace-editor.html': initCoursePaces,
+        'course-statistics.html': initCourseStatistics,
+        'course-wizard.html': initCourseHome,
+        'course-catalog.html': initAllCourses,
+        'copy-course.html': initCourseSettings,
+        'course-copy-status.html': initCopyStatus,
+        'course-paces.html': initCoursePaces,
         'permissions.html': initPermissions,
         'user-management.html': initUserManagement,
         'admin-dashboard.html': initAdminDashboard,
@@ -1578,14 +2282,90 @@
         'developer-keys.html': initDeveloperKeys,
         'reports.html': initReports,
         'sis-import.html': initSisImport,
+        'authentication-providers.html': initAuthProviders,
+        'brand-configs.html': initBrandConfigs,
+        'terms-index.html': initTermsIndex,
+        'feature-flags.html': initAccountAdminTools,
+        'plugins.html': initAccountAdminTools,
+        'rate-limiting.html': initAccountAdminTools,
+        'release-notes.html': initAccountAdminTools,
+        'jobs-dashboard.html': initJobsDashboard,
+        'section-management.html': initSectionManagement,
+        'lti-registrations.html': initAccountAdminTools,
+        'teacher-activity-report.html': initTeacherActivityReport,
 
-        // Batch 6: Remaining
-        'notifications.html': initNotifications,
+        // ── Content Management ──
+        'content-migrations.html': initContentMigrations,
+        'content-exports.html': initContentExports,
+        'content-sharing.html': initContentSharing,
+        'content-notices.html': initContentSharing,
+        'blueprint-courses.html': initBlueprintCourses,
+        'epub-exports.html': initContentExports,
+        'webzip-export.html': initContentExports,
+
+        // ── User & Profile ──
+        'profile-show.html': initProfileShow,
+        'user-settings.html': initUserSettings,
+        'user-logins.html': initUserLogins,
+        'user-name.html': initProfileShow,
+        'user-lists.html': initUserManagement,
+        'user-observees.html': initUserObservees,
+        'manage-avatars.html': initProfileShow,
+        'change-password.html': initChangePassword,
+
+        // ── Calendar ──
+        'edit-calendar-event.html': initEditCalendarEvent,
+        'appointment-groups.html': initCalendar,
+
+        // ── ePortfolio ──
         'eportfolio.html': initEPortfolio,
+        'eportfolio-moderation.html': initEPortfolioModeration,
+        'eportfolio-wizard.html': initEPortfolio,
+
+        // ── Remaining / Utility ──
+        'notifications.html': initNotifications,
         'planner.html': initPlanner,
         'search-results.html': initSearchResults,
+        'smart-search.html': initSmartSearch,
         'analytics.html': initAnalytics,
-        'content-migrations.html': initContentMigrations,
+        'analytics-hub.html': initAnalyticsHub,
+        'all-courses.html': initAllCourses,
+        'page-views.html': initPageViews,
+        'k5-dashboard.html': initK5Dashboard,
+        'k5-course.html': initK5Course,
+        'ai-experiences.html': initAccountAdminTools,
+        'discovery-page.html': initAllCourses,
+        'attendance-tracker.html': initPeople,
+        'enrollment-options.html': initCourseSettings,
+        'self-enrollment.html': initCourseSettings,
+        'choose-mastery-path.html': initModules,
+        'prerequisites-lookup.html': initModules,
+        'honor-pledge.html': initAssignmentDetail,
+        'deep-linking.html': initAccountAdminTools,
+        'password-complexity.html': initAccountAdminTools,
+
+        // ── Auth pages (minimal init) ──
+        'forgot-password.html': initAccessibility,
+        'registration.html': initAccessibility,
+        'mobile-login.html': initAccessibility,
+        'otp-login.html': initAccessibility,
+        'qr-mobile-login.html': initAccessibility,
+        'oauth2-confirm.html': initAccessibility,
+        'act-as-modal.html': initAccountAdminTools,
+        'external-content-success.html': initAccessibility,
+        'external-apps.html': initAccountAdminTools,
+        'external-tools.html': initAccountAdminTools,
+
+        // ── Static/Info pages ──
+        'accessibility.html': initAccessibility,
+        'acceptable-use-policy.html': initAccessibility,
+        'terms-of-service.html': initAccessibility,
+        'error-404.html': initAccessibility,
+        'error-form.html': initAccessibility,
+        'graphiql.html': initAccessibility,
+        'theme-editor.html': initBrandConfigs,
+        'theme-preview.html': initBrandConfigs,
+        'new-quiz-builder.html': initQuizTake,
     };
 
     // ═══════════════════════════════════════
