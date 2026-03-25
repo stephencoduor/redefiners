@@ -34,6 +34,16 @@ class CanvasAPI {
         this.files = new FilesAPI(this);
         this.planner = new PlannerAPI(this);
         this.search = new SearchAPI(this);
+        this.conferences = new ConferencesAPI(this);
+        this.collaborations = new CollaborationsAPI(this);
+        this.groups = new GroupsAPI(this);
+        this.people = new PeopleAPI(this);
+        this.outcomes = new OutcomesAPI(this);
+        this.rubrics = new RubricsAPI(this);
+        this.admin = new AdminAPI(this);
+        this.notifications = new NotificationsAPI(this);
+        this.eportfolio = new EPortfolioAPI(this);
+        this.contentMigrations = new ContentMigrationsAPI(this);
     }
 
     // ═══════════════════════════════════════
@@ -563,6 +573,240 @@ class SearchAPI {
     }
     allCourses(params = {}) {
         return this.api.get('/v1/search/all_courses', { params });
+    }
+}
+
+// ═══════════════════════════════════════
+// Conferences API
+// ═══════════════════════════════════════
+
+class ConferencesAPI {
+    constructor(api) { this.api = api; }
+
+    list(courseId) {
+        return this.api.get(`/v1/courses/${courseId}/conferences`);
+    }
+    forUser() {
+        return this.api.get('/v1/conferences');
+    }
+}
+
+// ═══════════════════════════════════════
+// Collaborations API
+// ═══════════════════════════════════════
+
+class CollaborationsAPI {
+    constructor(api) { this.api = api; }
+
+    list(courseId) {
+        return this.api.get(`/v1/courses/${courseId}/collaborations`);
+    }
+    members(collabId) {
+        return this.api.get(`/v1/collaborations/${collabId}/members`);
+    }
+}
+
+// ═══════════════════════════════════════
+// Groups API
+// ═══════════════════════════════════════
+
+class GroupsAPI {
+    constructor(api) { this.api = api; }
+
+    listForCourse(courseId) {
+        return this.api.get(`/v1/courses/${courseId}/groups`);
+    }
+    listForUser() {
+        return this.api.get('/v1/users/self/groups');
+    }
+    get(groupId) {
+        return this.api.get(`/v1/groups/${groupId}`);
+    }
+    members(groupId) {
+        return this.api.get(`/v1/groups/${groupId}/users`);
+    }
+    categories(courseId) {
+        return this.api.get(`/v1/courses/${courseId}/group_categories`);
+    }
+}
+
+// ═══════════════════════════════════════
+// People / Enrollments API
+// ═══════════════════════════════════════
+
+class PeopleAPI {
+    constructor(api) { this.api = api; }
+
+    list(courseId, params = {}) {
+        return this.api.get(`/v1/courses/${courseId}/users`, {
+            params: { include: ['avatar_url', 'enrollments', 'email'], ...params },
+        });
+    }
+    get(courseId, userId) {
+        return this.api.get(`/v1/courses/${courseId}/users/${userId}`, {
+            params: { include: ['avatar_url', 'enrollments', 'email'] },
+        });
+    }
+    enrollments(courseId, params = {}) {
+        return this.api.get(`/v1/courses/${courseId}/enrollments`, { params });
+    }
+    activityStream(userId = 'self') {
+        return this.api.get(`/v1/users/${userId}/activity_stream`);
+    }
+}
+
+// ═══════════════════════════════════════
+// Outcomes API
+// ═══════════════════════════════════════
+
+class OutcomesAPI {
+    constructor(api) { this.api = api; }
+
+    groups(courseId) {
+        return this.api.get(`/v1/courses/${courseId}/outcome_groups`);
+    }
+    groupOutcomes(courseId, groupId) {
+        return this.api.get(`/v1/courses/${courseId}/outcome_groups/${groupId}/outcomes`);
+    }
+    get(outcomeId) {
+        return this.api.get(`/v1/outcomes/${outcomeId}`);
+    }
+    results(courseId, params = {}) {
+        return this.api.get(`/v1/courses/${courseId}/outcome_results`, { params });
+    }
+    rollups(courseId, params = {}) {
+        return this.api.get(`/v1/courses/${courseId}/outcome_rollups`, { params });
+    }
+}
+
+// ═══════════════════════════════════════
+// Rubrics API
+// ═══════════════════════════════════════
+
+class RubricsAPI {
+    constructor(api) { this.api = api; }
+
+    list(courseId) {
+        return this.api.get(`/v1/courses/${courseId}/rubrics`);
+    }
+    get(courseId, rubricId) {
+        return this.api.get(`/v1/courses/${courseId}/rubrics/${rubricId}`, {
+            params: { include: ['assessments', 'associations'] },
+        });
+    }
+}
+
+// ═══════════════════════════════════════
+// Admin / Account API
+// ═══════════════════════════════════════
+
+class AdminAPI {
+    constructor(api) { this.api = api; }
+
+    accounts() {
+        return this.api.get('/v1/accounts');
+    }
+    account(accountId) {
+        return this.api.get(`/v1/accounts/${accountId}`);
+    }
+    subAccounts(accountId) {
+        return this.api.get(`/v1/accounts/${accountId}/sub_accounts`, {
+            params: { recursive: true },
+        });
+    }
+    roles(accountId) {
+        return this.api.get(`/v1/accounts/${accountId}/roles`);
+    }
+    permissions(accountId) {
+        return this.api.get(`/v1/accounts/${accountId}/permissions`);
+    }
+    users(accountId, params = {}) {
+        return this.api.get(`/v1/accounts/${accountId}/users`, {
+            params: { include: ['avatar_url', 'email'], ...params },
+        });
+    }
+    reports(accountId) {
+        return this.api.get(`/v1/accounts/${accountId}/reports`);
+    }
+    analytics(accountId, type = 'current') {
+        return this.api.get(`/v1/accounts/${accountId}/analytics/${type}/activity`);
+    }
+    sisImports(accountId) {
+        return this.api.get(`/v1/accounts/${accountId}/sis_imports`);
+    }
+    terms(accountId) {
+        return this.api.get(`/v1/accounts/${accountId}/terms`);
+    }
+    developerKeys(accountId) {
+        return this.api.get(`/v1/accounts/${accountId}/developer_keys`);
+    }
+    gradeChangeLog(params = {}) {
+        return this.api.get('/v1/audit/grade_change', { params });
+    }
+    courseAuditLog(params = {}) {
+        return this.api.get('/v1/audit/course', { params });
+    }
+}
+
+// ═══════════════════════════════════════
+// Notifications API
+// ═══════════════════════════════════════
+
+class NotificationsAPI {
+    constructor(api) { this.api = api; }
+
+    list() {
+        return this.api.get('/v1/users/self/activity_stream', {
+            params: { only_active_courses: true },
+        });
+    }
+    summary() {
+        return this.api.get('/v1/users/self/activity_stream/summary');
+    }
+    communicationChannels() {
+        return this.api.get('/v1/users/self/communication_channels');
+    }
+    preferences(channelId) {
+        return this.api.get(`/v1/users/self/communication_channels/${channelId}/notification_preferences`);
+    }
+}
+
+// ═══════════════════════════════════════
+// ePortfolio API
+// ═══════════════════════════════════════
+
+class EPortfolioAPI {
+    constructor(api) { this.api = api; }
+
+    list() {
+        return this.api.get('/v1/users/self/eportfolios');
+    }
+    get(portfolioId) {
+        return this.api.get(`/v1/eportfolios/${portfolioId}`);
+    }
+    pages(portfolioId) {
+        return this.api.get(`/v1/eportfolios/${portfolioId}/pages`);
+    }
+}
+
+// ═══════════════════════════════════════
+// Content Migrations API
+// ═══════════════════════════════════════
+
+class ContentMigrationsAPI {
+    constructor(api) { this.api = api; }
+
+    list(courseId) {
+        return this.api.get(`/v1/courses/${courseId}/content_migrations`);
+    }
+    get(courseId, migrationId) {
+        return this.api.get(`/v1/courses/${courseId}/content_migrations/${migrationId}`);
+    }
+    create(courseId, data) {
+        return this.api.post(`/v1/courses/${courseId}/content_migrations`, data);
+    }
+    migrators(courseId) {
+        return this.api.get(`/v1/courses/${courseId}/content_migrations/migrators`);
     }
 }
 

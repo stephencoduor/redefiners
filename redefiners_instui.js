@@ -18,14 +18,14 @@
 
   // ── Color Overrides ──
   // These map to @instructure/ui-themes canvas theme keys
-  brandVars['ic-brand-primary'] = '#38AA51';
-  brandVars['ic-brand-font-color-dark'] = '#00303F';
-  brandVars['ic-link-color'] = '#2989CA';
-  brandVars['ic-brand-button--primary-bgd'] = '#063949';
+  brandVars['ic-brand-primary'] = '#2DB88A';
+  brandVars['ic-brand-font-color-dark'] = '#1B1B1B';
+  brandVars['ic-link-color'] = '#3B82F6';
+  brandVars['ic-brand-button--primary-bgd'] = '#163B32';
   brandVars['ic-brand-button--primary-text'] = '#FFFFFF';
-  brandVars['ic-brand-button--secondary-bgd'] = '#F49E21';
+  brandVars['ic-brand-button--secondary-bgd'] = '#FF6B35';
   brandVars['ic-brand-button--secondary-text'] = '#FFFFFF';
-  brandVars['ic-brand-global-nav-bgd'] = '#00303F';
+  brandVars['ic-brand-global-nav-bgd'] = '#0F2922';
 
   window.CANVAS_ACTIVE_BRAND_VARIABLES = brandVars;
 
