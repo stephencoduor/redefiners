@@ -275,7 +275,7 @@ redefiners_variables = {
   # "Image Upload Instructions" section below.
   #
   # Uncomment and set the path if you have uploaded the image:
-  # 'ic-brand-header-image' => '/path/to/redefiners-logo.png',
+  'ic-brand-header-image' => '/redefiners-theme/images/logo.PNG',
 
   # -- ic-brand-mobile-global-nav-logo --
   # Logo shown in the mobile app's global navigation. Should be optimized
@@ -318,7 +318,7 @@ redefiners_variables = {
   # Schema default: "/images/favicon.ico"
   #
   # Uncomment and set if you have a custom favicon:
-  # 'ic-brand-favicon' => '/path/to/redefiners-favicon.ico',
+  'ic-brand-favicon' => '/redefiners-theme/images/logo.PNG',
 
   # -- ic-brand-apple-touch-icon --
   # The icon used when users add Canvas to their iOS home screen.
@@ -407,7 +407,7 @@ redefiners_variables = {
   # Schema default: "/images/login/canvas-logo.svg"
   #
   # Uncomment and set if you have a custom login logo:
-  # 'ic-brand-Login-logo' => '/path/to/redefiners-login-logo.svg',
+  'ic-brand-Login-logo' => '/redefiners-theme/images/logo.PNG',
 
   # -- ic-brand-Login-Content-bgd-color --
   # Background color for the login card/content area that contains the
