@@ -84,6 +84,27 @@ export const router = createBrowserRouter([
             },
           },
           {
+            path: '/courses/:courseId/assignments/new',
+            lazy: async () => {
+              const { AssignmentEditPage } = await import('@/pages/assignments/AssignmentEditPage')
+              return { Component: AssignmentEditPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/assignments/:assignmentId/edit',
+            lazy: async () => {
+              const { AssignmentEditPage } = await import('@/pages/assignments/AssignmentEditPage')
+              return { Component: AssignmentEditPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/assignments/:assignmentId/submit',
+            lazy: async () => {
+              const { SubmitAssignmentPage } = await import('@/pages/assignments/SubmitAssignmentPage')
+              return { Component: SubmitAssignmentPage }
+            },
+          },
+          {
             path: '/courses/:courseId/modules',
             lazy: async () => {
               const { ModulesPage } = await import('@/pages/modules/ModulesPage')
@@ -109,6 +130,20 @@ export const router = createBrowserRouter([
             lazy: async () => {
               const { PageViewPage } = await import('@/pages/pages/PageViewPage')
               return { Component: PageViewPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/pages/new',
+            lazy: async () => {
+              const { WikiPageEditPage } = await import('@/pages/pages/WikiPageEditPage')
+              return { Component: WikiPageEditPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/pages/:pageUrl/edit',
+            lazy: async () => {
+              const { WikiPageEditPage } = await import('@/pages/pages/WikiPageEditPage')
+              return { Component: WikiPageEditPage }
             },
           },
           {
@@ -140,10 +175,45 @@ export const router = createBrowserRouter([
             },
           },
           {
+            path: '/courses/:courseId/discussions/new',
+            lazy: async () => {
+              const { DiscussionEditPage } = await import('@/pages/discussions/DiscussionEditPage')
+              return { Component: DiscussionEditPage }
+            },
+          },
+          {
             path: '/courses/:courseId/quizzes',
             lazy: async () => {
               const { QuizzesPage } = await import('@/pages/quizzes/QuizzesPage')
               return { Component: QuizzesPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/quizzes/:quizId',
+            lazy: async () => {
+              const { QuizShowPage } = await import('@/pages/quizzes/QuizShowPage')
+              return { Component: QuizShowPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/quizzes/:quizId/take',
+            lazy: async () => {
+              const { QuizTakePage } = await import('@/pages/quizzes/QuizTakePage')
+              return { Component: QuizTakePage }
+            },
+          },
+          {
+            path: '/courses/:courseId/quizzes/:quizId/results',
+            lazy: async () => {
+              const { QuizResultsPage } = await import('@/pages/quizzes/QuizResultsPage')
+              return { Component: QuizResultsPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/quizzes/:quizId/statistics',
+            lazy: async () => {
+              const { QuizStatisticsPage } = await import('@/pages/quizzes/QuizStatisticsPage')
+              return { Component: QuizStatisticsPage }
             },
           },
           {
@@ -179,6 +249,20 @@ export const router = createBrowserRouter([
             lazy: async () => {
               const { ContentMigrationsPage } = await import('@/pages/services/ContentMigrationsPage')
               return { Component: ContentMigrationsPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/paces',
+            lazy: async () => {
+              const { CoursePacesPage } = await import('@/pages/courses/CoursePacesPage')
+              return { Component: CoursePacesPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/copy',
+            lazy: async () => {
+              const { CourseCopyPage } = await import('@/pages/courses/CourseCopyPage')
+              return { Component: CourseCopyPage }
             },
           },
           {

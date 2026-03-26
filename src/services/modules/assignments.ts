@@ -1,7 +1,7 @@
 // Assignments API module
 // Ported from ReDefiners/js/api.js AssignmentsAPI class
 
-import { apiGet, apiPost } from '@/services/api-client';
+import { apiGet, apiPost, apiPut } from '@/services/api-client';
 import type {
   ApiResponse,
   CanvasAssignment,
@@ -75,5 +75,26 @@ export function getPeerReviews(
 ): Promise<ApiResponse<CanvasPeerReview[]>> {
   return apiGet<CanvasPeerReview[]>(
     `/v1/courses/${courseId}/assignments/${assignmentId}/peer_reviews`,
+  );
+}
+
+export function createAssignment(
+  courseId: number | string,
+  data: Record<string, ParamValue>,
+): Promise<ApiResponse<CanvasAssignment>> {
+  return apiPost<CanvasAssignment>(
+    `/v1/courses/${courseId}/assignments`,
+    { assignment: data },
+  );
+}
+
+export function updateAssignment(
+  courseId: number | string,
+  assignmentId: number | string,
+  data: Record<string, ParamValue>,
+): Promise<ApiResponse<CanvasAssignment>> {
+  return apiPut<CanvasAssignment>(
+    `/v1/courses/${courseId}/assignments/${assignmentId}`,
+    { assignment: data },
   );
 }

@@ -60,3 +60,13 @@ export function postReply(
     { message },
   );
 }
+
+export function createDiscussion(
+  courseId: number | string,
+  data: Record<string, ParamValue>,
+): Promise<ApiResponse<CanvasDiscussionTopic>> {
+  return apiPost<CanvasDiscussionTopic>(
+    `/v1/courses/${courseId}/discussion_topics`,
+    data,
+  );
+}
