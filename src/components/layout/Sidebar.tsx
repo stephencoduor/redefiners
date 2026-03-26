@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
 import { Link, useLocation, useParams } from 'react-router'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { SidebarItem } from '@/components/layout/SidebarItem'
 import {
   getGlobalNavSections,
@@ -23,46 +22,66 @@ export function Sidebar() {
   }, [courseId])
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-40 hidden w-[240px] flex-col gradient-sidebar lg:flex">
+    <aside
+      className="fixed inset-y-0 left-0 z-40 hidden w-[240px] flex-col lg:flex"
+      style={{
+        background: 'linear-gradient(180deg, #163B32 0%, #0F2922 100%)',
+        overflowY: 'auto',
+        overflowX: 'hidden',
+      }}
+    >
       {/* Logo */}
-      <div className="flex items-center gap-2.5 px-5 py-5 pb-3">
-        <Link to="/dashboard" className="flex items-center gap-2 no-underline">
+      <div style={{ paddingBottom: '30px', paddingTop: '5px' }}>
+        <Link to="/dashboard" className="flex items-center gap-2 px-5 pt-4 no-underline">
           <img
             src={`${import.meta.env.BASE_URL}Images/logo.PNG`}
             alt="ReDefiners"
-            className="h-8"
+            style={{ maxWidth: '160px', paddingTop: '15px' }}
             onError={(e) => {
               ;(e.target as HTMLImageElement).style.display = 'none'
             }}
           />
-          <span
-            className="text-white font-semibold text-base"
-            style={{ fontFamily: 'Poppins, sans-serif' }}
-          >
-            ReDefiners
-          </span>
         </Link>
       </div>
 
       {/* Navigation */}
-      <ScrollArea className="flex-1 px-3 pb-4">
-        <nav className="flex flex-col gap-0.5">
-          {sections.map((section, idx) => (
-            <div key={section.title ?? idx}>
-              {section.title && (
-                <div className="px-3 pt-5 pb-1.5">
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.08em] text-white/40">
-                    {section.title}
-                  </span>
-                </div>
-              )}
-              {section.items.map((item) => (
-                <SidebarItem key={item.href + item.label} item={item} />
-              ))}
-            </div>
-          ))}
-        </nav>
-      </ScrollArea>
+      <nav
+        className="flex flex-1 flex-col gap-0.5 pb-5"
+        style={{
+          overflowY: 'auto',
+          scrollbarWidth: 'thin',
+          scrollbarColor: 'rgba(255,255,255,0.15) transparent',
+        }}
+      >
+        {sections.map((section, idx) => (
+          <div key={section.title ?? idx}>
+            {section.title && (
+              <div
+                style={{
+                  padding: '12px 20px 6px',
+                  fontSize: '10px',
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                  color: 'rgba(124, 181, 164, 0.7)',
+                }}
+              >
+                {section.title}
+              </div>
+            )}
+            {section.items.map((item) => (
+              <SidebarItem key={item.href + item.label} item={item} />
+            ))}
+          </div>
+        ))}
+      </nav>
+
+      {/* Custom scrollbar styles */}
+      <style>{`
+        aside::-webkit-scrollbar { width: 4px; }
+        aside::-webkit-scrollbar-track { background: transparent; }
+        aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+      `}</style>
     </aside>
   )
 }

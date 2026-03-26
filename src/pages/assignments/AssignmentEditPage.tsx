@@ -8,6 +8,7 @@ import {
   updateAssignment,
 } from '@/services/modules/assignments'
 import { LoadingSkeleton } from '@/components/common/LoadingSkeleton'
+import { RichTextEditor } from '@/components/shared/RichTextEditor'
 import { Save, X } from 'lucide-react'
 import type { CanvasAssignment, CanvasAssignmentGroup, SubmissionType } from '@/types/canvas'
 
@@ -172,24 +173,13 @@ export function AssignmentEditPage() {
           <label className="mb-1 block text-sm font-medium text-neutral-700">
             Description
           </label>
-          <textarea
-            name="description"
+          <RichTextEditor
             value={form.description}
-            onChange={handleChange}
-            rows={8}
-            className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-700 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+            onChange={(content) =>
+              setForm((prev) => ({ ...prev, description: content }))
+            }
+            height={300}
           />
-          {form.description && (
-            <details className="mt-3">
-              <summary className="cursor-pointer text-xs text-neutral-500">
-                Preview
-              </summary>
-              <div
-                className="prose prose-sm mt-2 max-w-none rounded border border-neutral-100 p-3 text-neutral-600"
-                dangerouslySetInnerHTML={{ __html: form.description }}
-              />
-            </details>
-          )}
         </div>
 
         {/* Settings Row */}

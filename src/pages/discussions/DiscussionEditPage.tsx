@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router'
 import { useMutation } from '@tanstack/react-query'
 import { createDiscussion } from '@/services/modules/discussions'
+import { RichTextEditor } from '@/components/shared/RichTextEditor'
 import { Save, X } from 'lucide-react'
 
 interface DiscussionFormData {
@@ -91,12 +92,12 @@ export function DiscussionEditPage() {
           <label className="mb-1 block text-sm font-medium text-neutral-700">
             Message
           </label>
-          <textarea
-            name="message"
+          <RichTextEditor
             value={form.message}
-            onChange={handleChange}
-            rows={10}
-            className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-700 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+            onChange={(content) =>
+              setForm((prev) => ({ ...prev, message: content }))
+            }
+            height={300}
           />
         </div>
 

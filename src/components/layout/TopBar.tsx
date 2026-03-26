@@ -1,6 +1,4 @@
 import { Search, Bell, Mail, Menu } from 'lucide-react'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
 import { UserMenu } from '@/components/layout/UserMenu'
 
 interface TopBarProps {
@@ -10,48 +8,96 @@ interface TopBarProps {
 
 export function TopBar({ onMenuClick, unreadCount = 0 }: TopBarProps) {
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-neutral-200 bg-white px-4 md:px-6">
+    <header
+      className="sticky top-0 z-30 flex items-center justify-between"
+      style={{
+        height: '64px',
+        background: 'white',
+        borderBottom: '1px solid #E5E7EB',
+        padding: '0 24px',
+      }}
+    >
       {/* Left: hamburger + search */}
       <div className="flex items-center gap-3">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="lg:hidden"
+        <button
+          className="flex h-9 w-9 items-center justify-center rounded-lg lg:hidden"
           onClick={onMenuClick}
           aria-label="Toggle sidebar"
+          style={{
+            background: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+          }}
         >
-          <Menu className="h-5 w-5 text-neutral-600" />
-        </Button>
+          <Menu className="h-5 w-5" style={{ color: '#6B7280' }} />
+        </button>
 
-        <div className="relative hidden sm:block">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
-          <Input
+        <div
+          className="hidden items-center sm:flex"
+          style={{
+            borderRadius: '9999px',
+            background: '#F3F4F6',
+            border: '1px solid #E5E7EB',
+            padding: '0 16px',
+            height: '40px',
+            width: '400px',
+            maxWidth: '400px',
+            gap: '8px',
+            transition: 'border-color 0.2s, box-shadow 0.2s',
+          }}
+        >
+          <Search className="shrink-0" style={{ color: '#6B7280', width: '14px', height: '14px' }} />
+          <input
             type="search"
             placeholder="Search courses, assignments..."
-            className="h-9 w-64 max-w-[400px] rounded-full border-neutral-200 bg-neutral-50 pl-9 text-sm focus-visible:bg-white"
+            style={{
+              border: 'none',
+              outline: 'none',
+              background: 'transparent',
+              fontFamily: "'Inter', 'Poppins', sans-serif",
+              fontSize: '13px',
+              color: '#163B32',
+              flex: 1,
+              minWidth: 0,
+            }}
           />
         </div>
       </div>
 
       {/* Right: notification icons + avatar */}
       <div className="flex items-center gap-2">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="relative"
+        <button
+          className="relative flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-neutral-100"
           aria-label="Notifications"
+          style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
         >
-          <Bell className="h-5 w-5 text-neutral-600" />
+          <Bell className="h-5 w-5" style={{ color: '#6B7280' }} />
           {unreadCount > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
+            <span
+              className="absolute flex items-center justify-center rounded-full text-white"
+              style={{
+                top: '-2px',
+                right: '-2px',
+                height: '16px',
+                minWidth: '16px',
+                background: '#EF4444',
+                fontSize: '10px',
+                fontWeight: 700,
+                padding: '0 4px',
+              }}
+            >
               {unreadCount > 99 ? '99+' : unreadCount}
             </span>
           )}
-        </Button>
+        </button>
 
-        <Button variant="ghost" size="icon" aria-label="Inbox">
-          <Mail className="h-5 w-5 text-neutral-600" />
-        </Button>
+        <button
+          className="flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-neutral-100"
+          aria-label="Inbox"
+          style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
+        >
+          <Mail className="h-5 w-5" style={{ color: '#6B7280' }} />
+        </button>
 
         <UserMenu />
       </div>

@@ -1,8 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router'
 import { useAuth } from '@/hooks/useAuth'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
 import { AlertTriangle } from 'lucide-react'
 
 export function LoginPage() {
@@ -35,36 +33,46 @@ export function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col font-poppins md:flex-row">
+    <div className="flex min-h-screen flex-col md:flex-row" style={{ fontFamily: "'Poppins', sans-serif" }}>
       {/* Left Panel - Teal Branding */}
       <div
-        className="hidden w-1/2 flex-col items-center justify-center gap-6 bg-gradient-to-b from-primary-700 to-primary-800 p-10 md:flex"
-        style={{ borderRadius: '0 40px 0 0' }}
+        className="hidden w-1/2 flex-col items-center justify-center gap-6 p-10 md:flex"
+        style={{
+          background: 'linear-gradient(180deg, #163B32 0%, #0F2922 100%)',
+          borderRadius: '0 40px 0 0',
+        }}
       >
-        <h1 className="text-center text-5xl font-bold text-white">Welcome</h1>
-        <h2 className="text-center text-3xl font-bold text-primary-400">
+        <h1 className="text-center font-bold text-white" style={{ fontSize: '3.5rem' }}>
+          Welcome
+        </h1>
+        <h1 className="text-center font-bold" style={{ fontSize: '28px', color: '#4A8B7A' }}>
           Bienvenidos
-        </h2>
-        <p className="text-center text-base text-primary-400">
+        </h1>
+        <h5 className="text-center font-normal" style={{ fontSize: '14px', color: '#4A8B7A' }}>
           Enter your details to login or
           <br />
           take a{' '}
-          <a href="#" className="text-primary-400 hover:underline">
+          <a href="#" className="hover:underline" style={{ color: '#4A8B7A' }}>
             Placement Test
           </a>
-        </p>
+        </h5>
         <div className="mt-6 flex gap-4">
-          <img src="/Images/login1.png" alt="" className="h-auto max-h-32" />
-          <img src="/Images/login2.png" alt="" className="h-auto max-h-32" />
-          <img src="/Images/login3.png" alt="" className="h-auto max-h-32" />
-          <img src="/Images/login4.png" alt="" className="h-auto max-h-32" />
+          <img src={`${import.meta.env.BASE_URL}Images/login1.png`} alt="" />
+          <img src={`${import.meta.env.BASE_URL}Images/login2.png`} alt="" />
+          <img src={`${import.meta.env.BASE_URL}Images/login3.png`} alt="" />
+          <img src={`${import.meta.env.BASE_URL}Images/login4.png`} alt="" />
         </div>
       </div>
 
       {/* Right Panel - Login Form */}
       <div className="flex flex-1 items-center justify-center p-6 md:p-12">
-        <div className="w-full max-w-sm">
-          <img src="/Images/logo.PNG" alt="ReDefiners" className="mb-8 h-10" />
+        <div className="w-full" style={{ maxWidth: '380px' }}>
+          <img
+            src={`${import.meta.env.BASE_URL}Images/logo.PNG`}
+            alt="ReDefiners"
+            className="mb-8"
+            style={{ height: '40px' }}
+          />
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Error message */}
@@ -76,34 +84,44 @@ export function LoginPage() {
             )}
 
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-primary-900">
+              <label
+                className="font-medium"
+                style={{ fontSize: '13px', color: '#0F2922' }}
+              >
                 Your E-mail
               </label>
-              <Input
+              <input
                 type="email"
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 autoComplete="email"
+                className="shadcn-input"
+                style={{ height: '44px' }}
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-primary-900">
+              <label
+                className="font-medium"
+                style={{ fontSize: '13px', color: '#0F2922' }}
+              >
                 Password
               </label>
-              <Input
+              <input
                 type="password"
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 autoComplete="current-password"
+                className="shadcn-input"
+                style={{ height: '44px' }}
               />
             </div>
 
-            <div className="flex items-center gap-2 text-sm">
+            <div className="flex items-center gap-2" style={{ fontSize: '13px' }}>
               <input
                 id="remember"
                 type="checkbox"
@@ -111,29 +129,73 @@ export function LoginPage() {
                 onChange={(e) => setRememberMe(e.target.checked)}
                 className="rounded"
               />
-              <label htmlFor="remember" className="text-primary-400">
+              <label htmlFor="remember" style={{ color: '#4A8B7A' }}>
                 Keep me logged in
               </label>
             </div>
 
-            <Button
+            <button
               type="submit"
               disabled={isSubmitting}
-              className="h-11 w-full bg-gradient-to-r from-primary-600 to-primary-700 font-semibold text-white hover:from-primary-700 hover:to-primary-800"
+              className="w-full font-semibold text-white"
+              style={{
+                height: '44px',
+                background: '#163B32',
+                borderRadius: '9999px',
+                border: 'none',
+                fontSize: '14px',
+                cursor: 'pointer',
+                fontFamily: "'Poppins', sans-serif",
+                boxShadow: '0 1px 2px 0 rgba(0,0,0,0.05)',
+                transition: 'background 0.15s ease',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                opacity: isSubmitting ? 0.5 : 1,
+              }}
+              onMouseOver={(e) => {
+                if (!isSubmitting) (e.currentTarget.style.background = '#0F2922')
+              }}
+              onMouseOut={(e) => {
+                if (!isSubmitting) (e.currentTarget.style.background = '#163B32')
+              }}
             >
               {isSubmitting ? 'Logging in...' : 'Login'}
-            </Button>
+            </button>
           </form>
 
           {/* Divider */}
           <div className="my-4 flex items-center gap-3">
-            <div className="h-px flex-1 bg-neutral-200" />
-            <span className="text-xs font-semibold text-primary-400">OR</span>
-            <div className="h-px flex-1 bg-neutral-200" />
+            <div className="flex-1" style={{ height: '1px', background: '#C4CDD5' }} />
+            <span className="font-semibold" style={{ fontSize: '12px', color: '#4A8B7A' }}>
+              OR
+            </span>
+            <div className="flex-1" style={{ height: '1px', background: '#C4CDD5' }} />
           </div>
 
           {/* Google OAuth */}
-          <Button variant="outline" className="w-full gap-2">
+          <button
+            className="w-full gap-2"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              whiteSpace: 'nowrap',
+              borderRadius: '9999px',
+              fontFamily: "'Poppins', sans-serif",
+              fontSize: '14px',
+              fontWeight: 500,
+              padding: '8px 16px',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease',
+              background: '#FFFFFF',
+              color: '#163B32',
+              border: '1px solid #E5E7EB',
+              boxShadow: '0 1px 2px 0 rgba(0,0,0,0.05)',
+              height: '44px',
+            }}
+          >
             <svg className="h-4 w-4" viewBox="0 0 24 24">
               <path
                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"
@@ -153,21 +215,23 @@ export function LoginPage() {
               />
             </svg>
             Login With Google
-          </Button>
+          </button>
 
-          <p className="mt-6 text-center text-xs text-primary-400">
+          <p className="mt-6 text-center" style={{ fontSize: '12px', color: '#4A8B7A' }}>
             Don&apos;t have an account?{' '}
             <a
               href="#"
-              className="font-semibold text-primary-900 hover:underline"
+              className="font-semibold hover:underline"
+              style={{ color: '#0F2922' }}
             >
               Sign up
             </a>
           </p>
-          <p className="mt-2 text-center text-xs">
+          <p className="mt-2 text-center" style={{ fontSize: '12px' }}>
             <a
               href="#"
-              className="font-semibold text-primary-900 hover:underline"
+              className="font-semibold hover:underline"
+              style={{ color: '#0F2922' }}
             >
               Forgot Password
             </a>

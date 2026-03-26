@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { getPage, createPage, updatePage } from '@/services/modules/pages'
 import { LoadingSkeleton } from '@/components/common/LoadingSkeleton'
+import { RichTextEditor } from '@/components/shared/RichTextEditor'
 import { Save, X } from 'lucide-react'
 
 interface PageFormData {
@@ -131,12 +132,12 @@ export function WikiPageEditPage() {
           <label className="mb-1 block text-sm font-medium text-neutral-700">
             Body
           </label>
-          <textarea
-            name="body"
+          <RichTextEditor
             value={form.body}
-            onChange={handleChange}
-            rows={16}
-            className="w-full rounded-lg border border-neutral-200 px-3 py-2 font-mono text-sm text-neutral-700 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+            onChange={(content) =>
+              setForm((prev) => ({ ...prev, body: content }))
+            }
+            height={400}
           />
         </div>
 

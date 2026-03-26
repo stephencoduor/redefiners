@@ -158,6 +158,113 @@
   background: linear-gradient(135deg, #FF6B35 0%, #FF8C5A 100%);
 }
 
+/* ═══════════════════════════════════════
+   Progress Bar Gradient Variants
+   ═══════════════════════════════════════ */
+
+.progress-bar-green {
+  background: linear-gradient(90deg, #2DB88A 0%, #00D99A 100%);
+}
+
+.progress-bar-purple {
+  background: linear-gradient(90deg, #8B5CF6 0%, #A78BFA 100%);
+}
+
+.progress-bar-orange {
+  background: linear-gradient(90deg, #FF6B35 0%, #FF8A5C 100%);
+}
+
+/* ═══════════════════════════════════════
+   Card Hover Lift Effect
+   ═══════════════════════════════════════ */
+
+.card-hover-lift {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.card-hover-lift:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  transform: translateY(-3px);
+}
+
+/* ═══════════════════════════════════════
+   Assignment / Announcement Row Hover
+   ═══════════════════════════════════════ */
+
+.assign-row-hover {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-radius: 14px;
+  transition: all 0.25s ease;
+}
+
+.assign-row-hover:hover {
+  background: #F9FAFB;
+}
+
+/* ═══════════════════════════════════════
+   Calendar Cell Event Colors
+   ═══════════════════════════════════════ */
+
+.cal-event-green {
+  background: var(--color-accent-green);
+  color: white;
+}
+
+.cal-event-blue {
+  background: var(--color-accent-blue);
+  color: white;
+}
+
+.cal-event-orange {
+  background: var(--color-accent-orange);
+  color: white;
+}
+
+.cal-event-purple {
+  background: var(--color-accent-purple);
+  color: white;
+}
+
+.cal-event-yellow {
+  background: var(--color-accent-yellow);
+  color: #163B32;
+}
+
+.cal-event-teal {
+  background: #2DD4BF;
+  color: white;
+}
+
+/* ═══════════════════════════════════════
+   shadcn Component Layer (from original)
+   ═══════════════════════════════════════ */
+
+.shadcn-input {
+  display: flex;
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #E5E7EB;
+  background: transparent;
+  padding: 8px 12px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  color: #163B32;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  outline: none;
+}
+
+.shadcn-input::placeholder {
+  color: #9CA3AF;
+}
+
+.shadcn-input:focus {
+  border-color: #2DB88A;
+  box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px rgba(0,196,140,0.2);
+}
+
 @theme inline {
   --font-heading: var(--font-sans);
   --font-sans: 'Geist Variable', sans-serif;
