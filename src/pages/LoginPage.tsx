@@ -5,7 +5,7 @@ import { AlertTriangle } from 'lucide-react'
 import { LoginVariant1, LoginVariant2, LoginVariant3, LoginVariant4, LoginVariant5 } from './login'
 
 const LOGIN_VARIANTS: Record<string, React.ComponentType> = {
-  default: LoginPageDefault,
+  default: LoginVariant1,
   aurora: LoginVariant1,
   glass: LoginVariant2,
   campus: LoginVariant3,
