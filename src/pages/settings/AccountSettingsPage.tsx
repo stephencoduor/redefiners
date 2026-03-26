@@ -106,6 +106,47 @@ export function AccountSettingsPage() {
             </div>
           </div>
 
+          {/* Login Page Design */}
+          <div className="border-t border-neutral-100 pt-5 dark:border-neutral-700">
+            <h4 className="mb-3 text-sm font-semibold" style={{ color: 'var(--color-text-primary)' }}>
+              <i className="fa fa-sign-in-alt mr-2 text-xs" />Login Page Design
+            </h4>
+            <div className="grid grid-cols-3 gap-3 md:grid-cols-6">
+              {[
+                { id: 'default', name: 'Classic', colors: ['#163B32', '#0F2922'] },
+                { id: 'aurora', name: 'Aurora', colors: ['#163B32', '#2DB88A', '#16D2DD'] },
+                { id: 'glass', name: 'Glass', colors: ['#0F2922', '#2DB88A', '#3B82F6'] },
+                { id: 'campus', name: 'Campus', colors: ['#000000', '#163B32'] },
+                { id: 'waves', name: 'Waves', colors: ['#0a0e17', '#2DB88A', '#16D2DD'] },
+                { id: 'mosaic', name: 'Mosaic', colors: ['#163B32', '#FFFFFF'] },
+              ].map(v => {
+                const active = (localStorage.getItem('redefiners-login-variant') ?? 'default') === v.id
+                return (
+                  <button key={v.id}
+                    onClick={() => { localStorage.setItem('redefiners-login-variant', v.id); window.location.reload() }}
+                    className={`relative rounded-lg border-2 p-2 text-center transition-all ${active ? 'border-emerald-500 ring-2 ring-emerald-500/20' : 'border-neutral-200 hover:border-neutral-300 dark:border-neutral-600'}`}
+                  >
+                    {active && (
+                      <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-white">
+                        <Check className="h-3 w-3" />
+                      </span>
+                    )}
+                    <div className="mb-1.5 h-12 rounded overflow-hidden flex">
+                      {v.colors.map((c, i) => (
+                        <div key={i} className="flex-1" style={{ background: c }} />
+                      ))}
+                    </div>
+                    <p className="text-xs font-medium" style={{ color: 'var(--color-text-primary)' }}>{v.name}</p>
+                  </button>
+                )
+              })}
+            </div>
+            <p className="mt-2 text-xs" style={{ color: 'var(--color-text-secondary)' }}>
+              Choose the login page design for your institution. Preview by visiting{' '}
+              <a href="/login" className="text-emerald-600 hover:underline" target="_blank">/login</a>
+            </p>
+          </div>
+
           <div className="border-t border-neutral-100 pt-5 dark:border-neutral-700">
             {/* Name */}
             <div className="mb-5">

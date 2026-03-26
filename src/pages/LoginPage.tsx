@@ -2,8 +2,24 @@ import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router'
 import { useAuth } from '@/hooks/useAuth'
 import { AlertTriangle } from 'lucide-react'
+import { LoginVariant1, LoginVariant2, LoginVariant3, LoginVariant4, LoginVariant5 } from './login'
+
+const LOGIN_VARIANTS: Record<string, React.ComponentType> = {
+  default: LoginPageDefault,
+  aurora: LoginVariant1,
+  glass: LoginVariant2,
+  campus: LoginVariant3,
+  waves: LoginVariant4,
+  mosaic: LoginVariant5,
+}
 
 export function LoginPage() {
+  const variant = localStorage.getItem('redefiners-login-variant') ?? 'default'
+  const Component = LOGIN_VARIANTS[variant] ?? LoginPageDefault
+  return <Component />
+}
+
+function LoginPageDefault() {
   const { login } = useAuth()
   const navigate = useNavigate()
 
