@@ -33,6 +33,20 @@ export const router = createBrowserRouter([
           return { Component: TermsOfServicePage }
         },
       },
+      {
+        path: '/acceptable-use',
+        lazy: async () => {
+          const { AcceptableUsePolicyPage } = await import('@/pages/admin/AcceptableUsePolicyPage')
+          return { Component: AcceptableUsePolicyPage }
+        },
+      },
+      {
+        path: '/register',
+        lazy: async () => {
+          const { RegistrationPage } = await import('@/pages/settings/RegistrationPage')
+          return { Component: RegistrationPage }
+        },
+      },
     ],
   },
   {
@@ -578,6 +592,202 @@ export const router = createBrowserRouter([
             lazy: async () => {
               const { CourseNotificationSettingsPage } = await import('@/pages/courses/CourseNotificationSettingsPage')
               return { Component: CourseNotificationSettingsPage }
+            },
+          },
+          {
+            path: '/admin/tools',
+            lazy: async () => {
+              const { AdminToolsPage } = await import('@/pages/admin/AdminToolsPage')
+              return { Component: AdminToolsPage }
+            },
+          },
+          {
+            path: '/admin/calendar-settings',
+            lazy: async () => {
+              const { CalendarSettingsPage } = await import('@/pages/admin/CalendarSettingsPage')
+              return { Component: CalendarSettingsPage }
+            },
+          },
+          {
+            path: '/admin/search',
+            lazy: async () => {
+              const { AccountSearchPage } = await import('@/pages/admin/AccountSearchPage')
+              return { Component: AccountSearchPage }
+            },
+          },
+          {
+            path: '/admin/grading-settings',
+            lazy: async () => {
+              const { GradingSettingsPage } = await import('@/pages/admin/GradingSettingsPage')
+              return { Component: GradingSettingsPage }
+            },
+          },
+          {
+            path: '/admin/grading-standards',
+            lazy: async () => {
+              const { GradingStandardsPage } = await import('@/pages/admin/GradingStandardsPage')
+              return { Component: GradingStandardsPage }
+            },
+          },
+          {
+            path: '/admin/account',
+            lazy: async () => {
+              const { AccountManagePage } = await import('@/pages/admin/AccountManagePage')
+              return { Component: AccountManagePage }
+            },
+          },
+          {
+            path: '/admin/notifications',
+            lazy: async () => {
+              const { AccountNotificationsPage } = await import('@/pages/admin/AccountNotificationsPage')
+              return { Component: AccountNotificationsPage }
+            },
+          },
+          {
+            path: '/admin/statistics',
+            lazy: async () => {
+              const { AccountStatisticsPage } = await import('@/pages/admin/AccountStatisticsPage')
+              return { Component: AccountStatisticsPage }
+            },
+          },
+          {
+            path: '/admin/act-as',
+            lazy: async () => {
+              const { ActAsUserPage } = await import('@/pages/admin/ActAsUserPage')
+              return { Component: ActAsUserPage }
+            },
+          },
+          {
+            path: '/admin/split',
+            lazy: async () => {
+              const { AdminSplitPage } = await import('@/pages/admin/AdminSplitPage')
+              return { Component: AdminSplitPage }
+            },
+          },
+          {
+            path: '/admin/auth-providers',
+            lazy: async () => {
+              const { AuthProvidersPage } = await import('@/pages/admin/AuthProvidersPage')
+              return { Component: AuthProvidersPage }
+            },
+          },
+          {
+            path: '/admin/themes',
+            lazy: async () => {
+              const { BrandConfigsPage } = await import('@/pages/admin/BrandConfigsPage')
+              return { Component: BrandConfigsPage }
+            },
+          },
+          {
+            path: '/admin/plugins',
+            lazy: async () => {
+              const { PluginsPage } = await import('@/pages/admin/PluginsPage')
+              return { Component: PluginsPage }
+            },
+          },
+          {
+            path: '/admin/rate-limiting',
+            lazy: async () => {
+              const { RateLimitingPage } = await import('@/pages/admin/RateLimitingPage')
+              return { Component: RateLimitingPage }
+            },
+          },
+          {
+            path: '/admin/release-notes',
+            lazy: async () => {
+              const { ReleaseNotesPage } = await import('@/pages/admin/ReleaseNotesPage')
+              return { Component: ReleaseNotesPage }
+            },
+          },
+          {
+            path: '/admin/page-views',
+            lazy: async () => {
+              const { PageViewsPage } = await import('@/pages/admin/PageViewsPage')
+              return { Component: PageViewsPage }
+            },
+          },
+          {
+            path: '/admin/theme-editor',
+            lazy: async () => {
+              const { ThemeEditorPage } = await import('@/pages/admin/ThemeEditorPage')
+              return { Component: ThemeEditorPage }
+            },
+          },
+          {
+            path: '/admin/theme-preview',
+            lazy: async () => {
+              const { ThemePreviewPage } = await import('@/pages/admin/ThemePreviewPage')
+              return { Component: ThemePreviewPage }
+            },
+          },
+          {
+            path: '/admin/terms/manage',
+            lazy: async () => {
+              const { TermsManagePage } = await import('@/pages/admin/TermsManagePage')
+              return { Component: TermsManagePage }
+            },
+          },
+          {
+            path: '/admin/feature-flags',
+            lazy: async () => {
+              const { FeatureFlagsPage } = await import('@/pages/admin/FeatureFlagsPage')
+              return { Component: FeatureFlagsPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/prior-users',
+            lazy: async () => {
+              const { PriorUsersPage } = await import('@/pages/courses/PriorUsersPage')
+              return { Component: PriorUsersPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/grading-standards',
+            lazy: async () => {
+              const { CourseGradingStandardsPage } = await import('@/pages/courses/CourseGradingStandardsPage')
+              return { Component: CourseGradingStandardsPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/groups/manage',
+            lazy: async () => {
+              const { ManageGroupsPage } = await import('@/pages/courses/ManageGroupsPage')
+              return { Component: ManageGroupsPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/people/add',
+            lazy: async () => {
+              const { AddPeoplePage } = await import('@/pages/courses/AddPeoplePage')
+              return { Component: AddPeoplePage }
+            },
+          },
+          {
+            path: '/courses/:courseId/sections',
+            lazy: async () => {
+              const { SectionManagementPage } = await import('@/pages/courses/SectionManagementPage')
+              return { Component: SectionManagementPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/teacher-report',
+            lazy: async () => {
+              const { TeacherActivityReportPage } = await import('@/pages/courses/TeacherActivityReportPage')
+              return { Component: TeacherActivityReportPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/navigation',
+            lazy: async () => {
+              const { CourseNavigationSettingsPage } = await import('@/pages/courses/CourseNavigationSettingsPage')
+              return { Component: CourseNavigationSettingsPage }
+            },
+          },
+          {
+            path: '/users/:userId',
+            lazy: async () => {
+              const { PublicProfilePage } = await import('@/pages/profile/PublicProfilePage')
+              return { Component: PublicProfilePage }
             },
           },
         ],
