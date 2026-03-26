@@ -6,7 +6,7 @@ import {
   useState,
   type ReactNode,
 } from 'react'
-import { apiGet, apiDelete } from '@/services/api-client'
+import { apiGet } from '@/services/api-client'
 import type { CanvasUser } from '@/types/canvas'
 
 export type UserRole = 'student' | 'teacher' | 'admin'
@@ -100,12 +100,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   )
 
   const logout = useCallback(async () => {
-    try {
-      await apiDelete('/logout')
-    } catch {
-      // Logout may fail silently
-    }
     setUser(null)
+    // Canvas logout requires DELETE to /logout with the session cookie
+    try {
+      await fetch('/logout', {
+        method: 'DELETE',
+        credentials: 'same-origin',
+        headers: { 'Accept': 'application/json' },
+      })
+    } catch {
+      // Logout may fail - still redirect to login
+    }
+    // Mark as explicitly logged out so PublicRoute doesn't auto-redirect
+    sessionStorage.setItem('just_logged_out', '1')
+    // Full page reload to clear all React state and Canvas session
     window.location.href = '/login'
   }, [])
 

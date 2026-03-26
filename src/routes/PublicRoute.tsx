@@ -12,6 +12,13 @@ export function PublicRoute() {
     )
   }
 
+  // Check if user just logged out — don't auto-redirect back to dashboard
+  const justLoggedOut = sessionStorage.getItem('just_logged_out')
+  if (justLoggedOut) {
+    sessionStorage.removeItem('just_logged_out')
+    return <Outlet />
+  }
+
   if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />
   }
