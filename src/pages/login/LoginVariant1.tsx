@@ -92,7 +92,7 @@ export function LoginVariant1() {
       <div className="flex flex-1 items-center justify-center p-8 bg-gray-50">
         <div className="w-full max-w-sm">
           <div className="mb-8">
-            <img src={`${import.meta.env.BASE_URL}Images/logo.PNG`} alt="ReDefiners" className="h-10 mb-6" />
+            <img src={`${import.meta.env.BASE_URL}Images/logo.PNG`} alt="ReDefiners" loading="lazy" width={150} height={40} className="h-10 mb-6" />
             <h2 className="text-2xl font-bold text-gray-900">Welcome back</h2>
             <p className="text-sm text-gray-500 mt-1">Sign in to continue your learning journey</p>
           </div>

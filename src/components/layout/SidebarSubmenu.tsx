@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react'
+import { memo, useRef, useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 import { cn } from '@/lib/utils'
 import { isNavItemActive } from '@/lib/navigation'
@@ -9,7 +9,7 @@ interface SidebarSubmenuProps {
   open: boolean
 }
 
-export function SidebarSubmenu({ items, open }: SidebarSubmenuProps) {
+export const SidebarSubmenu = memo(function SidebarSubmenu({ items, open }: SidebarSubmenuProps) {
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState(0)
   const { pathname } = useLocation()
@@ -52,4 +52,4 @@ export function SidebarSubmenu({ items, open }: SidebarSubmenuProps) {
       </div>
     </div>
   )
-}
+})

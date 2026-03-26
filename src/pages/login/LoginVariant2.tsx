@@ -49,7 +49,7 @@ export function LoginVariant2() {
       <div className="glass relative z-10 w-full max-w-md rounded-3xl p-10 shadow-2xl mx-4">
         <div className="text-center mb-8">
           <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-4 shadow-lg">
-            <img src={`${import.meta.env.BASE_URL}Images/logo.PNG`} alt="R" className="h-8" />
+            <img src={`${import.meta.env.BASE_URL}Images/logo.PNG`} alt="R" loading="lazy" width={120} height={32} className="h-8" />
           </div>
           <h1 className="text-3xl font-bold text-white mb-1">Welcome Back</h1>
           <p className="text-sm text-white/50">Sign in to your ReDefiners account</p>

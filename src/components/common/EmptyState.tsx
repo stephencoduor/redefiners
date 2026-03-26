@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import type { LucideIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Link } from 'react-router'
@@ -10,7 +11,7 @@ interface EmptyStateProps {
   ctaHref?: string
 }
 
-export function EmptyState({
+export const EmptyState = memo(function EmptyState({
   icon: Icon,
   heading,
   description,
@@ -36,4 +37,4 @@ export function EmptyState({
       )}
     </div>
   )
-}
+})

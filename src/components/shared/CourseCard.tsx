@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Link } from 'react-router'
 import type { CanvasCourse } from '@/types/canvas'
 
@@ -26,7 +27,7 @@ const PROGRESS_GRADIENTS = [
   'linear-gradient(90deg, #FF6B35 0%, #FF8A5C 100%)',
 ]
 
-export function CourseCard({ course }: CourseCardProps) {
+export const CourseCard = memo(function CourseCard({ course }: CourseCardProps) {
   // Find grade from student enrollment
   const studentEnrollment = course.enrollments?.find(
     (e) => e.type === 'StudentEnrollment',
@@ -61,6 +62,9 @@ export function CourseCard({ course }: CourseCardProps) {
         <img
           src={course.image_download_url ?? `${import.meta.env.BASE_URL}Images/course-${getCourseSlug(course.name)}.svg`}
           alt={course.name}
+          loading="lazy"
+          width={400}
+          height={150}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
       </div>
@@ -116,4 +120,4 @@ export function CourseCard({ course }: CourseCardProps) {
       </div>
     </Link>
   )
-}
+})

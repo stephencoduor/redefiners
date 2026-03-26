@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { cn } from '@/lib/utils'
 
 type StatusType =
@@ -50,7 +51,7 @@ const statusConfig: Record<StatusType, { label: string; classes: string }> = {
   },
 }
 
-export function StatusPill({ status, className }: StatusPillProps) {
+export const StatusPill = memo(function StatusPill({ status, className }: StatusPillProps) {
   const config = statusConfig[status]
   return (
     <span
@@ -63,4 +64,4 @@ export function StatusPill({ status, className }: StatusPillProps) {
       {config.label}
     </span>
   )
-}
+})

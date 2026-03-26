@@ -11,6 +11,26 @@ export default defineConfig({
     },
   },
   base: '/',
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id: string) {
+          if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/') || id.includes('node_modules/scheduler')) {
+            return 'vendor-react'
+          }
+          if (id.includes('node_modules/react-router')) {
+            return 'vendor-router'
+          }
+          if (id.includes('node_modules/@tanstack/react-query') && !id.includes('devtools')) {
+            return 'vendor-query'
+          }
+          if (id.includes('node_modules/dompurify')) {
+            return 'vendor-sanitize'
+          }
+        },
+      },
+    },
+  },
   server: {
     port: 3000,
     proxy: {

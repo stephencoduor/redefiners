@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { memo, useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router'
 import { ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -10,7 +10,7 @@ interface SidebarItemProps {
   item: NavItem
 }
 
-export function SidebarItem({ item }: SidebarItemProps) {
+export const SidebarItem = memo(function SidebarItem({ item }: SidebarItemProps) {
   const { pathname } = useLocation()
   const hasChildren = item.children && item.children.length > 0
   const active = isNavItemOrChildActive(pathname, item)
@@ -117,4 +117,4 @@ export function SidebarItem({ item }: SidebarItemProps) {
       )}
     </div>
   )
-}
+})

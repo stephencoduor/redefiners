@@ -73,10 +73,10 @@ function LoginPageDefault() {
           </a>
         </h5>
         <div className="mt-6 flex gap-4">
-          <img src={`${import.meta.env.BASE_URL}Images/login1.png`} alt="" />
-          <img src={`${import.meta.env.BASE_URL}Images/login2.png`} alt="" />
-          <img src={`${import.meta.env.BASE_URL}Images/login3.png`} alt="" />
-          <img src={`${import.meta.env.BASE_URL}Images/login4.png`} alt="" />
+          <img src={`${import.meta.env.BASE_URL}Images/login1.png`} alt="" loading="lazy" width={120} height={120} />
+          <img src={`${import.meta.env.BASE_URL}Images/login2.png`} alt="" loading="lazy" width={120} height={120} />
+          <img src={`${import.meta.env.BASE_URL}Images/login3.png`} alt="" loading="lazy" width={120} height={120} />
+          <img src={`${import.meta.env.BASE_URL}Images/login4.png`} alt="" loading="lazy" width={120} height={120} />
         </div>
       </div>
 
@@ -86,6 +86,9 @@ function LoginPageDefault() {
           <img
             src={`${import.meta.env.BASE_URL}Images/logo.PNG`}
             alt="ReDefiners"
+            loading="lazy"
+            width={150}
+            height={40}
             className="mb-8"
             style={{ height: '40px' }}
           />

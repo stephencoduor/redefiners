@@ -34,7 +34,7 @@ export function LoginVariant3() {
     <div className="relative flex min-h-screen items-center justify-center" style={{ fontFamily: "'Poppins', sans-serif" }}>
       {/* Background */}
       <div className="absolute inset-0">
-        <img src={`${import.meta.env.BASE_URL}Images/talking-class.png`} alt="" className="h-full w-full object-cover" />
+        <img src={`${import.meta.env.BASE_URL}Images/talking-class.png`} alt="" loading="lazy" width={1920} height={1080} className="h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-emerald-950/60 to-black/80" />
       </div>
 

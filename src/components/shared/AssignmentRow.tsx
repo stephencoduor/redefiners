@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Link } from 'react-router'
 import { FileText, Calendar } from 'lucide-react'
 import { StatusPill } from '@/components/common/StatusPill'
@@ -33,7 +34,7 @@ function getSubmissionStatus(
   return null
 }
 
-export function AssignmentRow({ assignment, courseId }: AssignmentRowProps) {
+export const AssignmentRow = memo(function AssignmentRow({ assignment, courseId }: AssignmentRowProps) {
   const status = getSubmissionStatus(assignment)
 
   return (
@@ -61,4 +62,4 @@ export function AssignmentRow({ assignment, courseId }: AssignmentRowProps) {
       {status && <StatusPill status={status} />}
     </Link>
   )
-}
+})

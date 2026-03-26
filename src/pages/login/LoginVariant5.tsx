@@ -47,15 +47,15 @@ export function LoginVariant5() {
       {/* Left: Image Mosaic */}
       <div className="hidden w-[50%] bg-emerald-900 p-6 md:flex flex-col">
         <div className="flex items-center gap-2 mb-6">
-          <img src={`${B}Images/logo.PNG`} alt="ReDefiners" className="h-8 brightness-0 invert" />
+          <img src={`${B}Images/logo.PNG`} alt="ReDefiners" loading="lazy" width={120} height={32} className="h-8 brightness-0 invert" />
         </div>
 
         <div className="flex-1 grid grid-cols-3 grid-rows-3 gap-3 rounded-3xl overflow-hidden">
           <div className="row-span-2 rounded-2xl overflow-hidden">
-            <img src={`${B}Images/login1.png`} alt="" className="w-full h-full object-cover" />
+            <img src={`${B}Images/login1.png`} alt="" loading="lazy" width={300} height={400} className="w-full h-full object-cover" />
           </div>
           <div className="rounded-2xl overflow-hidden">
-            <img src={`${B}Images/login2.png`} alt="" className="w-full h-full object-cover" />
+            <img src={`${B}Images/login2.png`} alt="" loading="lazy" width={300} height={200} className="w-full h-full object-cover" />
           </div>
           <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-emerald-400 to-cyan-400 flex items-center justify-center p-4">
             <div className="text-center">
@@ -64,10 +64,10 @@ export function LoginVariant5() {
             </div>
           </div>
           <div className="col-span-2 rounded-2xl overflow-hidden">
-            <img src={`${B}Images/talking-class.png`} alt="" className="w-full h-full object-cover" />
+            <img src={`${B}Images/talking-class.png`} alt="" loading="lazy" width={600} height={200} className="w-full h-full object-cover" />
           </div>
           <div className="rounded-2xl overflow-hidden">
-            <img src={`${B}Images/login3.png`} alt="" className="w-full h-full object-cover" />
+            <img src={`${B}Images/login3.png`} alt="" loading="lazy" width={300} height={200} className="w-full h-full object-cover" />
           </div>
           <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-orange-400 to-pink-400 flex items-center justify-center p-4">
             <div className="text-center">
@@ -78,7 +78,7 @@ export function LoginVariant5() {
             </div>
           </div>
           <div className="rounded-2xl overflow-hidden">
-            <img src={`${B}Images/login4.png`} alt="" className="w-full h-full object-cover" />
+            <img src={`${B}Images/login4.png`} alt="" loading="lazy" width={300} height={200} className="w-full h-full object-cover" />
           </div>
         </div>
       </div>

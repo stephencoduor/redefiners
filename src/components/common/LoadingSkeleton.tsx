@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
 
 interface LoadingSkeletonProps {
@@ -5,7 +6,7 @@ interface LoadingSkeletonProps {
   count?: number
 }
 
-export function LoadingSkeleton({ type, count = 1 }: LoadingSkeletonProps) {
+export const LoadingSkeleton = memo(function LoadingSkeleton({ type, count = 1 }: LoadingSkeletonProps) {
   const items = Array.from({ length: count }, (_, i) => i)
 
   switch (type) {
@@ -54,4 +55,4 @@ export function LoadingSkeleton({ type, count = 1 }: LoadingSkeletonProps) {
         </div>
       )
   }
-}
+})
