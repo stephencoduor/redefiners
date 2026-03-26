@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from 'react-router'
+import { createBrowserRouter, Navigate, Outlet } from 'react-router'
 import { ProtectedRoute } from '@/routes/ProtectedRoute'
 import { PublicRoute } from '@/routes/PublicRoute'
 
@@ -11,6 +11,26 @@ export const router = createBrowserRouter([
         lazy: async () => {
           const { LoginPage } = await import('@/pages/LoginPage')
           return { Component: LoginPage }
+        },
+      },
+    ],
+  },
+  // Public pages accessible without authentication
+  {
+    element: <Outlet />,
+    children: [
+      {
+        path: '/accessibility',
+        lazy: async () => {
+          const { AccessibilityPage } = await import('@/pages/utility/AccessibilityPage')
+          return { Component: AccessibilityPage }
+        },
+      },
+      {
+        path: '/terms',
+        lazy: async () => {
+          const { TermsOfServicePage } = await import('@/pages/utility/TermsOfServicePage')
+          return { Component: TermsOfServicePage }
         },
       },
     ],
@@ -148,6 +168,34 @@ export const router = createBrowserRouter([
             },
           },
           {
+            path: '/courses/:courseId/collaborations',
+            lazy: async () => {
+              const { CollaborationsPage } = await import('@/pages/services/CollaborationsPage')
+              return { Component: CollaborationsPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/content-migrations',
+            lazy: async () => {
+              const { ContentMigrationsPage } = await import('@/pages/services/ContentMigrationsPage')
+              return { Component: ContentMigrationsPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/announcements',
+            lazy: async () => {
+              const { CourseAnnouncementsPage } = await import('@/pages/courses/CourseAnnouncementsPage')
+              return { Component: CourseAnnouncementsPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/analytics',
+            lazy: async () => {
+              const { AnalyticsPage } = await import('@/pages/analytics/AnalyticsPage')
+              return { Component: AnalyticsPage }
+            },
+          },
+          {
             path: '/inbox',
             lazy: async () => {
               const { InboxPage } = await import('@/pages/inbox/InboxPage')
@@ -159,6 +207,48 @@ export const router = createBrowserRouter([
             lazy: async () => {
               const { ProfilePage } = await import('@/pages/profile/ProfilePage')
               return { Component: ProfilePage }
+            },
+          },
+          {
+            path: '/notifications',
+            lazy: async () => {
+              const { NotificationsPage } = await import('@/pages/services/NotificationsPage')
+              return { Component: NotificationsPage }
+            },
+          },
+          {
+            path: '/search',
+            lazy: async () => {
+              const { SearchPage } = await import('@/pages/services/SearchPage')
+              return { Component: SearchPage }
+            },
+          },
+          {
+            path: '/all-courses',
+            lazy: async () => {
+              const { AllCoursesPage } = await import('@/pages/courses/AllCoursesPage')
+              return { Component: AllCoursesPage }
+            },
+          },
+          {
+            path: '/change-password',
+            lazy: async () => {
+              const { ChangePasswordPage } = await import('@/pages/services/ChangePasswordPage')
+              return { Component: ChangePasswordPage }
+            },
+          },
+          {
+            path: '/help',
+            lazy: async () => {
+              const { HelpCenterPage } = await import('@/pages/utility/HelpCenterPage')
+              return { Component: HelpCenterPage }
+            },
+          },
+          {
+            path: '/student-analytics',
+            lazy: async () => {
+              const { StudentAnalyticsPage } = await import('@/pages/analytics/StudentAnalyticsPage')
+              return { Component: StudentAnalyticsPage }
             },
           },
           {
