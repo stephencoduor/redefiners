@@ -1,6 +1,21 @@
 import { Link } from 'react-router'
 import type { CanvasCourse } from '@/types/canvas'
 
+function getCourseSlug(name: string): string {
+  const lower = name.toLowerCase()
+  if (lower.includes('spanish')) return 'spanish'
+  if (lower.includes('biology')) return 'biology'
+  if (lower.includes('english')) return 'english'
+  if (lower.includes('environment')) return 'enviro'
+  if (lower.includes('history') && lower.includes('world')) return 'history'
+  if (lower.includes('math')) return 'math'
+  if (lower.includes('computer')) return 'cs'
+  if (lower.includes('psych')) return 'psych'
+  if (lower.includes('art')) return 'art'
+  if (lower.includes('music')) return 'music'
+  return 'spanish' // fallback
+}
+
 interface CourseCardProps {
   course: CanvasCourse
 }
@@ -44,7 +59,7 @@ export function CourseCard({ course }: CourseCardProps) {
       {/* Course image */}
       <div className="relative w-full overflow-hidden" style={{ height: '150px' }}>
         <img
-          src={course.image_download_url ?? `${import.meta.env.BASE_URL}Images/car1.png`}
+          src={course.image_download_url ?? `${import.meta.env.BASE_URL}Images/course-${getCourseSlug(course.name)}.svg`}
           alt={course.name}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
