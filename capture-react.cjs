@@ -60,6 +60,12 @@ const path = require('path');
     ['B4-11-rubrics', '/app/courses/1/rubrics'],
     ['B4-12-gradebook', '/app/courses/1/gradebook'],
     ['B4-13-speed-grader', '/app/courses/1/speed-grader'],
+    // Priority 1: Content Editors & Quiz Workflow
+    ['P1-01-assignment-edit', '/app/courses/1/assignments/new'],
+    ['P1-02-page-edit', '/app/courses/1/pages/new'],
+    ['P1-03-discussion-new', '/app/courses/1/discussions/new'],
+    ['P1-04-course-copy', '/app/courses/1/copy'],
+    ['P1-05-course-paces', '/app/courses/1/paces'],
     // Test 404
     ['B1-03-404', '/app/nonexistent-page'],
   ];
