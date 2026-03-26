@@ -34,7 +34,7 @@ export function listConversations(
 ): Promise<ApiResponse<CanvasConversation[]>> {
   return apiGet<CanvasConversation[]>(
     '/v1/conversations',
-    { per_page: 50, ...params },
+    { scope: 'inbox', per_page: 50, ...params },
   );
 }
 

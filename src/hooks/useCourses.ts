@@ -7,8 +7,10 @@ export function useCourses() {
     queryKey: ['courses'],
     queryFn: async () => {
       const response = await apiGet<CanvasCourse[]>('/v1/courses', {
-        include: ['term', 'total_students', 'enrollments'],
+        include: ['term', 'total_students', 'teachers', 'enrollments'],
         per_page: 50,
+        enrollment_state: 'active',
+        'state[]': 'available',
       })
       return response.data
     },
