@@ -42,7 +42,7 @@ export function SidebarItem({ item }: SidebarItemProps) {
           'group flex items-center no-underline transition-all duration-200',
           active
             ? 'font-medium text-white'
-            : 'font-normal text-white/75 hover:text-white hover:translate-x-0.5'
+            : 'hover:translate-x-0.5'
         )}
         style={{
           fontSize: '13px',
@@ -50,26 +50,26 @@ export function SidebarItem({ item }: SidebarItemProps) {
           borderRadius: '12px',
           margin: '0 10px',
           fontFamily: "'Inter', 'Poppins', sans-serif",
+          color: active ? '#FFFFFF' : 'var(--sidebar-text)',
           ...(active
             ? {
-                background: 'linear-gradient(135deg, #2DB88A 0%, #25A07A 100%)',
-                boxShadow: '0 4px 15px rgba(0,196,140,0.4)',
+                background: 'var(--sidebar-active)',
+                boxShadow: 'var(--sidebar-active-shadow)',
               }
-            : {}),
-          ...(!active
-            ? {
+            : {
                 background: 'transparent',
-              }
-            : {}),
+              }),
         }}
         onMouseOver={(e) => {
           if (!active) {
             e.currentTarget.style.background = 'rgba(255,255,255,0.08)'
+            e.currentTarget.style.color = '#FFFFFF'
           }
         }}
         onMouseOut={(e) => {
           if (!active) {
             e.currentTarget.style.background = 'transparent'
+            e.currentTarget.style.color = 'var(--sidebar-text)'
           }
         }}
       >
@@ -86,7 +86,7 @@ export function SidebarItem({ item }: SidebarItemProps) {
           <span
             className="ml-auto flex items-center justify-center rounded-full text-white"
             style={{
-              background: '#FF6B35',
+              background: 'var(--color-accent-orange)',
               fontSize: '10px',
               fontWeight: 600,
               padding: '1px 6px',

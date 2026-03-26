@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { useCurrentUser } from '@/hooks/useCurrentUser'
 import { LoadingSkeleton } from '@/components/common/LoadingSkeleton'
-import { Settings, Save } from 'lucide-react'
+import { Settings, Save, Check } from 'lucide-react'
+import { useTheme } from '@/contexts/ThemeContext'
+import { ThemePreview } from '@/components/shared/ThemePreview'
 
 const LANGUAGES = [
   { value: 'en', label: 'English' },
@@ -25,6 +27,7 @@ const TIMEZONES = [
 
 export function AccountSettingsPage() {
   const { data: user, isLoading } = useCurrentUser()
+  const { themeId, setTheme, availableThemes } = useTheme()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [language, setLanguage] = useState('en')
@@ -58,78 +61,123 @@ export function AccountSettingsPage() {
         </h3>
       </div>
 
-      <div className="mx-auto max-w-2xl rounded-lg bg-white p-6 shadow-sm">
+      <div className="mx-auto max-w-2xl rounded-lg bg-white p-6 shadow-sm dark:bg-[var(--color-surface)]">
         <div className="space-y-5">
-          {/* Name */}
+          {/* Theme Selection */}
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-neutral-700">
-              Display Name
-            </label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-700 focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-100"
-            />
+            <h4 className="mb-3 text-sm font-semibold text-neutral-800 dark:text-neutral-200">
+              Theme
+            </h4>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              {availableThemes.map((t) => {
+                const isActive = themeId === t.id
+                return (
+                  <button
+                    key={t.id}
+                    type="button"
+                    onClick={() => setTheme(t.id)}
+                    className="group relative rounded-lg border-2 p-3 text-left transition-all"
+                    style={{
+                      borderColor: isActive ? 'var(--color-accent-green)' : 'var(--color-surface-200)',
+                      background: 'var(--color-surface)',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {isActive && (
+                      <span
+                        className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full text-white"
+                        style={{ background: 'var(--color-accent-green)' }}
+                      >
+                        <Check className="h-3 w-3" />
+                      </span>
+                    )}
+                    <div className="mb-2 overflow-hidden rounded">
+                      <ThemePreview theme={t} size="sm" />
+                    </div>
+                    <p className="text-sm font-medium" style={{ color: 'var(--color-text-primary)' }}>
+                      {t.name}
+                    </p>
+                    <p className="mt-0.5 text-xs" style={{ color: 'var(--color-text-secondary)' }}>
+                      {t.description}
+                    </p>
+                  </button>
+                )
+              })}
+            </div>
           </div>
 
-          {/* Email */}
-          <div>
-            <label className="mb-1.5 block text-sm font-medium text-neutral-700">
-              Email Address
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-700 focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-100"
-            />
-          </div>
+          <div className="border-t border-neutral-100 pt-5 dark:border-neutral-700">
+            {/* Name */}
+            <div className="mb-5">
+              <label className="mb-1.5 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                Display Name
+              </label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-700 focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-100 dark:border-neutral-600 dark:bg-[var(--color-surface)] dark:text-neutral-200"
+              />
+            </div>
 
-          {/* Language */}
-          <div>
-            <label className="mb-1.5 block text-sm font-medium text-neutral-700">
-              Language
-            </label>
-            <select
-              value={language}
-              onChange={(e) => setLanguage(e.target.value)}
-              className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-700 focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-100"
-            >
-              {LANGUAGES.map((lang) => (
-                <option key={lang.value} value={lang.value}>
-                  {lang.label}
-                </option>
-              ))}
-            </select>
-          </div>
+            {/* Email */}
+            <div className="mb-5">
+              <label className="mb-1.5 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                Email Address
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-700 focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-100 dark:border-neutral-600 dark:bg-[var(--color-surface)] dark:text-neutral-200"
+              />
+            </div>
 
-          {/* Timezone */}
-          <div>
-            <label className="mb-1.5 block text-sm font-medium text-neutral-700">
-              Timezone
-            </label>
-            <select
-              value={timezone}
-              onChange={(e) => setTimezone(e.target.value)}
-              className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-700 focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-100"
-            >
-              {TIMEZONES.map((tz) => (
-                <option key={tz.value} value={tz.value}>
-                  {tz.label}
-                </option>
-              ))}
-            </select>
+            {/* Language */}
+            <div className="mb-5">
+              <label className="mb-1.5 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                Language
+              </label>
+              <select
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+                className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-700 focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-100 dark:border-neutral-600 dark:bg-[var(--color-surface)] dark:text-neutral-200"
+              >
+                {LANGUAGES.map((lang) => (
+                  <option key={lang.value} value={lang.value}>
+                    {lang.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Timezone */}
+            <div className="mb-5">
+              <label className="mb-1.5 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                Timezone
+              </label>
+              <select
+                value={timezone}
+                onChange={(e) => setTimezone(e.target.value)}
+                className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-700 focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-100 dark:border-neutral-600 dark:bg-[var(--color-surface)] dark:text-neutral-200"
+              >
+                {TIMEZONES.map((tz) => (
+                  <option key={tz.value} value={tz.value}>
+                    {tz.label}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           {/* Notification Preferences */}
-          <div className="border-t border-neutral-100 pt-5">
-            <h4 className="mb-3 text-sm font-semibold text-neutral-800">
+          <div className="border-t border-neutral-100 pt-5 dark:border-neutral-700">
+            <h4 className="mb-3 text-sm font-semibold text-neutral-800 dark:text-neutral-200">
               Notification Preferences
             </h4>
             <div className="space-y-3">
               <label className="flex items-center justify-between">
-                <span className="text-sm text-neutral-700">
+                <span className="text-sm text-neutral-700 dark:text-neutral-300">
                   Email Notifications
                 </span>
                 <button
@@ -149,7 +197,7 @@ export function AccountSettingsPage() {
                 </button>
               </label>
               <label className="flex items-center justify-between">
-                <span className="text-sm text-neutral-700">
+                <span className="text-sm text-neutral-700 dark:text-neutral-300">
                   Push Notifications
                 </span>
                 <button
@@ -172,7 +220,7 @@ export function AccountSettingsPage() {
           </div>
 
           {/* Save Button */}
-          <div className="border-t border-neutral-100 pt-5">
+          <div className="border-t border-neutral-100 pt-5 dark:border-neutral-700">
             <button
               type="button"
               className="flex items-center gap-2 rounded-lg bg-primary-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"

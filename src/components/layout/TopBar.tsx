@@ -1,14 +1,23 @@
-import { Search, Bell, Mail, Menu, Sun, Moon } from 'lucide-react'
+import { Search, Bell, Mail, Menu, Sun, Moon, Palette, Check } from 'lucide-react'
 import { UserMenu } from '@/components/layout/UserMenu'
 import { useTheme } from '@/contexts/ThemeContext'
 import { useNotificationPolling } from '@/hooks/useNotificationPolling'
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuPortal,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu'
 
 interface TopBarProps {
   onMenuClick?: () => void
 }
 
 export function TopBar({ onMenuClick }: TopBarProps) {
-  const { theme, toggleTheme } = useTheme()
+  const { mode, toggleMode, themeId, setTheme, availableThemes } = useTheme()
   const { unreadCount } = useNotificationPolling()
 
   return (
@@ -68,15 +77,60 @@ export function TopBar({ onMenuClick }: TopBarProps) {
         </div>
       </div>
 
-      {/* Right: theme toggle + notification icons + avatar */}
+      {/* Right: theme picker + theme toggle + notification icons + avatar */}
       <div className="flex items-center gap-2">
+        {/* Theme Picker Dropdown */}
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            className="flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-[var(--color-surface-100)]"
+            aria-label="Switch theme"
+            style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
+          >
+            <Palette className="h-5 w-5" style={{ color: 'var(--color-text-secondary)' }} />
+          </DropdownMenuTrigger>
+          <DropdownMenuPortal>
+            <DropdownMenuContent align="end" sideOffset={8} style={{ minWidth: '220px' }}>
+              <DropdownMenuLabel>Choose Theme</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {availableThemes.map((t) => (
+                <DropdownMenuItem
+                  key={t.id}
+                  onClick={() => setTheme(t.id)}
+                  style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}
+                >
+                  {/* Color preview dots */}
+                  <div className="flex items-center gap-1.5">
+                    <span
+                      className="inline-block h-3.5 w-3.5 rounded-full border border-neutral-200"
+                      style={{ background: t.colors.sidebarBg }}
+                    />
+                    <span
+                      className="inline-block h-3.5 w-3.5 rounded-full border border-neutral-200"
+                      style={{ background: t.colors.accentGreen }}
+                    />
+                    <span
+                      className="inline-block h-3.5 w-3.5 rounded-full border border-neutral-200"
+                      style={{ background: t.colors.pageBg }}
+                    />
+                  </div>
+                  <span className="flex-1 text-sm">{t.name}</span>
+                  {themeId === t.id && (
+                    <Check className="h-4 w-4 shrink-0" style={{ color: 'var(--color-accent-green)' }} />
+                  )}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenuPortal>
+        </DropdownMenu>
+
+        {/* Dark/Light mode toggle */}
         <button
-          onClick={toggleTheme}
+          onClick={toggleMode}
           className="flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-[var(--color-surface-100)]"
-          aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          aria-label={mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
           style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
         >
-          {theme === 'dark' ? (
+          {mode === 'dark' ? (
             <Sun className="h-5 w-5" style={{ color: 'var(--color-text-secondary)' }} />
           ) : (
             <Moon className="h-5 w-5" style={{ color: 'var(--color-text-secondary)' }} />

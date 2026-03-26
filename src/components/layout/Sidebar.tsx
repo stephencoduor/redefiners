@@ -25,7 +25,7 @@ export function Sidebar() {
     <aside
       className="fixed inset-y-0 left-0 z-40 hidden w-[240px] flex-col lg:flex"
       style={{
-        background: 'linear-gradient(180deg, #163B32 0%, #0F2922 100%)',
+        background: 'var(--sidebar-bg)',
         overflowY: 'auto',
         overflowX: 'hidden',
       }}
@@ -36,7 +36,11 @@ export function Sidebar() {
           <img
             src={`${import.meta.env.BASE_URL}Images/logo.PNG`}
             alt="ReDefiners"
-            style={{ maxWidth: '160px', paddingTop: '15px' }}
+            style={{
+              maxWidth: '160px',
+              paddingTop: '15px',
+              filter: 'var(--sidebar-logo-filter, none)',
+            }}
             onError={(e) => {
               ;(e.target as HTMLImageElement).style.display = 'none'
             }}
@@ -63,7 +67,7 @@ export function Sidebar() {
                   fontWeight: 600,
                   textTransform: 'uppercase',
                   letterSpacing: '0.08em',
-                  color: 'rgba(124, 181, 164, 0.7)',
+                  color: 'var(--sidebar-section-header)',
                 }}
               >
                 {section.title}

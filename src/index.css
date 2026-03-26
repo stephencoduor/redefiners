@@ -147,15 +147,15 @@
    ═══════════════════════════════════════ */
 
 .gradient-sidebar {
-  background: linear-gradient(180deg, var(--color-primary-800) 0%, var(--color-primary-900) 100%);
+  background: var(--sidebar-bg);
 }
 
 .gradient-menu-active {
-  background: linear-gradient(135deg, #2DB88A 0%, #25A07A 100%);
+  background: var(--sidebar-active);
 }
 
 .gradient-cta {
-  background: linear-gradient(135deg, #FF6B35 0%, #FF8C5A 100%);
+  background: linear-gradient(135deg, var(--color-accent-orange) 0%, #FF8C5A 100%);
 }
 
 /* ═══════════════════════════════════════
@@ -310,6 +310,30 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* ═══════════════════════════════════════
+   Theme Variable Defaults (dark-accent)
+   Overridden by loaded theme CSS via [data-theme]
+   ═══════════════════════════════════════ */
+
+:root {
+  /* Sidebar */
+  --sidebar-bg: linear-gradient(180deg, #163B32 0%, #0F2922 100%);
+  --sidebar-text: rgba(255,255,255,0.75);
+  --sidebar-active: linear-gradient(135deg, #2DB88A 0%, #25A07A 100%);
+  --sidebar-active-shadow: 0 4px 20px rgba(45,184,138,0.3);
+  --sidebar-section-header: rgba(124, 181, 164, 0.7);
+  --sidebar-logo-filter: none;
+
+  /* TopBar */
+  --topbar-bg: #FFFFFF;
+  --topbar-border: #E5E7EB;
+
+  /* Cards */
+  --card-radius: 16px;
+  --card-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  --card-bg: #FFFFFF;
 }
 
 :root {
