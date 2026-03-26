@@ -2378,6 +2378,15 @@
         // Skip API init on login page
         if (currentPage === 'login.html') return;
 
+        // Init sidebar (renders into #sidebar-root for new pages, enhances existing for original pages)
+        if (window.ReDefinersSidebar) {
+            try {
+                await window.ReDefinersSidebar.init();
+            } catch (e) {
+                console.error('[Sidebar] Init failed:', e);
+            }
+        }
+
         // Init top bar (all authenticated pages)
         await initTopBar();
 

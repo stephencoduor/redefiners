@@ -48,7 +48,33 @@ class ReDefinersSidebar {
      * Render the sidebar menu
      */
     _render() {
-        const menuLinks = document.querySelector('.menu-links');
+        let menuLinks = document.querySelector('.menu-links');
+
+        // If no .menu-links exists, inject the full sidebar into #sidebar-root
+        if (!menuLinks) {
+            const sidebarRoot = document.getElementById('sidebar-root');
+            if (!sidebarRoot) return;
+
+            sidebarRoot.innerHTML = `
+                <aside class="left-sidebar tw-fixed tw-inset-y-0 tw-left-0 tw-w-[240px] tw-z-50 tw--translate-x-full lg:tw-translate-x-0 tw-transition-transform tw-duration-300 tw-overflow-y-auto shadcn-scrollbar"
+                       style="background:var(--color-primary-900,#0F2922);color:white;">
+                    <div class="tw-p-5 tw-pb-3">
+                        <a href="dashboard.html" class="tw-flex tw-items-center tw-gap-2 tw-no-underline">
+                            <img src="Images/logo.PNG" alt="ReDefiners" style="height:32px;" onerror="this.style.display='none'" />
+                            <span class="tw-text-white tw-font-semibold tw-text-base" style="font-family:Poppins,sans-serif;">ReDefiners</span>
+                        </a>
+                    </div>
+                    <section class="menu-links" style="padding:0 12px;"></section>
+                </aside>
+            `;
+            menuLinks = sidebarRoot.querySelector('.menu-links');
+
+            // Also ensure the main-right has correct left margin
+            const mainRight = document.querySelector('.main-right, #main-right');
+            if (mainRight) {
+                mainRight.style.marginLeft = '240px';
+            }
+        }
         if (!menuLinks) return;
 
         // Determine context
