@@ -116,4 +116,6 @@ export const router = createBrowserRouter([
       return { Component: NotFoundPage }
     },
   },
-])
+], {
+  basename: '/app',
+})

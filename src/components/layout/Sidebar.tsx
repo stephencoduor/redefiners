@@ -28,7 +28,7 @@ export function Sidebar() {
       <div className="flex items-center gap-2.5 px-5 py-5 pb-3">
         <Link to="/dashboard" className="flex items-center gap-2 no-underline">
           <img
-            src="/images/logo.png"
+            src={`${import.meta.env.BASE_URL}Images/logo.PNG`}
             alt="ReDefiners"
             className="h-8"
             onError={(e) => {

@@ -56,7 +56,7 @@ export function MobileSidebar() {
             </SheetTitle>
             <Link to="/dashboard" className="flex items-center gap-2 no-underline">
               <img
-                src="/images/logo.png"
+                src={`${import.meta.env.BASE_URL}Images/logo.PNG`}
                 alt="ReDefiners"
                 className="h-8"
                 onError={(e) => {
