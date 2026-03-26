@@ -1,3 +1,4 @@
+import { safeHtml } from '../../lib/sanitize';
 import { useParams, Link } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { apiGet } from '@/services/api-client'
@@ -87,7 +88,7 @@ export function PageViewPage() {
         {page.body ? (
           <div
             className="prose prose-sm max-w-none text-neutral-600"
-            dangerouslySetInnerHTML={{ __html: page.body }}
+            dangerouslySetInnerHTML={safeHtml(page.body)}
           />
         ) : (
           <p className="text-sm text-neutral-400">This page is empty.</p>

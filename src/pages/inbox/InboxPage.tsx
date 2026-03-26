@@ -1,3 +1,4 @@
+import { safeHtml } from '../../lib/sanitize';
 import { useState } from 'react'
 import { useConversations, useConversation } from '@/hooks/useConversations'
 import { LoadingSkeleton } from '@/components/common/LoadingSkeleton'
@@ -180,7 +181,7 @@ export function InboxPage() {
                         </div>
                         <div
                           className="prose prose-sm max-w-none text-neutral-600"
-                          dangerouslySetInnerHTML={{ __html: msg.body || '' }}
+                          dangerouslySetInnerHTML={safeHtml(msg.body || '')}
                         />
                       </div>
                     </div>

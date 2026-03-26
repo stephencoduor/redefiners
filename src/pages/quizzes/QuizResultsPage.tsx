@@ -1,3 +1,4 @@
+import { safeHtml } from '../../lib/sanitize';
 import { useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import {
@@ -131,7 +132,7 @@ export function QuizResultsPage() {
                     </p>
                     <div
                       className="prose prose-sm mt-1 max-w-none text-neutral-700"
-                      dangerouslySetInnerHTML={{ __html: q.question_text }}
+                      dangerouslySetInnerHTML={safeHtml(q.question_text)}
                     />
                   </div>
                   <span className="ml-3 text-xs text-neutral-500">

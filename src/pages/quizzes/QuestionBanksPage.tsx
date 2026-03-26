@@ -1,3 +1,4 @@
+import { safeHtml } from '../../lib/sanitize';
 import { useState } from 'react'
 import { useParams } from 'react-router'
 import { useQuery, useMutation } from '@tanstack/react-query'
@@ -186,11 +187,10 @@ export function QuestionBanksPage() {
                           </span>
                           <p
                             className="text-sm text-neutral-700"
-                            dangerouslySetInnerHTML={{
-                              __html:
+                            dangerouslySetInnerHTML={safeHtml(
                                 q.question_text?.slice(0, 200) ??
-                                q.question_name,
-                            }}
+                                q.question_name
+                            )}
                           />
                         </div>
                       ))}

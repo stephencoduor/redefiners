@@ -1,3 +1,4 @@
+import { safeHtml } from '../../lib/sanitize';
 import { useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { getQuiz, getQuizStatistics } from '@/services/modules/quizzes'
@@ -133,9 +134,7 @@ export function QuizStatisticsPage() {
                     </p>
                     <div
                       className="mt-1 text-xs text-neutral-500"
-                      dangerouslySetInnerHTML={{
-                        __html: q.question_text.slice(0, 200),
-                      }}
+                      dangerouslySetInnerHTML={safeHtml(q.question_text.slice(0, 200))}
                     />
                   </div>
                   <span

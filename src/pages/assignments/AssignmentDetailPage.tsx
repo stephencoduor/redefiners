@@ -1,3 +1,4 @@
+import { safeHtml } from '../../lib/sanitize';
 import { useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { apiGet } from '@/services/api-client'
@@ -103,7 +104,7 @@ export function AssignmentDetailPage() {
         {assignment.description ? (
           <div
             className="prose prose-sm max-w-none text-neutral-600"
-            dangerouslySetInnerHTML={{ __html: assignment.description }}
+            dangerouslySetInnerHTML={safeHtml(assignment.description)}
           />
         ) : (
           <p className="text-sm text-neutral-400">

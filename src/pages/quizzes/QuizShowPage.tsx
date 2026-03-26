@@ -1,3 +1,4 @@
+import { safeHtml } from '../../lib/sanitize';
 import { useParams, Link } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { getQuiz, getQuizSubmissions } from '@/services/modules/quizzes'
@@ -96,7 +97,7 @@ export function QuizShowPage() {
         <section className="rounded-lg bg-white p-6 shadow-sm">
           <div
             className="prose prose-sm max-w-none text-neutral-600"
-            dangerouslySetInnerHTML={{ __html: quiz.description }}
+            dangerouslySetInnerHTML={safeHtml(quiz.description)}
           />
         </section>
       )}

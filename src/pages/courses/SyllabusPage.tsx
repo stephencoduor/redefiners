@@ -1,3 +1,4 @@
+import { safeHtml } from '../../lib/sanitize';
 import { useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import { apiGet } from '@/services/api-client'
@@ -64,7 +65,7 @@ export function SyllabusPage() {
         ) : course?.syllabus_body ? (
           <div
             className="prose prose-sm max-w-none text-neutral-600"
-            dangerouslySetInnerHTML={{ __html: course.syllabus_body }}
+            dangerouslySetInnerHTML={safeHtml(course.syllabus_body)}
           />
         ) : (
           <p className="text-sm text-neutral-400">

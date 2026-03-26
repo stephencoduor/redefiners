@@ -69,12 +69,24 @@ async function request<T>(
 ): Promise<ApiResponse<T>> {
   const url = buildUrl(path, options.params);
 
+  // Get CSRF token from Canvas cookie or meta tag
+  const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+    ?? document.cookie.match(/_csrf_token=([^;]+)/)?.[1]
+    ?? '';
+
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  };
+
+  // Include CSRF token on state-changing requests
+  if (method !== 'GET' && csrfToken) {
+    headers['X-CSRF-Token'] = decodeURIComponent(csrfToken);
+  }
+
   const fetchOptions: RequestInit = {
     method,
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
+    headers,
     credentials: 'same-origin',
   };
 

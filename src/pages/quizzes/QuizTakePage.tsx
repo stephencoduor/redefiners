@@ -1,3 +1,4 @@
+import { safeHtml } from '../../lib/sanitize';
 import { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router'
 import { useQuery, useMutation } from '@tanstack/react-query'
@@ -39,7 +40,7 @@ function QuestionRenderer({
     <div className="space-y-4">
       <div
         className="prose prose-sm max-w-none text-neutral-700"
-        dangerouslySetInnerHTML={{ __html: question_text }}
+        dangerouslySetInnerHTML={safeHtml(question_text)}
       />
 
       {(question_type === 'multiple_choice_question' ||
@@ -63,7 +64,7 @@ function QuestionRenderer({
               />
               <span
                 className="text-sm text-neutral-700"
-                dangerouslySetInnerHTML={{ __html: a.html || a.text }}
+                dangerouslySetInnerHTML={safeHtml(a.html || a.text)}
               />
             </label>
           ))}

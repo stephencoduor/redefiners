@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate, Outlet } from 'react-router'
 import { ProtectedRoute } from '@/routes/ProtectedRoute'
 import { PublicRoute } from '@/routes/PublicRoute'
+import AdminRoute from '@/routes/AdminRoute'
 
 export const router = createBrowserRouter([
   {
@@ -349,6 +350,10 @@ export const router = createBrowserRouter([
               return { Component: StudentAnalyticsPage }
             },
           },
+          // Admin routes — protected by AdminRoute (role check)
+          {
+            element: <AdminRoute />,
+            children: [
           {
             path: '/admin',
             lazy: async () => {
@@ -1111,6 +1116,8 @@ export const router = createBrowserRouter([
               const { SystemHealthPage } = await import('@/pages/admin/SystemHealthPage')
               return { Component: SystemHealthPage }
             },
+          },
+            ], // End AdminRoute children
           },
           // Announcements
           {

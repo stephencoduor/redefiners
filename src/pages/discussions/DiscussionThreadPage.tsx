@@ -1,3 +1,4 @@
+import { safeHtml } from '../../lib/sanitize';
 import { useState } from 'react'
 import { useParams } from 'react-router'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
@@ -55,7 +56,7 @@ function EntryCard({
           </div>
           <div
             className="prose prose-sm max-w-none text-neutral-600"
-            dangerouslySetInnerHTML={{ __html: entry.message || '' }}
+            dangerouslySetInnerHTML={safeHtml(entry.message || '')}
           />
         </div>
       </div>
@@ -137,7 +138,7 @@ export function DiscussionThreadPage() {
         <section className="rounded-lg bg-white p-5 shadow-sm">
           <div
             className="prose prose-sm max-w-none text-neutral-700"
-            dangerouslySetInnerHTML={{ __html: topic.message }}
+            dangerouslySetInnerHTML={safeHtml(topic.message)}
           />
         </section>
       )}
