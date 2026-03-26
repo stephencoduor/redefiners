@@ -440,6 +440,146 @@ export const router = createBrowserRouter([
               return { Component: SpeedGraderPage }
             },
           },
+          {
+            path: '/courses/:courseId/assignments/:assignmentId/peer-reviews',
+            lazy: async () => {
+              const { PeerReviewsPage } = await import('@/pages/assignments/PeerReviewsPage')
+              return { Component: PeerReviewsPage }
+            },
+          },
+          {
+            path: '/calendar/appointments/new',
+            lazy: async () => {
+              const { AppointmentGroupPage } = await import('@/pages/calendar/AppointmentGroupPage')
+              return { Component: AppointmentGroupPage }
+            },
+          },
+          {
+            path: '/admin/blueprint-courses',
+            lazy: async () => {
+              const { BlueprintCoursesPage } = await import('@/pages/courses/BlueprintCoursesPage')
+              return { Component: BlueprintCoursesPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/content-sharing',
+            lazy: async () => {
+              const { ContentSharingPage } = await import('@/pages/courses/ContentSharingPage')
+              return { Component: ContentSharingPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/exports',
+            lazy: async () => {
+              const { ContentExportsPage } = await import('@/pages/courses/ContentExportsPage')
+              return { Component: ContentExportsPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/link-validator',
+            lazy: async () => {
+              const { LinkValidatorPage } = await import('@/pages/courses/LinkValidatorPage')
+              return { Component: LinkValidatorPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/statistics',
+            lazy: async () => {
+              const { CourseStatisticsPage } = await import('@/pages/courses/CourseStatisticsPage')
+              return { Component: CourseStatisticsPage }
+            },
+          },
+          {
+            path: '/courses/new',
+            lazy: async () => {
+              const { CourseWizardPage } = await import('@/pages/courses/CourseWizardPage')
+              return { Component: CourseWizardPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/grades/summary',
+            lazy: async () => {
+              const { GradeSummaryPage } = await import('@/pages/grades/GradeSummaryPage')
+              return { Component: GradeSummaryPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/gradebook/history',
+            lazy: async () => {
+              const { GradebookHistoryPage } = await import('@/pages/gradebook/GradebookHistoryPage')
+              return { Component: GradebookHistoryPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/gradebook/upload',
+            lazy: async () => {
+              const { GradebookUploadsPage } = await import('@/pages/gradebook/GradebookUploadsPage')
+              return { Component: GradebookUploadsPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/question-banks',
+            lazy: async () => {
+              const { QuestionBanksPage } = await import('@/pages/quizzes/QuestionBanksPage')
+              return { Component: QuestionBanksPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/rubrics/:rubricId/assess',
+            lazy: async () => {
+              const { RubricAssessmentPage } = await import('@/pages/rubrics/RubricAssessmentPage')
+              return { Component: RubricAssessmentPage }
+            },
+          },
+          {
+            path: '/admin/sis-import',
+            lazy: async () => {
+              const { SisImportPage } = await import('@/pages/admin/SisImportPage')
+              return { Component: SisImportPage }
+            },
+          },
+          {
+            path: '/admin/sub-accounts',
+            lazy: async () => {
+              const { SubAccountsPage } = await import('@/pages/admin/SubAccountsPage')
+              return { Component: SubAccountsPage }
+            },
+          },
+          {
+            path: '/users/grades',
+            lazy: async () => {
+              const { UserGradesPage } = await import('@/pages/grades/UserGradesPage')
+              return { Component: UserGradesPage }
+            },
+          },
+          {
+            path: '/admin/users/:userId/logins',
+            lazy: async () => {
+              const { UserLoginsPage } = await import('@/pages/admin/UserLoginsPage')
+              return { Component: UserLoginsPage }
+            },
+          },
+          {
+            path: '/settings/observees',
+            lazy: async () => {
+              const { ObserveesPage } = await import('@/pages/settings/ObserveesPage')
+              return { Component: ObserveesPage }
+            },
+          },
+          {
+            path: '/users/outcomes',
+            lazy: async () => {
+              const { UserOutcomeResultsPage } = await import('@/pages/outcomes/UserOutcomeResultsPage')
+              return { Component: UserOutcomeResultsPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/notification-settings',
+            lazy: async () => {
+              const { CourseNotificationSettingsPage } = await import('@/pages/courses/CourseNotificationSettingsPage')
+              return { Component: CourseNotificationSettingsPage }
+            },
+          },
         ],
       },
     ],
