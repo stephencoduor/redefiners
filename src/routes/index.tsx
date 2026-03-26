@@ -161,6 +161,111 @@ export const router = createBrowserRouter([
               return { Component: ProfilePage }
             },
           },
+          {
+            path: '/admin',
+            lazy: async () => {
+              const { AdminDashboardPage } = await import('@/pages/admin/AdminDashboardPage')
+              return { Component: AdminDashboardPage }
+            },
+          },
+          {
+            path: '/admin/users',
+            lazy: async () => {
+              const { UserManagementPage } = await import('@/pages/admin/UserManagementPage')
+              return { Component: UserManagementPage }
+            },
+          },
+          {
+            path: '/admin/reports',
+            lazy: async () => {
+              const { ReportsPage } = await import('@/pages/admin/ReportsPage')
+              return { Component: ReportsPage }
+            },
+          },
+          {
+            path: '/admin/permissions',
+            lazy: async () => {
+              const { PermissionsPage } = await import('@/pages/admin/PermissionsPage')
+              return { Component: PermissionsPage }
+            },
+          },
+          {
+            path: '/admin/terms',
+            lazy: async () => {
+              const { TermsPage } = await import('@/pages/admin/TermsPage')
+              return { Component: TermsPage }
+            },
+          },
+          {
+            path: '/admin/developer-keys',
+            lazy: async () => {
+              const { DeveloperKeysPage } = await import('@/pages/admin/DeveloperKeysPage')
+              return { Component: DeveloperKeysPage }
+            },
+          },
+          {
+            path: '/settings',
+            lazy: async () => {
+              const { AccountSettingsPage } = await import('@/pages/settings/AccountSettingsPage')
+              return { Component: AccountSettingsPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/settings',
+            lazy: async () => {
+              const { CourseSettingsPage } = await import('@/pages/settings/CourseSettingsPage')
+              return { Component: CourseSettingsPage }
+            },
+          },
+          {
+            path: '/calendar',
+            lazy: async () => {
+              const { CalendarPage } = await import('@/pages/calendar/CalendarPage')
+              return { Component: CalendarPage }
+            },
+          },
+          {
+            path: '/planner',
+            lazy: async () => {
+              const { PlannerPage } = await import('@/pages/planner/PlannerPage')
+              return { Component: PlannerPage }
+            },
+          },
+          {
+            path: '/eportfolio',
+            lazy: async () => {
+              const { EPortfolioPage } = await import('@/pages/eportfolio/EPortfolioPage')
+              return { Component: EPortfolioPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/outcomes',
+            lazy: async () => {
+              const { OutcomesPage } = await import('@/pages/outcomes/OutcomesPage')
+              return { Component: OutcomesPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/rubrics',
+            lazy: async () => {
+              const { RubricsPage } = await import('@/pages/rubrics/RubricsPage')
+              return { Component: RubricsPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/gradebook',
+            lazy: async () => {
+              const { GradebookPage } = await import('@/pages/gradebook/GradebookPage')
+              return { Component: GradebookPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/speed-grader',
+            lazy: async () => {
+              const { SpeedGraderPage } = await import('@/pages/gradebook/SpeedGraderPage')
+              return { Component: SpeedGraderPage }
+            },
+          },
         ],
       },
     ],

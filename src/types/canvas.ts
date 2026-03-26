@@ -178,6 +178,7 @@ export interface CanvasRubricCriterion {
 
 export interface CanvasSubmission {
   id: number;
+  user_id?: number;
   assignment_id: number;
   grade: string | null;
   score: number | null;
@@ -208,6 +209,7 @@ export interface CanvasAssignment {
   grading_type?: string;
   assignment_group_id?: number;
   published?: boolean;
+  rubric_settings?: { points_possible: number };
 }
 
 export interface CanvasTodoItem {

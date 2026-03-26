@@ -46,6 +46,20 @@ const path = require('path');
     ['B3-05-conferences', '/app/courses/1/conferences'],
     ['B3-06-inbox', '/app/inbox'],
     ['B3-07-profile', '/app/profile'],
+    // Batch 4: Admin, Settings, Calendar, Gradebook
+    ['B4-01-admin-dashboard', '/app/admin'],
+    ['B4-02-admin-users', '/app/admin/users'],
+    ['B4-03-admin-reports', '/app/admin/reports'],
+    ['B4-04-admin-terms', '/app/admin/terms'],
+    ['B4-05-account-settings', '/app/settings'],
+    ['B4-06-course-settings', '/app/courses/1/settings'],
+    ['B4-07-calendar', '/app/calendar'],
+    ['B4-08-planner', '/app/planner'],
+    ['B4-09-eportfolio', '/app/eportfolio'],
+    ['B4-10-outcomes', '/app/courses/1/outcomes'],
+    ['B4-11-rubrics', '/app/courses/1/rubrics'],
+    ['B4-12-gradebook', '/app/courses/1/gradebook'],
+    ['B4-13-speed-grader', '/app/courses/1/speed-grader'],
     // Test 404
     ['B1-03-404', '/app/nonexistent-page'],
   ];
