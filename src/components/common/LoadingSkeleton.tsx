@@ -13,7 +13,11 @@ export function LoadingSkeleton({ type, count = 1 }: LoadingSkeletonProps) {
       return (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((i) => (
-            <div key={i} className="rounded-lg bg-white p-4 shadow-sm">
+            <div
+              key={i}
+              className="rounded-lg p-4 shadow-sm"
+              style={{ background: 'var(--color-surface)' }}
+            >
               <Skeleton className="mb-3 h-[150px] w-full rounded-lg" />
               <Skeleton className="mb-2 h-5 w-3/4" />
               <Skeleton className="mb-1 h-3 w-1/2" />

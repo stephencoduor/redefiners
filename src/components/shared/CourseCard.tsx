@@ -29,16 +29,16 @@ export function CourseCard({ course }: CourseCardProps) {
       to={`/courses/${course.id}`}
       className="group block overflow-hidden no-underline transition-all duration-300 hover:-translate-y-[3px]"
       style={{
-        background: 'white',
+        background: 'var(--color-surface)',
         borderRadius: '16px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-        border: '1px solid #E5E7EB',
+        boxShadow: 'var(--shadow-card)',
+        border: '1px solid var(--color-surface-200)',
       }}
       onMouseOver={(e) => {
-        e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)'
+        e.currentTarget.style.boxShadow = 'var(--shadow-card-hover)'
       }}
       onMouseOut={(e) => {
-        e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)'
+        e.currentTarget.style.boxShadow = 'var(--shadow-card)'
       }}
     >
       {/* Course image */}
@@ -54,22 +54,22 @@ export function CourseCard({ course }: CourseCardProps) {
       <div style={{ padding: '16px' }}>
         <h5
           className="mb-1 line-clamp-2 font-semibold"
-          style={{ fontSize: '16px', color: '#163B32' }}
+          style={{ fontSize: '16px', color: 'var(--color-text-primary)' }}
         >
           {course.name}
         </h5>
         {course.course_code && (
-          <p className="mb-0.5" style={{ fontSize: '12px', color: '#6B7280', margin: '0 0 2px' }}>
+          <p className="mb-0.5" style={{ fontSize: '12px', color: 'var(--color-text-secondary)', margin: '0 0 2px' }}>
             {course.course_code}
           </p>
         )}
         {course.term?.name && (
-          <p style={{ fontSize: '11px', color: '#9CA3AF', margin: '0 0 2px' }}>
+          <p style={{ fontSize: '11px', color: 'var(--color-text-muted)', margin: '0 0 2px' }}>
             {course.term.name}
           </p>
         )}
         {teacherNames && (
-          <p className="truncate" style={{ fontSize: '11px', color: '#9CA3AF', margin: '0 0 8px' }}>
+          <p className="truncate" style={{ fontSize: '11px', color: 'var(--color-text-muted)', margin: '0 0 8px' }}>
             {teacherNames}
           </p>
         )}
@@ -78,14 +78,14 @@ export function CourseCard({ course }: CourseCardProps) {
         {currentScore !== null && (
           <div style={{ marginTop: '8px' }}>
             <div className="mb-1 flex items-center justify-between">
-              <span style={{ fontSize: '12px', color: '#6B7280' }}>Progress</span>
-              <span className="font-semibold" style={{ fontSize: '12px', color: '#163B32' }}>
+              <span style={{ fontSize: '12px', color: 'var(--color-text-secondary)' }}>Progress</span>
+              <span className="font-semibold" style={{ fontSize: '12px', color: 'var(--color-text-primary)' }}>
                 {Math.round(currentScore)}%
               </span>
             </div>
             <div
               className="w-full overflow-hidden"
-              style={{ height: '6px', borderRadius: '9999px', background: '#E5E7EB' }}
+              style={{ height: '6px', borderRadius: '9999px', background: 'var(--color-surface-200)' }}
             >
               <div
                 className="h-full transition-all"

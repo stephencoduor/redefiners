@@ -12,9 +12,9 @@ export function CoursesPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-2xl font-bold text-primary-800">My Courses</h3>
+          <h3 className="text-2xl font-bold" style={{ color: 'var(--color-text-primary)' }}>My Courses</h3>
           {!isLoading && courses && (
-            <p className="mt-1 text-sm text-neutral-500">
+            <p className="mt-1 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
               {courses.length} {courses.length === 1 ? 'course' : 'courses'} enrolled
             </p>
           )}

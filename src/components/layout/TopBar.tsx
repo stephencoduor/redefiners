@@ -1,19 +1,23 @@
-import { Search, Bell, Mail, Menu } from 'lucide-react'
+import { Search, Bell, Mail, Menu, Sun, Moon } from 'lucide-react'
 import { UserMenu } from '@/components/layout/UserMenu'
+import { useTheme } from '@/contexts/ThemeContext'
+import { useNotificationPolling } from '@/hooks/useNotificationPolling'
 
 interface TopBarProps {
   onMenuClick?: () => void
-  unreadCount?: number
 }
 
-export function TopBar({ onMenuClick, unreadCount = 0 }: TopBarProps) {
+export function TopBar({ onMenuClick }: TopBarProps) {
+  const { theme, toggleTheme } = useTheme()
+  const { unreadCount } = useNotificationPolling()
+
   return (
     <header
       className="sticky top-0 z-30 flex items-center justify-between"
       style={{
         height: '64px',
-        background: 'white',
-        borderBottom: '1px solid #E5E7EB',
+        background: 'var(--color-surface)',
+        borderBottom: '1px solid var(--color-surface-200)',
         padding: '0 24px',
       }}
     >
@@ -29,15 +33,15 @@ export function TopBar({ onMenuClick, unreadCount = 0 }: TopBarProps) {
             cursor: 'pointer',
           }}
         >
-          <Menu className="h-5 w-5" style={{ color: '#6B7280' }} />
+          <Menu className="h-5 w-5" style={{ color: 'var(--color-text-secondary)' }} />
         </button>
 
         <div
           className="hidden items-center sm:flex"
           style={{
             borderRadius: '9999px',
-            background: '#F3F4F6',
-            border: '1px solid #E5E7EB',
+            background: 'var(--color-surface-100)',
+            border: '1px solid var(--color-surface-200)',
             padding: '0 16px',
             height: '40px',
             width: '400px',
@@ -46,7 +50,7 @@ export function TopBar({ onMenuClick, unreadCount = 0 }: TopBarProps) {
             transition: 'border-color 0.2s, box-shadow 0.2s',
           }}
         >
-          <Search className="shrink-0" style={{ color: '#6B7280', width: '14px', height: '14px' }} />
+          <Search className="shrink-0" style={{ color: 'var(--color-text-secondary)', width: '14px', height: '14px' }} />
           <input
             type="search"
             placeholder="Search courses, assignments..."
@@ -56,7 +60,7 @@ export function TopBar({ onMenuClick, unreadCount = 0 }: TopBarProps) {
               background: 'transparent',
               fontFamily: "'Inter', 'Poppins', sans-serif",
               fontSize: '13px',
-              color: '#163B32',
+              color: 'var(--color-text-primary)',
               flex: 1,
               minWidth: 0,
             }}
@@ -64,14 +68,27 @@ export function TopBar({ onMenuClick, unreadCount = 0 }: TopBarProps) {
         </div>
       </div>
 
-      {/* Right: notification icons + avatar */}
+      {/* Right: theme toggle + notification icons + avatar */}
       <div className="flex items-center gap-2">
         <button
-          className="relative flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-neutral-100"
+          onClick={toggleTheme}
+          className="flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-[var(--color-surface-100)]"
+          aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
+        >
+          {theme === 'dark' ? (
+            <Sun className="h-5 w-5" style={{ color: 'var(--color-text-secondary)' }} />
+          ) : (
+            <Moon className="h-5 w-5" style={{ color: 'var(--color-text-secondary)' }} />
+          )}
+        </button>
+
+        <button
+          className="relative flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-[var(--color-surface-100)]"
           aria-label="Notifications"
           style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
         >
-          <Bell className="h-5 w-5" style={{ color: '#6B7280' }} />
+          <Bell className="h-5 w-5" style={{ color: 'var(--color-text-secondary)' }} />
           {unreadCount > 0 && (
             <span
               className="absolute flex items-center justify-center rounded-full text-white"
@@ -92,11 +109,11 @@ export function TopBar({ onMenuClick, unreadCount = 0 }: TopBarProps) {
         </button>
 
         <button
-          className="flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-neutral-100"
+          className="flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-[var(--color-surface-100)]"
           aria-label="Inbox"
           style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
         >
-          <Mail className="h-5 w-5" style={{ color: '#6B7280' }} />
+          <Mail className="h-5 w-5" style={{ color: 'var(--color-text-secondary)' }} />
         </button>
 
         <UserMenu />

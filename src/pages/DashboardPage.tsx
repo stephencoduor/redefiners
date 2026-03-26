@@ -43,13 +43,16 @@ function MiniCalendar() {
   for (let d = 1; d <= daysInMonth; d++) cells.push(d)
 
   return (
-    <div className="rounded-2xl bg-white p-5 shadow-sm">
-      <h5 className="mb-3 text-sm font-semibold" style={{ color: '#163B32' }}>
+    <div
+      className="rounded-2xl p-5 shadow-sm"
+      style={{ background: 'var(--color-surface)' }}
+    >
+      <h5 className="mb-3 text-sm font-semibold" style={{ color: 'var(--color-text-primary)' }}>
         {monthName}
       </h5>
       <div className="grid grid-cols-7 gap-1 text-center text-xs">
         {CALENDAR_DAYS.map((d, i) => (
-          <div key={i} className="py-1 font-semibold" style={{ color: '#9CA3AF', fontSize: '11px' }}>
+          <div key={i} className="py-1 font-semibold" style={{ color: 'var(--color-text-muted)', fontSize: '11px' }}>
             {d}
           </div>
         ))}
@@ -60,7 +63,7 @@ function MiniCalendar() {
             style={
               day === today
                 ? { background: '#2DB88A', color: 'white', fontWeight: 600 }
-                : { color: day ? '#163B32' : 'transparent' }
+                : { color: day ? 'var(--color-text-primary)' : 'transparent' }
             }
           >
             {day ?? ''}
@@ -79,7 +82,7 @@ function ProgressBar({ value, color }: { value: number; color: 'green' | 'purple
   }
 
   return (
-    <div className="h-5 w-full overflow-hidden rounded-full" style={{ background: '#E5E7EB' }}>
+    <div className="h-5 w-full overflow-hidden rounded-full" style={{ background: 'var(--color-surface-200)' }}>
       <div
         className="h-full rounded-full transition-all duration-600"
         style={{
@@ -116,7 +119,7 @@ export function DashboardPage() {
         <div className="flex items-center gap-4 py-2">
           <div
             className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full"
-            style={{ background: '#D4EFE6', border: '3px solid #2DB88A' }}
+            style={{ background: 'var(--color-page)', border: '3px solid #2DB88A' }}
           >
             <img
               src={`${import.meta.env.BASE_URL}Images/profile.png`}
@@ -131,7 +134,7 @@ export function DashboardPage() {
             {userLoading ? (
               <LoadingSkeleton type="text" count={1} />
             ) : (
-              <h3 className="font-bold" style={{ color: '#163B32', fontSize: '22px' }}>
+              <h3 className="font-bold" style={{ color: 'var(--color-text-primary)', fontSize: '22px' }}>
                 Welcome, {user?.short_name ?? 'Student'}!
               </h3>
             )}
@@ -143,14 +146,14 @@ export function DashboardPage() {
           {PROGRESS_CARDS.map((card) => (
             <div
               key={card.title}
-              className="rounded-2xl bg-white p-5 transition-all duration-300 hover:-translate-y-px"
-              style={{ boxShadow: '0 1px 4px rgba(0,0,0,0.03)' }}
+              className="rounded-2xl p-5 transition-all duration-300 hover:-translate-y-px"
+              style={{ background: 'var(--color-surface)', boxShadow: 'var(--shadow-card)' }}
             >
               <div className="mb-2.5 flex items-center justify-between">
-                <h5 className="text-sm font-semibold" style={{ color: '#163B32' }}>
+                <h5 className="text-sm font-semibold" style={{ color: 'var(--color-text-primary)' }}>
                   {card.title}
                 </h5>
-                <span className="text-xs font-medium" style={{ color: '#6B7280' }}>
+                <span className="text-xs font-medium" style={{ color: 'var(--color-text-secondary)' }}>
                   Details
                 </span>
               </div>
@@ -162,24 +165,24 @@ export function DashboardPage() {
         {/* Course Cards Carousel */}
         <section>
           <div className="mb-3 flex items-center justify-between">
-            <h4 className="text-base font-semibold" style={{ color: '#163B32' }}>
+            <h4 className="text-base font-semibold" style={{ color: 'var(--color-text-primary)' }}>
               My Courses
             </h4>
             {courses && courses.length > 3 && (
               <div className="flex gap-2">
                 <button
                   onClick={() => scrollCarousel('left')}
-                  className="flex h-8 w-8 items-center justify-center rounded-full border transition-colors hover:bg-neutral-50"
-                  style={{ borderColor: '#E5E7EB' }}
+                  className="flex h-8 w-8 items-center justify-center rounded-full border transition-colors hover:bg-[var(--color-surface-50)]"
+                  style={{ borderColor: 'var(--color-surface-200)' }}
                 >
-                  <ChevronLeft className="h-4 w-4" style={{ color: '#6B7280' }} />
+                  <ChevronLeft className="h-4 w-4" style={{ color: 'var(--color-text-secondary)' }} />
                 </button>
                 <button
                   onClick={() => scrollCarousel('right')}
-                  className="flex h-8 w-8 items-center justify-center rounded-full border transition-colors hover:bg-neutral-50"
-                  style={{ borderColor: '#E5E7EB' }}
+                  className="flex h-8 w-8 items-center justify-center rounded-full border transition-colors hover:bg-[var(--color-surface-50)]"
+                  style={{ borderColor: 'var(--color-surface-200)' }}
                 >
-                  <ChevronRight className="h-4 w-4" style={{ color: '#6B7280' }} />
+                  <ChevronRight className="h-4 w-4" style={{ color: 'var(--color-text-secondary)' }} />
                 </button>
               </div>
             )}
@@ -210,10 +213,10 @@ export function DashboardPage() {
         {/* Assignments Section */}
         <section>
           <div
-            className="rounded-2xl bg-white p-5"
-            style={{ boxShadow: '0 1px 4px rgba(0,0,0,0.03)' }}
+            className="rounded-2xl p-5"
+            style={{ background: 'var(--color-surface)', boxShadow: 'var(--shadow-card)' }}
           >
-            <h5 className="mb-4 text-base font-semibold" style={{ color: '#163B32' }}>
+            <h5 className="mb-4 text-base font-semibold" style={{ color: 'var(--color-text-primary)' }}>
               Assignments
             </h5>
             {todosLoading ? (
@@ -238,7 +241,10 @@ export function DashboardPage() {
       {/* Right Sidebar */}
       <div className="hidden w-72 shrink-0 space-y-5 xl:block">
         {/* User Profile Card */}
-        <div className="rounded-2xl bg-white p-5 text-center shadow-sm">
+        <div
+          className="rounded-2xl p-5 text-center shadow-sm"
+          style={{ background: 'var(--color-surface)' }}
+        >
           <div
             className="mx-auto mb-3 flex h-16 w-16 items-center justify-center overflow-hidden rounded-full"
             style={{ border: '3px solid #2DB88A' }}
@@ -252,10 +258,10 @@ export function DashboardPage() {
               }}
             />
           </div>
-          <h5 className="text-sm font-semibold" style={{ color: '#163B32' }}>
+          <h5 className="text-sm font-semibold" style={{ color: 'var(--color-text-primary)' }}>
             {user?.short_name ?? 'Student'}
           </h5>
-          <p className="text-xs" style={{ color: '#6B7280' }}>
+          <p className="text-xs" style={{ color: 'var(--color-text-secondary)' }}>
             {user?.email ?? 'student@redefiners.com'}
           </p>
         </div>
@@ -264,8 +270,11 @@ export function DashboardPage() {
         <MiniCalendar />
 
         {/* Recent Chats */}
-        <div className="rounded-2xl bg-white p-5 shadow-sm">
-          <h5 className="mb-3 text-sm font-semibold" style={{ color: '#163B32' }}>
+        <div
+          className="rounded-2xl p-5 shadow-sm"
+          style={{ background: 'var(--color-surface)' }}
+        >
+          <h5 className="mb-3 text-sm font-semibold" style={{ color: 'var(--color-text-primary)' }}>
             Recent Chats
           </h5>
           {[
@@ -275,7 +284,7 @@ export function DashboardPage() {
           ].map((chat, i) => (
             <div
               key={i}
-              className="flex items-center gap-3 rounded-xl px-2 py-2 transition-colors hover:bg-neutral-50"
+              className="flex items-center gap-3 rounded-xl px-2 py-2 transition-colors hover:bg-[var(--color-surface-50)]"
               style={{ cursor: 'pointer' }}
             >
               <div
@@ -287,14 +296,14 @@ export function DashboardPage() {
                 {chat.name[0]}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-xs font-semibold" style={{ color: '#163B32', margin: 0 }}>
+                <p className="truncate text-xs font-semibold" style={{ color: 'var(--color-text-primary)', margin: 0 }}>
                   {chat.name}
                 </p>
-                <p className="truncate text-xs" style={{ color: '#6B7280', margin: 0 }}>
+                <p className="truncate text-xs" style={{ color: 'var(--color-text-secondary)', margin: 0 }}>
                   {chat.message}
                 </p>
               </div>
-              <span className="shrink-0 text-xs" style={{ color: '#9CA3AF' }}>
+              <span className="shrink-0 text-xs" style={{ color: 'var(--color-text-muted)' }}>
                 {chat.time}
               </span>
             </div>
