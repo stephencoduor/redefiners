@@ -790,6 +790,336 @@ export const router = createBrowserRouter([
               return { Component: PublicProfilePage }
             },
           },
+          // Student Services
+          {
+            path: '/chat',
+            lazy: async () => {
+              const { ChatPage } = await import('@/pages/services/ChatPage')
+              return { Component: ChatPage }
+            },
+          },
+          {
+            path: '/feedback',
+            lazy: async () => {
+              const { FeedbackPage } = await import('@/pages/services/FeedbackPage')
+              return { Component: FeedbackPage }
+            },
+          },
+          {
+            path: '/mentoring',
+            lazy: async () => {
+              const { MentoringPage } = await import('@/pages/services/MentoringPage')
+              return { Component: MentoringPage }
+            },
+          },
+          {
+            path: '/tutoring',
+            lazy: async () => {
+              const { TutoringPage } = await import('@/pages/services/TutoringPage')
+              return { Component: TutoringPage }
+            },
+          },
+          {
+            path: '/career-services',
+            lazy: async () => {
+              const { CareerServicesPage } = await import('@/pages/services/CareerServicesPage')
+              return { Component: CareerServicesPage }
+            },
+          },
+          {
+            path: '/support',
+            lazy: async () => {
+              const { SupportPage } = await import('@/pages/services/SupportPage')
+              return { Component: SupportPage }
+            },
+          },
+          {
+            path: '/wellness',
+            lazy: async () => {
+              const { WellnessPage } = await import('@/pages/services/WellnessPage')
+              return { Component: WellnessPage }
+            },
+          },
+          {
+            path: '/office-hours',
+            lazy: async () => {
+              const { OfficeHoursPage } = await import('@/pages/services/OfficeHoursPage')
+              return { Component: OfficeHoursPage }
+            },
+          },
+          {
+            path: '/message-templates',
+            lazy: async () => {
+              const { MessageTemplatesPage } = await import('@/pages/services/MessageTemplatesPage')
+              return { Component: MessageTemplatesPage }
+            },
+          },
+          // Learning
+          {
+            path: '/learning-objectives',
+            lazy: async () => {
+              const { LearningObjectivesPage } = await import('@/pages/learning/LearningObjectivesPage')
+              return { Component: LearningObjectivesPage }
+            },
+          },
+          {
+            path: '/competencies',
+            lazy: async () => {
+              const { CompetenciesPage } = await import('@/pages/learning/CompetenciesPage')
+              return { Component: CompetenciesPage }
+            },
+          },
+          {
+            path: '/learning-paths',
+            lazy: async () => {
+              const { LearningPathsPage } = await import('@/pages/learning/LearningPathsPage')
+              return { Component: LearningPathsPage }
+            },
+          },
+          {
+            path: '/certificates',
+            lazy: async () => {
+              const { CertificatesPage } = await import('@/pages/learning/CertificatesPage')
+              return { Component: CertificatesPage }
+            },
+          },
+          {
+            path: '/goal-setting',
+            lazy: async () => {
+              const { GoalSettingPage } = await import('@/pages/learning/GoalSettingPage')
+              return { Component: GoalSettingPage }
+            },
+          },
+          {
+            path: '/progress-tracker',
+            lazy: async () => {
+              const { ProgressTrackerPage } = await import('@/pages/learning/ProgressTrackerPage')
+              return { Component: ProgressTrackerPage }
+            },
+          },
+          // Content
+          {
+            path: '/content-library',
+            lazy: async () => {
+              const { ContentLibraryPage } = await import('@/pages/content/ContentLibraryPage')
+              return { Component: ContentLibraryPage }
+            },
+          },
+          {
+            path: '/resource-library',
+            lazy: async () => {
+              const { ResourceLibraryPage } = await import('@/pages/content/ResourceLibraryPage')
+              return { Component: ResourceLibraryPage }
+            },
+          },
+          {
+            path: '/video-studio',
+            lazy: async () => {
+              const { VideoStudioPage } = await import('@/pages/content/VideoStudioPage')
+              return { Component: VideoStudioPage }
+            },
+          },
+          {
+            path: '/interactive-tools',
+            lazy: async () => {
+              const { InteractiveToolsPage } = await import('@/pages/content/InteractiveToolsPage')
+              return { Component: InteractiveToolsPage }
+            },
+          },
+          {
+            path: '/commons',
+            lazy: async () => {
+              const { CommonsPage } = await import('@/pages/content/CommonsPage')
+              return { Component: CommonsPage }
+            },
+          },
+          // Community
+          {
+            path: '/study-groups',
+            lazy: async () => {
+              const { StudyGroupsPage } = await import('@/pages/community/StudyGroupsPage')
+              return { Component: StudyGroupsPage }
+            },
+          },
+          {
+            path: '/workspaces',
+            lazy: async () => {
+              const { WorkspacesPage } = await import('@/pages/community/WorkspacesPage')
+              return { Component: WorkspacesPage }
+            },
+          },
+          {
+            path: '/conferences',
+            lazy: async () => {
+              const { GlobalConferencesPage } = await import('@/pages/community/GlobalConferencesPage')
+              return { Component: GlobalConferencesPage }
+            },
+          },
+          {
+            path: '/recordings',
+            lazy: async () => {
+              const { RecordingsPage } = await import('@/pages/community/RecordingsPage')
+              return { Component: RecordingsPage }
+            },
+          },
+          {
+            path: '/group-assignments',
+            lazy: async () => {
+              const { GroupAssignmentsPage } = await import('@/pages/community/GroupAssignmentsPage')
+              return { Component: GroupAssignmentsPage }
+            },
+          },
+          // Schedule
+          {
+            path: '/academic-calendar',
+            lazy: async () => {
+              const { AcademicCalendarPage } = await import('@/pages/schedule/AcademicCalendarPage')
+              return { Component: AcademicCalendarPage }
+            },
+          },
+          {
+            path: '/events',
+            lazy: async () => {
+              const { EventsPage } = await import('@/pages/schedule/EventsPage')
+              return { Component: EventsPage }
+            },
+          },
+          {
+            path: '/room-booking',
+            lazy: async () => {
+              const { RoomBookingPage } = await import('@/pages/schedule/RoomBookingPage')
+              return { Component: RoomBookingPage }
+            },
+          },
+          {
+            path: '/attendance',
+            lazy: async () => {
+              const { AttendancePage } = await import('@/pages/schedule/AttendancePage')
+              return { Component: AttendancePage }
+            },
+          },
+          // Analytics
+          {
+            path: '/analytics',
+            lazy: async () => {
+              const { GlobalAnalyticsPage } = await import('@/pages/analytics/GlobalAnalyticsPage')
+              return { Component: GlobalAnalyticsPage }
+            },
+          },
+          {
+            path: '/learning-analytics',
+            lazy: async () => {
+              const { LearningAnalyticsPage } = await import('@/pages/analytics/LearningAnalyticsPage')
+              return { Component: LearningAnalyticsPage }
+            },
+          },
+          {
+            path: '/engagement',
+            lazy: async () => {
+              const { EngagementPage } = await import('@/pages/analytics/EngagementPage')
+              return { Component: EngagementPage }
+            },
+          },
+          {
+            path: '/completion-reports',
+            lazy: async () => {
+              const { CompletionReportsPage } = await import('@/pages/analytics/CompletionReportsPage')
+              return { Component: CompletionReportsPage }
+            },
+          },
+          {
+            path: '/analytics-hub',
+            lazy: async () => {
+              const { AnalyticsHubPage } = await import('@/pages/analytics/AnalyticsHubPage')
+              return { Component: AnalyticsHubPage }
+            },
+          },
+          // Admin
+          {
+            path: '/admin/accessibility',
+            lazy: async () => {
+              const { AdminAccessibilityPage } = await import('@/pages/admin/AdminAccessibilityPage')
+              return { Component: AdminAccessibilityPage }
+            },
+          },
+          {
+            path: '/admin/api-tokens',
+            lazy: async () => {
+              const { ApiTokensPage } = await import('@/pages/admin/ApiTokensPage')
+              return { Component: ApiTokensPage }
+            },
+          },
+          {
+            path: '/admin/audit-log',
+            lazy: async () => {
+              const { AuditLogPage } = await import('@/pages/admin/AuditLogPage')
+              return { Component: AuditLogPage }
+            },
+          },
+          {
+            path: '/admin/authentication',
+            lazy: async () => {
+              const { AuthenticationPage } = await import('@/pages/admin/AuthenticationPage')
+              return { Component: AuthenticationPage }
+            },
+          },
+          {
+            path: '/admin/backup',
+            lazy: async () => {
+              const { BackupPage } = await import('@/pages/admin/BackupPage')
+              return { Component: BackupPage }
+            },
+          },
+          {
+            path: '/admin/course-templates',
+            lazy: async () => {
+              const { CourseTemplatesPage } = await import('@/pages/admin/CourseTemplatesPage')
+              return { Component: CourseTemplatesPage }
+            },
+          },
+          {
+            path: '/admin/data-privacy',
+            lazy: async () => {
+              const { DataPrivacyPage } = await import('@/pages/admin/DataPrivacyPage')
+              return { Component: DataPrivacyPage }
+            },
+          },
+          {
+            path: '/admin/enrollments',
+            lazy: async () => {
+              const { EnrollmentsPage } = await import('@/pages/admin/EnrollmentsPage')
+              return { Component: EnrollmentsPage }
+            },
+          },
+          {
+            path: '/admin/institution',
+            lazy: async () => {
+              const { InstitutionPage } = await import('@/pages/admin/InstitutionPage')
+              return { Component: InstitutionPage }
+            },
+          },
+          {
+            path: '/admin/system',
+            lazy: async () => {
+              const { SystemPage } = await import('@/pages/admin/SystemPage')
+              return { Component: SystemPage }
+            },
+          },
+          {
+            path: '/admin/system-health',
+            lazy: async () => {
+              const { SystemHealthPage } = await import('@/pages/admin/SystemHealthPage')
+              return { Component: SystemHealthPage }
+            },
+          },
+          // Announcements
+          {
+            path: '/announcements/editor',
+            lazy: async () => {
+              const { AnnouncementEditorPage } = await import('@/pages/announcements/AnnouncementEditorPage')
+              return { Component: AnnouncementEditorPage }
+            },
+          },
         ],
       },
     ],
