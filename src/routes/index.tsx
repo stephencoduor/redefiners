@@ -105,6 +105,62 @@ export const router = createBrowserRouter([
               return { Component: SyllabusPage }
             },
           },
+          {
+            path: '/courses/:courseId/discussions',
+            lazy: async () => {
+              const { DiscussionsPage } = await import('@/pages/discussions/DiscussionsPage')
+              return { Component: DiscussionsPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/discussions/:topicId',
+            lazy: async () => {
+              const { DiscussionThreadPage } = await import('@/pages/discussions/DiscussionThreadPage')
+              return { Component: DiscussionThreadPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/quizzes',
+            lazy: async () => {
+              const { QuizzesPage } = await import('@/pages/quizzes/QuizzesPage')
+              return { Component: QuizzesPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/people',
+            lazy: async () => {
+              const { PeoplePage } = await import('@/pages/people/PeoplePage')
+              return { Component: PeoplePage }
+            },
+          },
+          {
+            path: '/courses/:courseId/groups',
+            lazy: async () => {
+              const { GroupsPage } = await import('@/pages/groups/GroupsPage')
+              return { Component: GroupsPage }
+            },
+          },
+          {
+            path: '/courses/:courseId/conferences',
+            lazy: async () => {
+              const { ConferencesPage } = await import('@/pages/conferences/ConferencesPage')
+              return { Component: ConferencesPage }
+            },
+          },
+          {
+            path: '/inbox',
+            lazy: async () => {
+              const { InboxPage } = await import('@/pages/inbox/InboxPage')
+              return { Component: InboxPage }
+            },
+          },
+          {
+            path: '/profile',
+            lazy: async () => {
+              const { ProfilePage } = await import('@/pages/profile/ProfilePage')
+              return { Component: ProfilePage }
+            },
+          },
         ],
       },
     ],

@@ -38,6 +38,14 @@ const path = require('path');
     // Also test with different course
     ['B2-10-course2-home', '/app/courses/2'],
     ['B2-11-course2-assignments', '/app/courses/2/assignments'],
+    // Batch 3: Communication & Assessment
+    ['B3-01-discussions', '/app/courses/1/discussions'],
+    ['B3-02-quizzes', '/app/courses/1/quizzes'],
+    ['B3-03-people', '/app/courses/1/people'],
+    ['B3-04-groups', '/app/courses/1/groups'],
+    ['B3-05-conferences', '/app/courses/1/conferences'],
+    ['B3-06-inbox', '/app/inbox'],
+    ['B3-07-profile', '/app/profile'],
     // Test 404
     ['B1-03-404', '/app/nonexistent-page'],
   ];
