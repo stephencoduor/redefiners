@@ -1,5 +1,59 @@
 # Performance Optimization Report
 
+**Last Audit Date:** 2026-03-26
+**Tool:** Puppeteer + Chrome DevTools Protocol (Performance API, Navigation Timing, Layout Shift API)
+**Test Server:** https://fineract.us (Hostinger VPS, 8GB RAM, 2 vCPU)
+
+---
+
+## Core Web Vitals (10-Page Audit Results)
+
+| Metric | Average | Grade | Target |
+|--------|---------|-------|--------|
+| **TTFB** | 176ms | GOOD | < 200ms |
+| **FCP** | 567ms | GOOD | < 1800ms |
+| **CLS** | 0.000 | GOOD | < 0.1 |
+| **DOM Interactive** | 210ms | GOOD | < 500ms |
+| **Full Page Load** | 1687ms | GOOD | < 3000ms |
+| **JS Heap** | 21.3MB avg | OK | < 50MB |
+
+## Per-Page Breakdown
+
+| Page | TTFB | FCP | Load | Requests | DOM Nodes | Heap |
+|------|------|-----|------|----------|-----------|------|
+| Login | 1ms | 812ms | 1728ms | 70 | 577 | 21.9MB |
+| Dashboard | 197ms | 532ms | 2004ms | 71 | 577 | 22.0MB |
+| Courses | 194ms | 532ms | 2009ms | 70 | 471 | 23.3MB |
+| Course Home | 196ms | 532ms | 1416ms | 63 | 306 | 16.1MB |
+| Assignments | 197ms | 508ms | 1224ms | 62 | 246 | 19.8MB |
+| Inbox | 196ms | 664ms | 1659ms | 62 | 428 | 17.6MB |
+| Calendar | 196ms | 528ms | 1381ms | 59 | 502 | 20.1MB |
+| Admin | 194ms | 536ms | 2003ms | 67 | 557 | 22.5MB |
+| Profile | 196ms | 520ms | 1499ms | 60 | 459 | 23.9MB |
+| Gradebook | 194ms | 508ms | 1943ms | 61 | 249 | 26.1MB |
+
+## Slowest Resources (per page)
+
+| Page | Slowest Resource | Duration |
+|------|-----------------|----------|
+| Course Home | modules API | 620ms |
+| Admin | activity_stream API | 548ms |
+| Gradebook | submissions API | 941ms |
+| Calendar | calendar_events API | 304ms |
+| Inbox | conversations API | 270ms |
+
+## Failed API Calls
+
+| Page | Endpoint | Status |
+|------|----------|--------|
+| Course Home | /api/v1/courses/1/assignments (order_by=due_at) | 500 |
+| Assignments | /api/v1/courses/1/assignment_groups | 500 |
+| Gradebook | /api/v1/courses/1/assignments (order_by=position) | 500 |
+
+*Note: 500 errors are Canvas backend issues with certain query parameters, not frontend performance issues.*
+
+---
+
 ## Bundle Size Results
 
 ### Before Optimization
