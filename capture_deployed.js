@@ -2,8 +2,11 @@ const puppeteer = require('puppeteer');
 const path = require('path');
 
 (async () => {
-  const browser = await puppeteer.launch({ headless: 'new', args: ['--no-sandbox', '--ignore-certificate-errors'] });
+  const browser = await puppeteer.launch({ headless: 'new', args: ['--no-sandbox', '--ignore-certificate-errors', '--disable-web-security'] });
   const page = await browser.newPage();
+  // Disable cache
+  const client = await page.createCDPSession();
+  await client.send('Network.setCacheDisabled', { cacheDisabled: true });
   await page.setViewport({ width: 1440, height: 900 });
 
   try {
@@ -37,7 +40,7 @@ const path = require('path');
   for (const [name, url] of pages) {
     try {
       await page.goto('https://fineract.us' + url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-      await new Promise(r => setTimeout(r, 2000));
+      await new Promise(r => setTimeout(r, 3000));
       await page.screenshot({ path: path.join(outDir, name + '.png'), fullPage: false });
       console.log('ok ' + name);
       success++;
